@@ -45,7 +45,7 @@ namespace WebUI
             services.AddHealthChecks()
                 .AddDbContextCheck<PisheyarMagContext>();
 
-            //services.AddCors();
+            services.AddCors();
             services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<IPisheyarMagContext>())
                 .AddNewtonsoftJson();
 
@@ -79,10 +79,10 @@ namespace WebUI
             app.UseAuthentication();
             app.UseAuthorization();
 
-            //app.UseCors(x => x
-            //    .AllowAnyOrigin()
-            //    .AllowAnyMethod()
-            //    .AllowAnyHeader());
+            app.UseCors(x => x
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
 
             app.UseEndpoints(endpoints =>
             {
