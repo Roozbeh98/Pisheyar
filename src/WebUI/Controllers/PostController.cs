@@ -26,12 +26,23 @@ namespace WebUI.Controllers
     [ApiController]
     public class PostController : ApiController
     {
+        /// <summary>
+        /// دریافت اطلاعات پست از طریق آیدی
+        /// </summary>
+        /// <param name="guid">آیدی</param>
+        /// <returns></returns>
         [HttpGet("[action]/{guid}")]
         public async Task<ActionResult<GetPostVm>> GetByGuid(Guid guid)
         {
             return await Mediator.Send(new GetPostQuery() { Guid = guid });
         }
 
+        /// <summary>
+        /// دریافت پست ها از طریق دسته بندی
+        /// </summary>
+        /// <param name="categoryId">آیدی دسته بندی</param>
+        /// <param name="page">شماره صفحه</param>
+        /// <returns></returns>
         [HttpGet("[action]/{categoryId}/{page}")]
         public async Task<ActionResult<GetPostsByCategoryVm>> GetByCategory(int categoryId, int page)
         {
@@ -39,7 +50,7 @@ namespace WebUI.Controllers
         }
 
         /// <summary>
-        /// لیست تمام پست ها
+        /// دریافت تمامی پست ها
         /// </summary>
         /// <returns></returns>
         [HttpGet("[action]")]
@@ -48,66 +59,121 @@ namespace WebUI.Controllers
             return await Mediator.Send(new GetAllPostsQuery());
         }
 
+        /// <summary>
+        /// دریافت پست ها از طریق شماره صفحه
+        /// </summary>
+        /// <param name="page">شماره صفحه</param>
+        /// <returns></returns>
         [HttpGet("[action]/{page}")]
         public async Task<ActionResult<GetPostsByPaginationVm>> GetByPagination(int page)
         {
             return await Mediator.Send(new GetPostsByPaginationQuery() { Page = page });
         }
 
+        /// <summary>
+        /// دریافت نظرات پذیرفته شده
+        /// </summary>
+        /// <param name="postId">آیدی پست</param>
+        /// <returns></returns>
         [HttpGet("{postId}/[action]")]
         public async Task<ActionResult<AcceptedPostCommentsVm>> GetAcceptedComments(int postId)
         {
             return await Mediator.Send(new GetAcceptedPostCommentsQuery() { PostId = postId });
         }
 
+        /// <summary>
+        /// دریافت نظرات پذیرفته نشده
+        /// </summary>
+        /// <param name="postId">آیدی پست</param>
+        /// <returns></returns>
         [HttpGet("{postId}/[action]")]
         public async Task<ActionResult<RejectedPostCommentsVm>> GetRejectedComments(int postId)
         {
             return await Mediator.Send(new GetRejectedPostCommentsQuery() { PostId = postId });
         }
 
+        /// <summary>
+        /// افزودن پست جدید
+        /// </summary>
+        /// <param name="command">اطلاعات پست</param>
+        /// <returns></returns>
         [HttpPost("[action]")]
         public async Task<ActionResult<int>> Create(CreatePostCommand command)
         {
             return await Mediator.Send(command);
         }
 
+        /// <summary>
+        /// لایک پست
+        /// </summary>
+        /// <param name="command">آیدی پست</param>
+        /// <returns></returns>
         [HttpPost("[action]")]
         public async Task<ActionResult<int>> Like(LikePostCommand command)
         {
             return await Mediator.Send(command);
         }
 
+        /// <summary>
+        /// تغییر وضعیت نمایش پست
+        /// </summary>
+        /// <param name="command">اطلاعات لازم</param>
+        /// <returns></returns>
         [HttpPost("[action]")]
         public async Task<ActionResult<int>> ChangeShow(ChangePostShowCommand command)
         {
             return await Mediator.Send(command);
         }
 
+        /// <summary>
+        /// افزودن نظر جدید
+        /// </summary>
+        /// <param name="command">اطلاعات نظر</param>
+        /// <returns></returns>
         [HttpPost("[action]")]
         public async Task<ActionResult<int>> CreateComment(CreatePostCommentCommand command)
         {
             return await Mediator.Send(command);
         }
 
+        /// <summary>
+        /// تغییر وضعیت پذیرش نظر
+        /// </summary>
+        /// <param name="command">اطلاعات لازم</param>
+        /// <returns></returns>
         [HttpPost("[action]")]
         public async Task<ActionResult<int>> ChangeCommentAcceptance(ChangePostCommentAcceptanceCommand command)
         {
             return await Mediator.Send(command);
         }
 
+        /// <summary>
+        /// ویرایش نظر
+        /// </summary>
+        /// <param name="command">اطلاعات نظر</param>
+        /// <returns></returns>
         [HttpPut("[action]")]
         public async Task<ActionResult<int>> Update(UpdatePostCommand command)
         {
             return await Mediator.Send(command);
         }
 
+        /// <summary>
+        /// حذف پست
+        /// </summary>
+        /// <param name="id">آیدی پست</param>
+        /// <returns></returns>
         [HttpDelete("[action]/{id}")]
         public async Task<ActionResult<int>> Delete(int id)
         {
             return await Mediator.Send(new DeletePostCommand { PostId = id });
         }
 
+        /// <summary>
+        /// حذف نظر
+        /// </summary>
+        /// <param name="id">آیدی نظر</param>
+        /// <returns></returns>
         [HttpDelete("[action]/{id}")]
         public async Task<ActionResult<int>> DeleteComment(int id)
         {
