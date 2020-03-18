@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Pisheyar.Application.Posts.Commands.UpdatePost
 {
-    public class UpdatePostCommand : IRequest<int>
+    public class UpdatePostCommand : IRequest<UpdatePostCommandVm>
     {
         public Guid PostGuid { get; set; }
 
@@ -28,7 +28,7 @@ namespace Pisheyar.Application.Posts.Commands.UpdatePost
 
         //public int[] Tags { get; set; }
 
-        public class UpdatePostCommandHandler : IRequestHandler<UpdatePostCommand, int>
+        public class UpdatePostCommandHandler : IRequestHandler<UpdatePostCommand, UpdatePostCommandVm>
         {
             private readonly IPisheyarMagContext _context;
             private readonly ICurrentUserService _currentUserService;
@@ -39,7 +39,7 @@ namespace Pisheyar.Application.Posts.Commands.UpdatePost
                 _currentUserService = currentUserService;
             }
 
-            public async Task<int> Handle(UpdatePostCommand request, CancellationToken cancellationToken)
+            public async Task<UpdatePostCommandVm> Handle(UpdatePostCommand request, CancellationToken cancellationToken)
             {
                 var query = await _context.TblPost.SingleOrDefaultAsync(x => x.PostGuid == request.PostGuid && !x.PostIsDelete);
 
@@ -65,10 +65,10 @@ namespace Pisheyar.Application.Posts.Commands.UpdatePost
 
                     await _context.SaveChangesAsync(cancellationToken);
 
-                    return 1;
+                    return new UpdatePostCommandVm() { Message = "عملیات موفق آمیز", State = (int)UpdatePostState.Success };
                 }
 
-                return -1;
+                return new UpdatePostCommandVm() { Message = "پست مورد نظر یافت نشد", State = (int)UpdatePostState.PostNotFound };
             }
         }
     }

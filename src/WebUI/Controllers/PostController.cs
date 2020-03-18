@@ -98,7 +98,7 @@ namespace WebUI.Controllers
         /// <param name="command">اطلاعات پست</param>
         /// <returns></returns>
         [HttpPost("[action]")]
-        public async Task<ActionResult<int>> Create(CreatePostCommand command)
+        public async Task<ActionResult<CreatePostCommandVm>> Create(CreatePostCommand command)
         {
             return await Mediator.Send(command);
         }
@@ -153,7 +153,7 @@ namespace WebUI.Controllers
         /// <param name="command">اطلاعات نظر</param>
         /// <returns></returns>
         [HttpPost("[action]")]
-        public async Task<ActionResult<int>> Update(UpdatePostCommand command)
+        public async Task<ActionResult<UpdatePostCommandVm>> Update(UpdatePostCommand command)
         {
             return await Mediator.Send(command);
         }

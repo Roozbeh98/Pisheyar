@@ -4,9 +4,14 @@ using System.Text;
 
 namespace Pisheyar.Domain.Enums
 {
-    public enum ChangeUserActivenessState
+    public enum CreatePostState
+    {
+        Success = 1
+    }
+
+    public enum UpdatePostState
     {
         Success = 1,
-        UserNotFound = 2
+        PostNotFound = 2
     }
 }

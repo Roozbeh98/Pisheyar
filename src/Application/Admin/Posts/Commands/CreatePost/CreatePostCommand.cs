@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Pisheyar.Application.Posts.Commands.CreatePost
 {
-    public class CreatePostCommand : IRequest<int>
+    public class CreatePostCommand : IRequest<CreatePostCommandVm>
     {
         public string Title { get; set; }
 
@@ -26,7 +26,7 @@ namespace Pisheyar.Application.Posts.Commands.CreatePost
 
         //public int[] Tags { get; set; }
 
-        public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, int>
+        public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, CreatePostCommandVm>
         {
             private readonly IPisheyarMagContext _context;
             private readonly ICurrentUserService _currentUserService;
@@ -37,7 +37,7 @@ namespace Pisheyar.Application.Posts.Commands.CreatePost
                 _currentUserService = currentUserService;
             }
 
-            public async Task<int> Handle(CreatePostCommand request, CancellationToken cancellationToken)
+            public async Task<CreatePostCommandVm> Handle(CreatePostCommand request, CancellationToken cancellationToken)
             {
                 var postEntity = new TblPost
                 {
@@ -63,7 +63,7 @@ namespace Pisheyar.Application.Posts.Commands.CreatePost
 
                 await _context.SaveChangesAsync(cancellationToken);
 
-                return 1;
+                return new CreatePostCommandVm() { Message = "عملیات موفق آمیز", State = (int)CreatePostState.Success };
             }
         }
     }
