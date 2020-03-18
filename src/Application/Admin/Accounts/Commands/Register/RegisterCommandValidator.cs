@@ -6,9 +6,9 @@ namespace Pisheyar.Application.Accounts.Commands.Register
     {
         public RegisterCommandValidator()
         {
-            //RuleFor(v => v.Title)
-            //    .MaximumLength(200)
-            //    .NotEmpty();
+            RuleFor(v => v.Name)
+                .MaximumLength(128)
+                .NotEmpty();
         }
     }
 }

@@ -63,7 +63,7 @@ namespace WebUI.Controllers
         /// </summary>
         /// <param name="command">اطلاعات لازم</param>
         /// <returns></returns>
-        [HttpPut("[action]")]
+        [HttpPost("[action]")]
         public async Task<ActionResult<int>> Update(UpdateCategoryCommand command)
         {
             return await Mediator.Send(command);
@@ -74,7 +74,7 @@ namespace WebUI.Controllers
         /// </summary>
         /// <param name="id">آیدی دسته بندی</param>
         /// <returns></returns>
-        [HttpDelete("[action]/{id}")]
+        [HttpPost("[action]/{id}")]
         public async Task<ActionResult<int>> Delete(int id)
         {
             return await Mediator.Send(new DeleteCategoryCommand { CategoryId = id });

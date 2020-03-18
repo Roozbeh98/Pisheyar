@@ -148,11 +148,11 @@ namespace WebUI.Controllers
         }
 
         /// <summary>
-        /// ویرایش نظر
+        /// ویرایش پست
         /// </summary>
         /// <param name="command">اطلاعات نظر</param>
         /// <returns></returns>
-        [HttpPut("[action]")]
+        [HttpPost("[action]")]
         public async Task<ActionResult<int>> Update(UpdatePostCommand command)
         {
             return await Mediator.Send(command);
@@ -163,7 +163,7 @@ namespace WebUI.Controllers
         /// </summary>
         /// <param name="id">آیدی پست</param>
         /// <returns></returns>
-        [HttpDelete("[action]/{id}")]
+        [HttpPost("[action]/{id}")]
         public async Task<ActionResult<int>> Delete(int id)
         {
             return await Mediator.Send(new DeletePostCommand { PostId = id });
@@ -174,7 +174,7 @@ namespace WebUI.Controllers
         /// </summary>
         /// <param name="id">آیدی نظر</param>
         /// <returns></returns>
-        [HttpDelete("[action]/{id}")]
+        [HttpPost("[action]/{id}")]
         public async Task<ActionResult<int>> DeleteComment(int id)
         {
             return await Mediator.Send(new DeletePostCommentCommand { PostCommentId = id });

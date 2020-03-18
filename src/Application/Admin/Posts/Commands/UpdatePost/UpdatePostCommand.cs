@@ -14,9 +14,7 @@ namespace Pisheyar.Application.Posts.Commands.UpdatePost
 {
     public class UpdatePostCommand : IRequest<int>
     {
-        public int PostId { get; set; }
-
-        public int UserId { get; set; }
+        public Guid PostGuid { get; set; }
 
         public string Title { get; set; }
 
@@ -28,24 +26,26 @@ namespace Pisheyar.Application.Posts.Commands.UpdatePost
 
         public int[] CategoriesIds { get; set; }
 
-        public int[] Tags { get; set; }
+        //public int[] Tags { get; set; }
 
         public class UpdatePostCommandHandler : IRequestHandler<UpdatePostCommand, int>
         {
             private readonly IPisheyarMagContext _context;
+            private readonly ICurrentUserService _currentUserService;
 
-            public UpdatePostCommandHandler(IPisheyarMagContext context)
+            public UpdatePostCommandHandler(IPisheyarMagContext context, ICurrentUserService currentUserService)
             {
                 _context = context;
+                _currentUserService = currentUserService;
             }
 
             public async Task<int> Handle(UpdatePostCommand request, CancellationToken cancellationToken)
             {
-                var query = await _context.TblPost.SingleOrDefaultAsync(x => x.PostId == request.PostId && !x.PostIsDelete);
+                var query = await _context.TblPost.SingleOrDefaultAsync(x => x.PostGuid == request.PostGuid && !x.PostIsDelete);
 
                 if (query != null)
                 {
-                    query.PostUserId = request.UserId;
+                    query.PostUserId = await _context.TblUser.Where(x => x.UserGuid == Guid.Parse(_currentUserService.NameIdentifier)).Select(x => x.UserId).SingleOrDefaultAsync(cancellationToken);
                     query.PostTitle = request.Title;
                     query.PostAbstract = request.Abstract;
                     query.PostDescription = request.Description;

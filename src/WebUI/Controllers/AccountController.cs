@@ -103,7 +103,7 @@ namespace WebUI.Controllers
         /// </summary>
         /// <param name="command">اطلاعات لازم</param>
         /// <returns></returns>
-        [HttpPut("[action]")]
+        [HttpPost("[action]")]
         public async Task<ActionResult<ChangeUserActivenessVm>> ChangeActiveness(ChangeUserActivenessCommand command)
         {
             return await Mediator.Send(command);
@@ -114,7 +114,7 @@ namespace WebUI.Controllers
         /// </summary>
         /// <param name="command">آیدی کاربر</param>
         /// <returns></returns>
-        [HttpDelete("[action]")]
+        [HttpPost("[action]")]
         public async Task<ActionResult<DeleteUserVm>> Delete(DeleteUserCommand command)
         {
             return await Mediator.Send(command);
