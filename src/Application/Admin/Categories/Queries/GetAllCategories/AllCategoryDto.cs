@@ -5,20 +5,16 @@ using System.Collections.Generic;
 
 namespace Pisheyar.Application.Categories.Queries.GetAllCategories
 {
-    public class AllCategoryDto/* : IMapFrom<TblCategory>*/
+    public class AllCategoryDto
     {
         public int CategoryId { get; set; }
+
+        public int? ParentId { get; set; }
 
         public string CategoryDisplay { get; set; }
 
         public int CategoryOrder { get; set; }
 
-        public List<AllCategoryDto> SubCategories { get; set; }/* = new List<AllCategoryDto>();*/
-
-        //public void Mapping(Profile profile)
-        //{
-        //    profile.CreateMap<TblCategory, AllCategoryDto>()
-        //        .ForMember(d => d.SubCategories, opt => opt.MapFrom(s => s.InverseCategoryCategory));
-        //}
+        public List<AllCategoryDto> SubCategories { get; set; } = new List<AllCategoryDto>();
     }
 }
