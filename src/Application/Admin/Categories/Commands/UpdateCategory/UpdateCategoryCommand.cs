@@ -14,7 +14,7 @@ namespace Pisheyar.Application.Categories.Commands.UpdateCategory
 {
     public class UpdateCategoryCommand : IRequest<int>
     {
-        public int CategoryId { get; set; }
+        public Guid CategoryGuid { get; set; }
 
         public string Name { get; set; }
 
@@ -31,7 +31,7 @@ namespace Pisheyar.Application.Categories.Commands.UpdateCategory
 
             public async Task<int> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
             {
-                var query = await _context.TblCategory.SingleOrDefaultAsync(x => x.CategoryId == request.CategoryId && !x.CategoryIsDelete);
+                var query = await _context.TblCategory.SingleOrDefaultAsync(x => x.CategoryGuid == request.CategoryGuid && !x.CategoryIsDelete);
 
                 if (query != null)
                 {

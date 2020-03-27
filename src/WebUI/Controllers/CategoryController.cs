@@ -19,12 +19,12 @@ namespace WebUI.Controllers
         /// <summary>
         /// دریافت اطلاعات دسته بندی از طریق آیدی
         /// </summary>
-        /// <param name="id">آیدی دسته بندی</param>
+        /// <param name="guid">آیدی دسته بندی</param>
         /// <returns></returns>
-        [HttpGet("[action]/{id}")]
-        public async Task<ActionResult<CategoryVm>> GetById(int id)
+        [HttpGet("[action]/{guid}")]
+        public async Task<ActionResult<CategoryVm>> GetByGuid(Guid guid)
         {
-            return await Mediator.Send(new GetCategoryByGuidQuery() { CategoryId = id });
+            return await Mediator.Send(new GetCategoryByGuidQuery() { CategoryGuid = guid });
         }
 
         /// <summary>
@@ -72,12 +72,12 @@ namespace WebUI.Controllers
         /// <summary>
         /// حذف دسته بندی
         /// </summary>
-        /// <param name="id">آیدی دسته بندی</param>
+        /// <param name="guid">آیدی دسته بندی</param>
         /// <returns></returns>
-        [HttpPost("[action]/{id}")]
-        public async Task<ActionResult<int>> Delete(int id)
+        [HttpPost("[action]/{guid}")]
+        public async Task<ActionResult<int>> Delete(Guid guid)
         {
-            return await Mediator.Send(new DeleteCategoryCommand { CategoryId = id });
+            return await Mediator.Send(new DeleteCategoryCommand { CategoryGuid = guid });
         }
     }
 }

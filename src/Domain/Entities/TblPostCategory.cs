@@ -9,12 +9,12 @@ namespace Pisheyar.Domain.Entities
 
         public Guid PcGuid { get; set; }
 
-        public int PcCategoryId { get; set; }
+        public Guid PcCategoryGuid { get; set; }
 
         public int PcPostId { get; set; }
 
 
-        public virtual TblCategory PcCategory { get; set; }
+        public virtual TblCategory PcCategoryGu { get; set; }
 
         public virtual TblPost PcPost { get; set; }
     }

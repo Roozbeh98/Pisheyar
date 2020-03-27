@@ -11,17 +11,17 @@ namespace Pisheyar.Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<TblCategory> entity)
         {
-            entity.HasKey(e => e.CategoryId);
+            entity.HasKey(e => e.CategoryGuid);
 
             entity.ToTable("Tbl_Category");
 
-            entity.HasIndex(e => e.CategoryCategoryId);
+            entity.Property(e => e.CategoryGuid)
+                .HasColumnName("Category_Guid")
+                //.HasColumnType("UNIQUEIDENTIFIER ROWGUIDCOL")
+                .HasDefaultValueSql("(newid())");
 
-            entity.Property(e => e.CategoryId)
-                .HasColumnName("Category_ID");
-
-            entity.Property(e => e.CategoryCategoryId)
-                .HasColumnName("Category_CategoryID");
+            entity.Property(e => e.CategoryCategoryGuid)
+                .HasColumnName("Category_CategoryGuid");
 
             entity.Property(e => e.CategoryCreateDate)
                 .HasColumnName("Category_CreateDate")
@@ -31,11 +31,6 @@ namespace Pisheyar.Infrastructure.Persistence.Configurations
                 .IsRequired()
                 .HasColumnName("Category_Display")
                 .HasMaxLength(128);
-
-            entity.Property(e => e.CategoryGuid)
-                .HasColumnName("Category_Guid")
-                .HasColumnType("UNIQUEIDENTIFIER ROWGUIDCOL")
-                .HasDefaultValueSql("(newid())");
 
             entity.Property(e => e.CategoryIsDelete)
                 .HasColumnName("Category_IsDelete")
@@ -48,9 +43,9 @@ namespace Pisheyar.Infrastructure.Persistence.Configurations
             entity.Property(e => e.CategoryOrder)
                 .HasColumnName("Category_Order");
 
-            entity.HasOne(d => d.CategoryCategory)
-                .WithMany(p => p.InverseCategoryCategory)
-                .HasForeignKey(d => d.CategoryCategoryId)
+            entity.HasOne(d => d.CategoryCategoryGu)
+                .WithMany(p => p.InverseCategoryCategoryGu)
+                .HasForeignKey(d => d.CategoryCategoryGuid)
                 .HasConstraintName("FK_Tbl_Category_Tbl_Category");
         }
     }

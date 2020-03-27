@@ -40,13 +40,13 @@ namespace WebUI.Controllers
         /// <summary>
         /// دریافت پست ها از طریق دسته بندی
         /// </summary>
-        /// <param name="categoryId">آیدی دسته بندی</param>
+        /// <param name="categoryGuid">آیدی دسته بندی</param>
         /// <param name="page">شماره صفحه</param>
         /// <returns></returns>
         [HttpGet("[action]/{categoryId}/{page}")]
-        public async Task<ActionResult<GetPostsByCategoryVm>> GetByCategory(int categoryId, int page)
+        public async Task<ActionResult<GetPostsByCategoryVm>> GetByCategory(Guid categoryGuid, int page)
         {
-            return await Mediator.Send(new GetPostsByCategoryQuery() { CategoryId = categoryId, Page = page });
+            return await Mediator.Send(new GetPostsByCategoryQuery() { CategoryGuid = categoryGuid, Page = page });
         }
 
         /// <summary>

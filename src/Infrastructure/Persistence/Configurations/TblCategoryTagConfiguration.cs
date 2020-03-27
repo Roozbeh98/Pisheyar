@@ -11,37 +11,35 @@ namespace Pisheyar.Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<TblCategoryTag> entity)
         {
-            entity.HasKey(e => e.CategoryTagId);
+            entity.HasKey(e => e.CtId);
 
             entity.ToTable("Tbl_CategoryTag");
 
-            entity.HasIndex(e => e.CategoryTagCategoryId);
+            entity.HasIndex(e => e.CtTagId);
 
-            entity.HasIndex(e => e.CategoryTagTagId);
+            entity.Property(e => e.CtId)
+                .HasColumnName("CT_ID");
 
-            entity.Property(e => e.CategoryTagId)
-                .HasColumnName("CategoryTag_ID");
+            entity.Property(e => e.CtCategoryGuid)
+                .HasColumnName("CT_CategoryGuid");
 
-            entity.Property(e => e.CategoryTagCategoryId)
-                .HasColumnName("CategoryTag_CategoryID");
-
-            entity.Property(e => e.CategoryTagGuid)
-                .HasColumnName("CategoryTag_Guid")
+            entity.Property(e => e.CtGuid)
+                .HasColumnName("CT_Guid")
                 .HasColumnType("UNIQUEIDENTIFIER ROWGUIDCOL")
                 .HasDefaultValueSql("(newid())");
 
-            entity.Property(e => e.CategoryTagTagId)
-                .HasColumnName("CategoryTag_TagID");
+            entity.Property(e => e.CtTagId)
+                .HasColumnName("CT_TagID");
 
-            entity.HasOne(d => d.CategoryTagCategory)
+            entity.HasOne(d => d.CtCategoryGu)
                 .WithMany(p => p.TblCategoryTag)
-                .HasForeignKey(d => d.CategoryTagCategoryId)
+                .HasForeignKey(d => d.CtCategoryGuid)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Tbl_CategoryTag_Tbl_Category");
 
-            entity.HasOne(d => d.CategoryTagTag)
+            entity.HasOne(d => d.CtTag)
                 .WithMany(p => p.TblCategoryTag)
-                .HasForeignKey(d => d.CategoryTagTagId)
+                .HasForeignKey(d => d.CtTagId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Tbl_CategoryTag_Tbl_Tag");
         }

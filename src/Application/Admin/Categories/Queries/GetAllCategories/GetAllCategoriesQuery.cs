@@ -25,12 +25,12 @@ namespace Pisheyar.Application.Categories.Queries.GetAllCategories
                 _context = context;
             }
 
-            public async Task<List<AllCategoryDto>> GetCategoryTree(List<TblCategory> allCategories, int? parentId = null)
+            public async Task<List<AllCategoryDto>> GetCategoryTree(List<TblCategory> allCategories, Guid? parentGuid = null)
             {
                 var categories = new List<AllCategoryDto>();
 
                 var children = allCategories
-                    .Where(x => x.CategoryCategoryId == parentId)
+                    .Where(x => x.CategoryCategoryGuid == parentGuid)
                     .OrderBy(x => x.CategoryOrder)
                     .ToList();
 
@@ -38,8 +38,8 @@ namespace Pisheyar.Application.Categories.Queries.GetAllCategories
                 {
                     AllCategoryDto category = new AllCategoryDto
                     {
-                        Id = child.CategoryId,
-                        ParentId = child.CategoryCategoryId,
+                        Guid = child.CategoryGuid,
+                        ParentGuid = child.CategoryCategoryGuid,
                         Title = child.CategoryDisplay,
                         Order = child.CategoryOrder
                     };
@@ -55,12 +55,12 @@ namespace Pisheyar.Application.Categories.Queries.GetAllCategories
             private async Task<List<AllCategoryDto>> GetCategoryChildren(List<TblCategory> allCategories, AllCategoryDto category)
             {
                 var subCategories = allCategories
-                    .Where(x => x.CategoryCategoryId == category.Id)
+                    .Where(x => x.CategoryCategoryGuid == category.Guid)
                     .OrderBy(x => x.CategoryOrder)
                     .Select(x => new AllCategoryDto
                     {
-                        Id = x.CategoryId,
-                        ParentId = x.CategoryCategoryId,
+                        Guid = x.CategoryGuid,
+                        ParentGuid = x.CategoryCategoryGuid,
                         Title = x.CategoryDisplay,
                         Order = x.CategoryOrder
 

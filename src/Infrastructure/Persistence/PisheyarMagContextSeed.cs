@@ -93,9 +93,8 @@ namespace Pisheyar.Infrastructure.Persistence
             modelBuilder.Entity<TblCategory>().HasData(
                     new TblCategory
                     {
-                        CategoryId = 1,
                         CategoryGuid = Guid.NewGuid(),
-                        CategoryCategoryId = null,
+                        CategoryCategoryGuid = null,
                         CategoryDisplay = "سایت اصلی",
                         CategoryOrder = 1,
                         CategoryCreateDate = DateTime.Now,
@@ -104,110 +103,10 @@ namespace Pisheyar.Infrastructure.Persistence
                     },
                     new TblCategory
                     {
-                        CategoryId = 2,
                         CategoryGuid = Guid.NewGuid(),
-                        CategoryCategoryId = null,
+                        CategoryCategoryGuid = null,
                         CategoryDisplay = "وبلاگ",
                         CategoryOrder = 2,
-                        CategoryCreateDate = DateTime.Now,
-                        CategoryModifyDate = DateTime.Now,
-                        CategoryIsDelete = false
-                    },
-                    new TblCategory
-                    {
-                        CategoryId = 3,
-                        CategoryGuid = Guid.NewGuid(),
-                        CategoryCategoryId = 2,
-                        CategoryDisplay = "1",
-                        CategoryOrder = 1,
-                        CategoryCreateDate = DateTime.Now,
-                        CategoryModifyDate = DateTime.Now,
-                        CategoryIsDelete = false
-                    },
-                    new TblCategory
-                    {
-                        CategoryId = 4,
-                        CategoryGuid = Guid.NewGuid(),
-                        CategoryCategoryId = 2,
-                        CategoryDisplay = "2",
-                        CategoryOrder = 2,
-                        CategoryCreateDate = DateTime.Now,
-                        CategoryModifyDate = DateTime.Now,
-                        CategoryIsDelete = false
-                    },
-                    new TblCategory
-                    {
-                        CategoryId = 5,
-                        CategoryGuid = Guid.NewGuid(),
-                        CategoryCategoryId = 3,
-                        CategoryDisplay = "3",
-                        CategoryOrder = 3,
-                        CategoryCreateDate = DateTime.Now,
-                        CategoryModifyDate = DateTime.Now,
-                        CategoryIsDelete = false
-                    },
-                    new TblCategory
-                    {
-                        CategoryId = 6,
-                        CategoryGuid = Guid.NewGuid(),
-                        CategoryCategoryId = 4,
-                        CategoryDisplay = "1",
-                        CategoryOrder = 1,
-                        CategoryCreateDate = DateTime.Now,
-                        CategoryModifyDate = DateTime.Now,
-                        CategoryIsDelete = false
-                    },
-                    new TblCategory
-                    {
-                        CategoryId = 7,
-                        CategoryGuid = Guid.NewGuid(),
-                        CategoryCategoryId = 4,
-                        CategoryDisplay = "2",
-                        CategoryOrder = 2,
-                        CategoryCreateDate = DateTime.Now,
-                        CategoryModifyDate = DateTime.Now,
-                        CategoryIsDelete = false
-                    },
-                    new TblCategory
-                    {
-                        CategoryId = 8,
-                        CategoryGuid = Guid.NewGuid(),
-                        CategoryCategoryId = 6,
-                        CategoryDisplay = "1",
-                        CategoryOrder = 1,
-                        CategoryCreateDate = DateTime.Now,
-                        CategoryModifyDate = DateTime.Now,
-                        CategoryIsDelete = false
-                    },
-                    new TblCategory
-                    {
-                        CategoryId = 9,
-                        CategoryGuid = Guid.NewGuid(),
-                        CategoryCategoryId = 1,
-                        CategoryDisplay = "1",
-                        CategoryOrder = 1,
-                        CategoryCreateDate = DateTime.Now,
-                        CategoryModifyDate = DateTime.Now,
-                        CategoryIsDelete = false
-                    },
-                    new TblCategory
-                    {
-                        CategoryId = 10,
-                        CategoryGuid = Guid.NewGuid(),
-                        CategoryCategoryId = 1,
-                        CategoryDisplay = "2",
-                        CategoryOrder = 2,
-                        CategoryCreateDate = DateTime.Now,
-                        CategoryModifyDate = DateTime.Now,
-                        CategoryIsDelete = false
-                    },
-                    new TblCategory
-                    {
-                        CategoryId = 11,
-                        CategoryGuid = Guid.NewGuid(),
-                        CategoryCategoryId = 10,
-                        CategoryDisplay = "1",
-                        CategoryOrder = 1,
                         CategoryCreateDate = DateTime.Now,
                         CategoryModifyDate = DateTime.Now,
                         CategoryIsDelete = false

@@ -15,15 +15,13 @@ namespace Pisheyar.Infrastructure.Persistence.Configurations
 
             entity.ToTable("Tbl_PostCategory");
 
-            entity.HasIndex(e => e.PcCategoryId);
-
             entity.HasIndex(e => e.PcPostId);
 
             entity.Property(e => e.PcId)
                 .HasColumnName("PC_ID");
 
-            entity.Property(e => e.PcCategoryId)
-                .HasColumnName("PC_CategoryID");
+            entity.Property(e => e.PcCategoryGuid)
+                .HasColumnName("PC_CategoryGuid");
 
             entity.Property(e => e.PcGuid)
                 .HasColumnName("PC_Guid")
@@ -33,9 +31,9 @@ namespace Pisheyar.Infrastructure.Persistence.Configurations
             entity.Property(e => e.PcPostId)
                 .HasColumnName("PC_PostID");
 
-            entity.HasOne(d => d.PcCategory)
+            entity.HasOne(d => d.PcCategoryGu)
                 .WithMany(p => p.TblPostCategory)
-                .HasForeignKey(d => d.PcCategoryId)
+                .HasForeignKey(d => d.PcCategoryGuid)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Tbl_PostCategory_Tbl_Category");
 

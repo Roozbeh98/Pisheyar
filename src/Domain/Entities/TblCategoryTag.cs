@@ -5,17 +5,17 @@ namespace Pisheyar.Domain.Entities
 {
     public partial class TblCategoryTag
     {
-        public int CategoryTagId { get; set; }
+        public int CtId { get; set; }
 
-        public Guid CategoryTagGuid { get; set; }
+        public Guid CtGuid { get; set; }
 
-        public int CategoryTagCategoryId { get; set; }
+        public Guid CtCategoryGuid { get; set; }
 
-        public int CategoryTagTagId { get; set; }
+        public int CtTagId { get; set; }
 
 
-        public virtual TblCategory CategoryTagCategory { get; set; }
+        public virtual TblCategory CtCategoryGu { get; set; }
 
-        public virtual TblTag CategoryTagTag { get; set; }
+        public virtual TblTag CtTag { get; set; }
     }
 }

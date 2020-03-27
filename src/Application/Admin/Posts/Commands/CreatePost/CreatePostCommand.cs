@@ -22,7 +22,7 @@ namespace Pisheyar.Application.Posts.Commands.CreatePost
 
         public bool IsShow { get; set; }
 
-        public int[] CategoriesIds { get; set; }
+        public Guid[] CategoriesGuid { get; set; }
 
         //public int[] Tags { get; set; }
 
@@ -48,12 +48,12 @@ namespace Pisheyar.Application.Posts.Commands.CreatePost
                     PostIsShow = request.IsShow
                 };
 
-                foreach (var categoryId in request.CategoriesIds)
+                foreach (var categoryGuid in request.CategoriesGuid)
                 {
                     var postCategoryEntity = new TblPostCategory()
                     {
                         PcPost = postEntity,
-                        PcCategoryId = categoryId
+                        PcCategoryGuid = categoryGuid
                     };
 
                     _context.TblPostCategory.Add(postCategoryEntity);
@@ -63,7 +63,11 @@ namespace Pisheyar.Application.Posts.Commands.CreatePost
 
                 await _context.SaveChangesAsync(cancellationToken);
 
-                return new CreatePostCommandVm() { Message = "عملیات موفق آمیز", State = (int)CreatePostState.Success };
+                return new CreatePostCommandVm()
+                {
+                    Message = "عملیات موفق آمیز",
+                    State = (int)CreatePostState.Success
+                };
             }
         }
     }

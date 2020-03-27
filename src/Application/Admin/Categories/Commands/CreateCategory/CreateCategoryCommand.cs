@@ -14,7 +14,7 @@ namespace Pisheyar.Application.Categories.Commands.CreateCategory
 {
     public class CreateCategoryCommand : IRequest<int>
     {
-        public int? CategoryId { get; set; }
+        public Guid? CategoryGuid { get; set; }
 
         public string Name { get; set; }
 
@@ -33,7 +33,7 @@ namespace Pisheyar.Application.Categories.Commands.CreateCategory
             {
                 var entity = new TblCategory
                 {
-                    CategoryCategoryId = request.CategoryId,
+                    CategoryCategoryGuid = request.CategoryGuid,
                     CategoryDisplay = request.Name,
                     CategoryOrder = request.Order,
                 };

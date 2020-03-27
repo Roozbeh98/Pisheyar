@@ -87,15 +87,15 @@ namespace Pisheyar.Infrastructure.Migrations
 
             modelBuilder.Entity("Pisheyar.Domain.Entities.TblCategory", b =>
                 {
-                    b.Property<int>("CategoryId")
+                    b.Property<Guid>("CategoryGuid")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("Category_ID")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnName("Category_Guid")
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("(newid())");
 
-                    b.Property<int?>("CategoryCategoryId")
-                        .HasColumnName("Category_CategoryID")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("CategoryCategoryGuid")
+                        .HasColumnName("Category_CategoryGuid")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CategoryCreateDate")
                         .ValueGeneratedOnAdd()
@@ -108,12 +108,6 @@ namespace Pisheyar.Infrastructure.Migrations
                         .HasColumnName("Category_Display")
                         .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
-
-                    b.Property<Guid>("CategoryGuid")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("Category_Guid")
-                        .HasColumnType("UNIQUEIDENTIFIER ROWGUIDCOL")
-                        .HasDefaultValueSql("(newid())");
 
                     b.Property<bool>("CategoryIsDelete")
                         .ValueGeneratedOnAdd()
@@ -131,161 +125,60 @@ namespace Pisheyar.Infrastructure.Migrations
                         .HasColumnName("Category_Order")
                         .HasColumnType("int");
 
-                    b.HasKey("CategoryId");
+                    b.HasKey("CategoryGuid");
 
-                    b.HasIndex("CategoryCategoryId");
+                    b.HasIndex("CategoryCategoryGuid");
 
                     b.ToTable("Tbl_Category");
 
                     b.HasData(
                         new
                         {
-                            CategoryId = 1,
-                            CategoryCreateDate = new DateTime(2020, 3, 24, 13, 58, 7, 681, DateTimeKind.Local).AddTicks(3737),
+                            CategoryGuid = new Guid("f1b77c7c-dd98-428a-89fc-bb1f62718f3c"),
+                            CategoryCreateDate = new DateTime(2020, 3, 27, 18, 32, 59, 530, DateTimeKind.Local).AddTicks(9600),
                             CategoryDisplay = "سایت اصلی",
-                            CategoryGuid = new Guid("28eb4c4a-6411-4317-a946-d787c19d8838"),
                             CategoryIsDelete = false,
-                            CategoryModifyDate = new DateTime(2020, 3, 24, 13, 58, 7, 681, DateTimeKind.Local).AddTicks(4318),
+                            CategoryModifyDate = new DateTime(2020, 3, 27, 18, 32, 59, 531, DateTimeKind.Local).AddTicks(137),
                             CategoryOrder = 1
                         },
                         new
                         {
-                            CategoryId = 2,
-                            CategoryCreateDate = new DateTime(2020, 3, 24, 13, 58, 7, 681, DateTimeKind.Local).AddTicks(5391),
+                            CategoryGuid = new Guid("d3bde41a-7a98-4fe3-a18b-ce8962a61beb"),
+                            CategoryCreateDate = new DateTime(2020, 3, 27, 18, 32, 59, 531, DateTimeKind.Local).AddTicks(1240),
                             CategoryDisplay = "وبلاگ",
-                            CategoryGuid = new Guid("124afdf0-6ba6-4f5f-a3eb-704f8f8e42fe"),
                             CategoryIsDelete = false,
-                            CategoryModifyDate = new DateTime(2020, 3, 24, 13, 58, 7, 681, DateTimeKind.Local).AddTicks(5412),
+                            CategoryModifyDate = new DateTime(2020, 3, 27, 18, 32, 59, 531, DateTimeKind.Local).AddTicks(1266),
                             CategoryOrder = 2
-                        },
-                        new
-                        {
-                            CategoryId = 3,
-                            CategoryCategoryId = 2,
-                            CategoryCreateDate = new DateTime(2020, 3, 24, 13, 58, 7, 681, DateTimeKind.Local).AddTicks(5442),
-                            CategoryDisplay = "1",
-                            CategoryGuid = new Guid("3ec0d0f1-b5e9-45c9-8126-10b8f8a33f37"),
-                            CategoryIsDelete = false,
-                            CategoryModifyDate = new DateTime(2020, 3, 24, 13, 58, 7, 681, DateTimeKind.Local).AddTicks(5446),
-                            CategoryOrder = 1
-                        },
-                        new
-                        {
-                            CategoryId = 4,
-                            CategoryCategoryId = 2,
-                            CategoryCreateDate = new DateTime(2020, 3, 24, 13, 58, 7, 681, DateTimeKind.Local).AddTicks(5453),
-                            CategoryDisplay = "2",
-                            CategoryGuid = new Guid("e776b81c-d58f-41f4-88b8-67e769149030"),
-                            CategoryIsDelete = false,
-                            CategoryModifyDate = new DateTime(2020, 3, 24, 13, 58, 7, 681, DateTimeKind.Local).AddTicks(5456),
-                            CategoryOrder = 2
-                        },
-                        new
-                        {
-                            CategoryId = 5,
-                            CategoryCategoryId = 3,
-                            CategoryCreateDate = new DateTime(2020, 3, 24, 13, 58, 7, 681, DateTimeKind.Local).AddTicks(5463),
-                            CategoryDisplay = "3",
-                            CategoryGuid = new Guid("b569c0ec-0fef-4521-b838-5a88c9a78c5b"),
-                            CategoryIsDelete = false,
-                            CategoryModifyDate = new DateTime(2020, 3, 24, 13, 58, 7, 681, DateTimeKind.Local).AddTicks(5466),
-                            CategoryOrder = 3
-                        },
-                        new
-                        {
-                            CategoryId = 6,
-                            CategoryCategoryId = 4,
-                            CategoryCreateDate = new DateTime(2020, 3, 24, 13, 58, 7, 681, DateTimeKind.Local).AddTicks(5472),
-                            CategoryDisplay = "1",
-                            CategoryGuid = new Guid("0d9add27-67d1-4820-b677-1319fc4a99a9"),
-                            CategoryIsDelete = false,
-                            CategoryModifyDate = new DateTime(2020, 3, 24, 13, 58, 7, 681, DateTimeKind.Local).AddTicks(5475),
-                            CategoryOrder = 1
-                        },
-                        new
-                        {
-                            CategoryId = 7,
-                            CategoryCategoryId = 4,
-                            CategoryCreateDate = new DateTime(2020, 3, 24, 13, 58, 7, 681, DateTimeKind.Local).AddTicks(5481),
-                            CategoryDisplay = "2",
-                            CategoryGuid = new Guid("e4f81f08-f864-4968-9de3-552c83eec347"),
-                            CategoryIsDelete = false,
-                            CategoryModifyDate = new DateTime(2020, 3, 24, 13, 58, 7, 681, DateTimeKind.Local).AddTicks(5484),
-                            CategoryOrder = 2
-                        },
-                        new
-                        {
-                            CategoryId = 8,
-                            CategoryCategoryId = 6,
-                            CategoryCreateDate = new DateTime(2020, 3, 24, 13, 58, 7, 681, DateTimeKind.Local).AddTicks(5491),
-                            CategoryDisplay = "1",
-                            CategoryGuid = new Guid("2861178b-8edc-4496-8b63-d2edab2be0af"),
-                            CategoryIsDelete = false,
-                            CategoryModifyDate = new DateTime(2020, 3, 24, 13, 58, 7, 681, DateTimeKind.Local).AddTicks(5494),
-                            CategoryOrder = 1
-                        },
-                        new
-                        {
-                            CategoryId = 9,
-                            CategoryCategoryId = 1,
-                            CategoryCreateDate = new DateTime(2020, 3, 24, 13, 58, 7, 681, DateTimeKind.Local).AddTicks(5500),
-                            CategoryDisplay = "1",
-                            CategoryGuid = new Guid("04e9070f-21be-44e6-9e9e-15745f1c6038"),
-                            CategoryIsDelete = false,
-                            CategoryModifyDate = new DateTime(2020, 3, 24, 13, 58, 7, 681, DateTimeKind.Local).AddTicks(5503),
-                            CategoryOrder = 1
-                        },
-                        new
-                        {
-                            CategoryId = 10,
-                            CategoryCategoryId = 1,
-                            CategoryCreateDate = new DateTime(2020, 3, 24, 13, 58, 7, 681, DateTimeKind.Local).AddTicks(5513),
-                            CategoryDisplay = "2",
-                            CategoryGuid = new Guid("fbdfd52e-aa55-4049-9564-309b75cfb04c"),
-                            CategoryIsDelete = false,
-                            CategoryModifyDate = new DateTime(2020, 3, 24, 13, 58, 7, 681, DateTimeKind.Local).AddTicks(5516),
-                            CategoryOrder = 2
-                        },
-                        new
-                        {
-                            CategoryId = 11,
-                            CategoryCategoryId = 10,
-                            CategoryCreateDate = new DateTime(2020, 3, 24, 13, 58, 7, 681, DateTimeKind.Local).AddTicks(5523),
-                            CategoryDisplay = "1",
-                            CategoryGuid = new Guid("0deae108-cd73-44ba-90d9-79330e338e2a"),
-                            CategoryIsDelete = false,
-                            CategoryModifyDate = new DateTime(2020, 3, 24, 13, 58, 7, 681, DateTimeKind.Local).AddTicks(5526),
-                            CategoryOrder = 1
                         });
                 });
 
             modelBuilder.Entity("Pisheyar.Domain.Entities.TblCategoryTag", b =>
                 {
-                    b.Property<int>("CategoryTagId")
+                    b.Property<int>("CtId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("CategoryTag_ID")
+                        .HasColumnName("CT_ID")
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CategoryTagCategoryId")
-                        .HasColumnName("CategoryTag_CategoryID")
-                        .HasColumnType("int");
+                    b.Property<Guid>("CtCategoryGuid")
+                        .HasColumnName("CT_CategoryGuid")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CategoryTagGuid")
+                    b.Property<Guid>("CtGuid")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("CategoryTag_Guid")
+                        .HasColumnName("CT_Guid")
                         .HasColumnType("UNIQUEIDENTIFIER ROWGUIDCOL")
                         .HasDefaultValueSql("(newid())");
 
-                    b.Property<int>("CategoryTagTagId")
-                        .HasColumnName("CategoryTag_TagID")
+                    b.Property<int>("CtTagId")
+                        .HasColumnName("CT_TagID")
                         .HasColumnType("int");
 
-                    b.HasKey("CategoryTagId");
+                    b.HasKey("CtId");
 
-                    b.HasIndex("CategoryTagCategoryId");
+                    b.HasIndex("CtCategoryGuid");
 
-                    b.HasIndex("CategoryTagTagId");
+                    b.HasIndex("CtTagId");
 
                     b.ToTable("Tbl_CategoryTag");
                 });
@@ -604,9 +497,9 @@ namespace Pisheyar.Infrastructure.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("PcCategoryId")
-                        .HasColumnName("PC_CategoryID")
-                        .HasColumnType("int");
+                    b.Property<Guid>("PcCategoryGuid")
+                        .HasColumnName("PC_CategoryGuid")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("PcGuid")
                         .ValueGeneratedOnAdd()
@@ -620,7 +513,7 @@ namespace Pisheyar.Infrastructure.Migrations
 
                     b.HasKey("PcId");
 
-                    b.HasIndex("PcCategoryId");
+                    b.HasIndex("PcCategoryGuid");
 
                     b.HasIndex("PcPostId");
 
@@ -747,21 +640,21 @@ namespace Pisheyar.Infrastructure.Migrations
                         new
                         {
                             RoleId = 1,
-                            RoleCreateDate = new DateTime(2020, 3, 24, 13, 58, 7, 679, DateTimeKind.Local).AddTicks(2197),
+                            RoleCreateDate = new DateTime(2020, 3, 27, 18, 32, 59, 528, DateTimeKind.Local).AddTicks(9273),
                             RoleDisplay = "کاربر عادی",
-                            RoleGuid = new Guid("2406f99f-d219-47fa-adcf-1242884b9565"),
+                            RoleGuid = new Guid("535f6b9b-f6be-4ab6-8436-c549d5f88d4e"),
                             RoleIsDelete = false,
-                            RoleModifyDate = new DateTime(2020, 3, 24, 13, 58, 7, 679, DateTimeKind.Local).AddTicks(2742),
+                            RoleModifyDate = new DateTime(2020, 3, 27, 18, 32, 59, 528, DateTimeKind.Local).AddTicks(9822),
                             RoleName = "User"
                         },
                         new
                         {
                             RoleId = 2,
-                            RoleCreateDate = new DateTime(2020, 3, 24, 13, 58, 7, 679, DateTimeKind.Local).AddTicks(3858),
+                            RoleCreateDate = new DateTime(2020, 3, 27, 18, 32, 59, 529, DateTimeKind.Local).AddTicks(866),
                             RoleDisplay = "ادمین",
-                            RoleGuid = new Guid("d6f10f17-9ac8-4d3a-8766-1b2412cab10a"),
+                            RoleGuid = new Guid("7cf7797c-45b1-4054-9a52-ed9b9f2c6319"),
                             RoleIsDelete = false,
-                            RoleModifyDate = new DateTime(2020, 3, 24, 13, 58, 7, 679, DateTimeKind.Local).AddTicks(3880),
+                            RoleModifyDate = new DateTime(2020, 3, 27, 18, 32, 59, 529, DateTimeKind.Local).AddTicks(886),
                             RoleName = "Admin"
                         });
                 });
@@ -881,10 +774,10 @@ namespace Pisheyar.Infrastructure.Migrations
                         {
                             SpcId = 1,
                             SpcApiKey = "61726634455053586E44464E413462574A76535677436B547236574B56386D6A6F6E4F326A374A4C7755773D",
-                            SpcCreateDate = new DateTime(2020, 3, 24, 13, 58, 7, 672, DateTimeKind.Local).AddTicks(6249),
-                            SpcGuid = new Guid("54a98ce0-932a-44de-98e4-a873f43bcf23"),
+                            SpcCreateDate = new DateTime(2020, 3, 27, 18, 32, 59, 520, DateTimeKind.Local).AddTicks(155),
+                            SpcGuid = new Guid("2193d749-f719-4459-9ea8-78895f1fef2e"),
                             SpcIsDelete = false,
-                            SpcModifyDate = new DateTime(2020, 3, 24, 13, 58, 7, 675, DateTimeKind.Local).AddTicks(9092),
+                            SpcModifyDate = new DateTime(2020, 3, 27, 18, 32, 59, 523, DateTimeKind.Local).AddTicks(9215),
                             SpcPassword = "ptcoptco",
                             SpcUsername = "ptmgroupco@gmail.com"
                         });
@@ -1091,10 +984,10 @@ namespace Pisheyar.Infrastructure.Migrations
                         new
                         {
                             SsId = 1,
-                            SsCreateDate = new DateTime(2020, 3, 24, 13, 58, 7, 677, DateTimeKind.Local).AddTicks(9246),
-                            SsGuid = new Guid("d6cc466f-fffb-4a5d-ae00-709135a7c832"),
+                            SsCreateDate = new DateTime(2020, 3, 27, 18, 32, 59, 527, DateTimeKind.Local).AddTicks(2839),
+                            SsGuid = new Guid("995ed660-7d46-4098-bb31-b0b38839e62e"),
                             SsIsDelete = false,
-                            SsModifyDate = new DateTime(2020, 3, 24, 13, 58, 7, 677, DateTimeKind.Local).AddTicks(9953),
+                            SsModifyDate = new DateTime(2020, 3, 27, 18, 32, 59, 527, DateTimeKind.Local).AddTicks(3793),
                             SsName = "Kavenegar",
                             SsSpcid = 1
                         });
@@ -1152,10 +1045,10 @@ namespace Pisheyar.Infrastructure.Migrations
                         new
                         {
                             StId = 1,
-                            StCreateDate = new DateTime(2020, 3, 24, 13, 58, 7, 678, DateTimeKind.Local).AddTicks(5277),
-                            StGuid = new Guid("806c268a-ea8d-43a1-94b0-c4ab0b0b2f71"),
+                            StCreateDate = new DateTime(2020, 3, 27, 18, 32, 59, 528, DateTimeKind.Local).AddTicks(910),
+                            StGuid = new Guid("03e5d887-3651-417a-a5ff-b82941615e3b"),
                             StIsDelete = false,
-                            StModifyDate = new DateTime(2020, 3, 24, 13, 58, 7, 678, DateTimeKind.Local).AddTicks(5824),
+                            StModifyDate = new DateTime(2020, 3, 27, 18, 32, 59, 528, DateTimeKind.Local).AddTicks(1454),
                             StName = "VerifyAccount",
                             StSsid = 1
                         });
@@ -1286,14 +1179,14 @@ namespace Pisheyar.Infrastructure.Migrations
                         new
                         {
                             UserId = 1,
-                            UserCreateDate = new DateTime(2020, 3, 24, 13, 58, 7, 680, DateTimeKind.Local).AddTicks(4561),
+                            UserCreateDate = new DateTime(2020, 3, 27, 18, 32, 59, 530, DateTimeKind.Local).AddTicks(816),
                             UserEmail = "mahdiroudaki@hotmail.com",
                             UserFamily = "Roudaki",
-                            UserGuid = new Guid("ce0a1900-e839-408f-a93f-fd8fd2d3b669"),
+                            UserGuid = new Guid("80e78a66-d617-44f2-8a77-c533bc73419a"),
                             UserIsActive = true,
                             UserIsDelete = false,
                             UserMobile = "09227204305",
-                            UserModifyDate = new DateTime(2020, 3, 24, 13, 58, 7, 680, DateTimeKind.Local).AddTicks(5108),
+                            UserModifyDate = new DateTime(2020, 3, 27, 18, 32, 59, 530, DateTimeKind.Local).AddTicks(1356),
                             UserName = "Mahdi",
                             UserRoleId = 1
                         });
@@ -1401,23 +1294,23 @@ namespace Pisheyar.Infrastructure.Migrations
 
             modelBuilder.Entity("Pisheyar.Domain.Entities.TblCategory", b =>
                 {
-                    b.HasOne("Pisheyar.Domain.Entities.TblCategory", "CategoryCategory")
-                        .WithMany("InverseCategoryCategory")
-                        .HasForeignKey("CategoryCategoryId")
+                    b.HasOne("Pisheyar.Domain.Entities.TblCategory", "CategoryCategoryGu")
+                        .WithMany("InverseCategoryCategoryGu")
+                        .HasForeignKey("CategoryCategoryGuid")
                         .HasConstraintName("FK_Tbl_Category_Tbl_Category");
                 });
 
             modelBuilder.Entity("Pisheyar.Domain.Entities.TblCategoryTag", b =>
                 {
-                    b.HasOne("Pisheyar.Domain.Entities.TblCategory", "CategoryTagCategory")
+                    b.HasOne("Pisheyar.Domain.Entities.TblCategory", "CtCategoryGu")
                         .WithMany("TblCategoryTag")
-                        .HasForeignKey("CategoryTagCategoryId")
+                        .HasForeignKey("CtCategoryGuid")
                         .HasConstraintName("FK_Tbl_CategoryTag_Tbl_Category")
                         .IsRequired();
 
-                    b.HasOne("Pisheyar.Domain.Entities.TblTag", "CategoryTagTag")
+                    b.HasOne("Pisheyar.Domain.Entities.TblTag", "CtTag")
                         .WithMany("TblCategoryTag")
-                        .HasForeignKey("CategoryTagTagId")
+                        .HasForeignKey("CtTagId")
                         .HasConstraintName("FK_Tbl_CategoryTag_Tbl_Tag")
                         .IsRequired();
                 });
@@ -1465,9 +1358,9 @@ namespace Pisheyar.Infrastructure.Migrations
 
             modelBuilder.Entity("Pisheyar.Domain.Entities.TblPostCategory", b =>
                 {
-                    b.HasOne("Pisheyar.Domain.Entities.TblCategory", "PcCategory")
+                    b.HasOne("Pisheyar.Domain.Entities.TblCategory", "PcCategoryGu")
                         .WithMany("TblPostCategory")
-                        .HasForeignKey("PcCategoryId")
+                        .HasForeignKey("PcCategoryGuid")
                         .HasConstraintName("FK_Tbl_PostCategory_Tbl_Category")
                         .IsRequired();
 

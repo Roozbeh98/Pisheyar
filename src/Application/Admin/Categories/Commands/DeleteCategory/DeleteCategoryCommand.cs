@@ -14,7 +14,7 @@ namespace Pisheyar.Application.Categories.Commands.DeleteCategory
 {
     public class DeleteCategoryCommand : IRequest<int>
     {
-        public int CategoryId { get; set; }
+        public Guid CategoryGuid { get; set; }
 
         public class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryCommand, int>
         {
@@ -27,7 +27,7 @@ namespace Pisheyar.Application.Categories.Commands.DeleteCategory
 
             public async Task<int> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
             {
-                var query = await _context.TblCategory.SingleOrDefaultAsync(x => x.CategoryId == request.CategoryId && !x.CategoryIsDelete);
+                var query = await _context.TblCategory.SingleOrDefaultAsync(x => x.CategoryGuid == request.CategoryGuid && !x.CategoryIsDelete);
 
                 if (query != null)
                 {

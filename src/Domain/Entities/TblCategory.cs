@@ -7,17 +7,15 @@ namespace Pisheyar.Domain.Entities
     {
         public TblCategory()
         {
-            InverseCategoryCategory = new HashSet<TblCategory>();
+            InverseCategoryCategoryGu = new HashSet<TblCategory>();
             TblCategoryTag = new HashSet<TblCategoryTag>();
             TblPostCategory = new HashSet<TblPostCategory>();
         }
 
 
-        public int CategoryId { get; set; }
-
         public Guid CategoryGuid { get; set; }
 
-        public int? CategoryCategoryId { get; set; }
+        public Guid? CategoryCategoryGuid { get; set; }
 
         public string CategoryDisplay { get; set; }
 
@@ -30,9 +28,9 @@ namespace Pisheyar.Domain.Entities
         public bool CategoryIsDelete { get; set; }
 
 
-        public virtual TblCategory CategoryCategory { get; set; }
+        public virtual TblCategory CategoryCategoryGu { get; set; }
 
-        public virtual ICollection<TblCategory> InverseCategoryCategory { get; set; }
+        public virtual ICollection<TblCategory> InverseCategoryCategoryGu { get; set; }
 
         public virtual ICollection<TblCategoryTag> TblCategoryTag { get; set; }
 

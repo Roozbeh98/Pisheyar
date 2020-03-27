@@ -16,7 +16,7 @@ namespace Pisheyar.Application.Categories.Queries.GetCategoryByGuid
 {
     public class GetCategoryByGuidQuery : IRequest<CategoryVm>
     {
-        public int CategoryId { get; set; }
+        public Guid CategoryGuid { get; set; }
 
         public class GetCategoryByGuidQueryHandler : IRequestHandler<GetCategoryByGuidQuery, CategoryVm>
         {
@@ -27,12 +27,12 @@ namespace Pisheyar.Application.Categories.Queries.GetCategoryByGuid
                 _context = context;
             }
 
-            public async Task<List<CategoryDto>> GetCategoryTree(List<TblCategory> allCategories, int parentId)
+            public async Task<List<CategoryDto>> GetCategoryTree(List<TblCategory> allCategories, Guid parentGuid)
             {
                 var categories = new List<CategoryDto>();
 
                 var children = allCategories
-                    .Where(x => x.CategoryCategoryId == parentId)
+                    .Where(x => x.CategoryCategoryGuid == parentGuid)
                     .OrderBy(x => x.CategoryOrder)
                     .ToList();
 
@@ -40,8 +40,8 @@ namespace Pisheyar.Application.Categories.Queries.GetCategoryByGuid
                 {
                     CategoryDto category = new CategoryDto
                     {
-                        Id = child.CategoryId,
-                        ParentId = child.CategoryCategoryId,
+                        Guid = child.CategoryGuid,
+                        ParentGuid = child.CategoryCategoryGuid,
                         Title = child.CategoryDisplay,
                         Order = child.CategoryOrder
                     };
@@ -57,12 +57,12 @@ namespace Pisheyar.Application.Categories.Queries.GetCategoryByGuid
             private async Task<List<CategoryDto>> GetCategoryChildren(List<TblCategory> allCategories, CategoryDto category)
             {
                 var subCategories = allCategories
-                    .Where(x => x.CategoryCategoryId == category.Id)
+                    .Where(x => x.CategoryCategoryGuid == category.Guid)
                     .OrderBy(x => x.CategoryOrder)
                     .Select(x => new CategoryDto
                     {
-                        Id = x.CategoryId,
-                        ParentId = x.CategoryCategoryId,
+                        Guid = x.CategoryGuid,
+                        ParentGuid = x.CategoryCategoryGuid,
                         Title = x.CategoryDisplay,
                         Order = x.CategoryOrder
 
@@ -87,7 +87,7 @@ namespace Pisheyar.Application.Categories.Queries.GetCategoryByGuid
                     .Where(x => !x.CategoryIsDelete)
                     .ToListAsync(cancellationToken);
 
-                var categoryTree = await GetCategoryTree(categories, request.CategoryId);
+                var categoryTree = await GetCategoryTree(categories, request.CategoryGuid);
 
                 if (categoryTree.Count > 0)
                 {

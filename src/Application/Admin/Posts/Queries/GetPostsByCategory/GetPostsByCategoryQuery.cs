@@ -16,7 +16,7 @@ namespace Pisheyar.Application.Posts.Queries.GetPostsByCategory
 {
     public class GetPostsByCategoryQuery : IRequest<GetPostsByCategoryVm>
     {
-        public int CategoryId { get; set; }
+        public Guid CategoryGuid { get; set; }
 
         public int Page { get; set; }
 
@@ -32,7 +32,7 @@ namespace Pisheyar.Application.Posts.Queries.GetPostsByCategory
             public async Task<GetPostsByCategoryVm> Handle(GetPostsByCategoryQuery request, CancellationToken cancellationToken)
             {
                 var posts = await (from pc in _context.TblPostCategory
-                                   where pc.PcCategoryId == request.CategoryId
+                                   where pc.PcCategoryGuid == request.CategoryGuid
                                    join p in _context.TblPost on pc.PcPostId equals p.PostId
                                    orderby p.PostModifyDate descending
                                    select new GetPostsByCategoryDto

@@ -30,7 +30,7 @@ namespace Pisheyar.Application.Categories.Queries.GetPrimaryCategories
             public async Task<PrimaryCategoriesVm> Handle(GetPrimaryCategoriesQuery request, CancellationToken cancellationToken)
             {
                 var primaryCategories = await _context.TblCategory
-                    .Where(x => x.CategoryCategoryId == null && !x.CategoryIsDelete)
+                    .Where(x => x.CategoryCategoryGuid == null && !x.CategoryIsDelete)
                     .OrderBy(x => x.CategoryOrder)
                     .ProjectTo<PrimaryCategoryDto>(_mapper.ConfigurationProvider)
                     .ToListAsync(cancellationToken);
