@@ -19,12 +19,12 @@ namespace WebUI.Controllers
         /// <summary>
         /// دریافت اطلاعات دسته بندی از طریق آیدی
         /// </summary>
-        /// <param name="guid">آیدی دسته بندی</param>
+        /// <param name="id">آیدی دسته بندی</param>
         /// <returns></returns>
-        [HttpGet("[action]/{guid}")]
-        public async Task<ActionResult<CategoryVm>> GetByGuid(Guid guid)
+        [HttpGet("[action]/{id}")]
+        public async Task<ActionResult<CategoryVm>> GetById(int id)
         {
-            return await Mediator.Send(new GetCategoryByGuidQuery() { CategoryGuid = guid });
+            return await Mediator.Send(new GetCategoryByGuidQuery() { CategoryId = id });
         }
 
         /// <summary>

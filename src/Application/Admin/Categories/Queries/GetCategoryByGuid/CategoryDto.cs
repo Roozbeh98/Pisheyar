@@ -6,10 +6,14 @@ namespace Pisheyar.Application.Categories.Queries.GetCategoryByGuid
 {
     public class CategoryDto
     {
-        public string CategoryDisplay { get; set; }
+        public int Id { get; set; }
 
-        public int CategoryOrder { get; set; }
+        public int? ParentId { get; set; }
 
-        public IEnumerable<SubCategoryDto> SubCategories { get; set; }
+        public string Title { get; set; }
+
+        public int Order { get; set; }
+
+        public List<CategoryDto> Children { get; set; } = new List<CategoryDto>();
     }
 }

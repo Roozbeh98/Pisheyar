@@ -10,6 +10,6 @@ namespace Pisheyar.Application.Categories.Queries.GetPrimaryCategories
 
         public bool Result { get; set; }
 
-        public IEnumerable<PrimaryCategoryDto> PrimaryCategories { get; set; }
+        public List<PrimaryCategoryDto> PrimaryCategories { get; set; } = new List<PrimaryCategoryDto>();
     }
 }

@@ -50,7 +50,6 @@
     <Folder Include="Admin\Advertisements\Queries\GetAdvertisement\" />
     <Folder Include="Admin\Advertisements\Queries\GetAllAdvertisements\" />
     <Folder Include="Admin\Tags\Commands\" />
-    <Folder Include="Admin\Tags\Queries\" />
     <Folder Include="Common\Mappings\" />
     <Folder Include="User\" />
   </ItemGroup>

@@ -10,6 +10,6 @@ namespace Pisheyar.Application.Categories.Queries.GetCategoryByGuid
 
         public bool Result { get; set; }
 
-        public CategoryDto Category { get; set; }
+        public List<CategoryDto> Categories { get; set; } = new List<CategoryDto>();
     }
 }

@@ -10,6 +10,6 @@ namespace Pisheyar.Application.Categories.Queries.GetAllCategories
 
         public bool Result { get; set; }
 
-        public List<AllCategoryDto> Categories { get; set; }
+        public List<AllCategoryDto> Categories { get; set; } = new List<AllCategoryDto>();
     }
 }

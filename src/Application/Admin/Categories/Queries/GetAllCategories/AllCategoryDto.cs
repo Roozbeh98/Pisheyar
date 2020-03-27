@@ -7,14 +7,14 @@ namespace Pisheyar.Application.Categories.Queries.GetAllCategories
 {
     public class AllCategoryDto
     {
-        public int CategoryId { get; set; }
+        public int Id { get; set; }
 
         public int? ParentId { get; set; }
 
-        public string CategoryDisplay { get; set; }
+        public string Title { get; set; }
 
-        public int CategoryOrder { get; set; }
+        public int Order { get; set; }
 
-        public List<AllCategoryDto> SubCategories { get; set; } = new List<AllCategoryDto>();
+        public List<AllCategoryDto> Children { get; set; } = new List<AllCategoryDto>();
     }
 }

@@ -38,6 +38,10 @@ namespace Pisheyar.Infrastructure.Persistence.Configurations
             entity.Property(e => e.TagName)
                 .IsRequired()
                 .HasColumnName("Tag_Name");
+
+            entity.Property(e => e.TagUsage)
+                .HasColumnName("Tag_Usage")
+                .HasDefaultValueSql("((0))");
         }
     }
 }

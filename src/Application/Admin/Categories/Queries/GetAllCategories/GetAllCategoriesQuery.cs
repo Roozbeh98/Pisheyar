@@ -19,12 +19,10 @@ namespace Pisheyar.Application.Categories.Queries.GetAllCategories
         public class GetCategoriesQueryHandler : IRequestHandler<GetAllCategoriesQuery, AllCategoriesVm>
         {
             private readonly IPisheyarMagContext _context;
-            private readonly IMapper _mapper;
 
-            public GetCategoriesQueryHandler(IPisheyarMagContext context, IMapper mapper)
+            public GetCategoriesQueryHandler(IPisheyarMagContext context)
             {
                 _context = context;
-                _mapper = mapper;
             }
 
             public async Task<List<AllCategoryDto>> GetCategoryTree(List<TblCategory> allCategories, int? parentId = null)
@@ -33,19 +31,20 @@ namespace Pisheyar.Application.Categories.Queries.GetAllCategories
 
                 var children = allCategories
                     .Where(x => x.CategoryCategoryId == parentId)
+                    .OrderBy(x => x.CategoryOrder)
                     .ToList();
 
                 foreach (var child in children)
                 {
                     AllCategoryDto category = new AllCategoryDto
                     {
-                        CategoryId = child.CategoryId,
+                        Id = child.CategoryId,
                         ParentId = child.CategoryCategoryId,
-                        CategoryDisplay = child.CategoryDisplay,
-                        CategoryOrder = child.CategoryOrder
+                        Title = child.CategoryDisplay,
+                        Order = child.CategoryOrder
                     };
 
-                    category.SubCategories = await GetCategoryChildren(allCategories, category);
+                    category.Children = await GetCategoryChildren(allCategories, category);
 
                     categories.Add(category);
                 }
@@ -56,40 +55,52 @@ namespace Pisheyar.Application.Categories.Queries.GetAllCategories
             private async Task<List<AllCategoryDto>> GetCategoryChildren(List<TblCategory> allCategories, AllCategoryDto category)
             {
                 var subCategories = allCategories
-                    .Where(b => b.CategoryCategoryId == category.CategoryId)
+                    .Where(x => x.CategoryCategoryId == category.Id)
+                    .OrderBy(x => x.CategoryOrder)
                     .Select(x => new AllCategoryDto
                     {
-                        CategoryId = x.CategoryId,
+                        Id = x.CategoryId,
                         ParentId = x.CategoryCategoryId,
-                        CategoryDisplay = x.CategoryDisplay,
-                        CategoryOrder = x.CategoryOrder
+                        Title = x.CategoryDisplay,
+                        Order = x.CategoryOrder
 
                     }).ToList();
 
                 if (subCategories != null)
                 {
-                    category.SubCategories = subCategories;
+                    category.Children = subCategories;
 
-                    foreach (var item in category.SubCategories)
+                    foreach (var item in category.Children)
                     {
-                        item.SubCategories = await GetCategoryChildren(allCategories, item);
+                        item.Children = await GetCategoryChildren(allCategories, item);
                     }
                 }
 
-                return category.SubCategories;
+                return category.Children;
             }
 
             public async Task<AllCategoriesVm> Handle(GetAllCategoriesQuery request, CancellationToken cancellationToken)
             {
-                var categories = _context.TblCategory.ToList();
+                var categories = await _context.TblCategory
+                    .Where(x => !x.CategoryIsDelete)
+                    .ToListAsync(cancellationToken);
 
                 var categoryTree = await GetCategoryTree(categories);
 
+                if (categoryTree.Count > 0)
+                {
+                    return new AllCategoriesVm()
+                    {
+                        Message = "عملیات موفق آمیز",
+                        Result = true,
+                        Categories = categoryTree
+                    };
+                }
+
                 return new AllCategoriesVm()
                 {
-                    Message = "عملیات موفق آمیز",
+                    Message = "موردی یافت نشد",
                     Result = true,
-                    Categories = categoryTree
                 };
             }
         }

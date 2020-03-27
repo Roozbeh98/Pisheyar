@@ -35,11 +35,20 @@ namespace Pisheyar.Application.Categories.Queries.GetPrimaryCategories
                     .ProjectTo<PrimaryCategoryDto>(_mapper.ConfigurationProvider)
                     .ToListAsync(cancellationToken);
 
+                if (primaryCategories.Count > 0)
+                {
+                    return new PrimaryCategoriesVm()
+                    {
+                        Message = "عملیات موفق آمیز",
+                        Result = true,
+                        PrimaryCategories = primaryCategories
+                    };
+                }
+
                 return new PrimaryCategoriesVm()
                 {
-                    Message = "عملیات موفق آمیز",
+                    Message = "موردی یافت نشد",
                     Result = true,
-                    PrimaryCategories = primaryCategories
                 };
             }
         }

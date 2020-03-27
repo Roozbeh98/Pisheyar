@@ -18,6 +18,8 @@ namespace Pisheyar.Domain.Entities
 
         public string TagName { get; set; }
 
+        public int TagUsage { get; set; }
+
         public DateTime TagCreateDate { get; set; }
 
         public DateTime TagModifyDate { get; set; }
