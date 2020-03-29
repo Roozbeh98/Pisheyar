@@ -94,7 +94,7 @@ namespace Pisheyar.Application.Categories.Queries.GetCategoryByGuid
                     return new CategoryVm()
                     {
                         Message = "عملیات موفق آمیز",
-                        Result = true,
+                        State = (int)GetCategoryByGuidState.Success,
                         Categories = categoryTree
                     };
                 }
@@ -102,7 +102,7 @@ namespace Pisheyar.Application.Categories.Queries.GetCategoryByGuid
                 return new CategoryVm()
                 {
                     Message = "موردی یافت نشد",
-                    Result = true,
+                    State = (int)GetCategoryByGuidState.NotFound
                 };
             }
         }

@@ -92,7 +92,7 @@ namespace Pisheyar.Application.Categories.Queries.GetAllCategories
                     return new AllCategoriesVm()
                     {
                         Message = "عملیات موفق آمیز",
-                        Result = true,
+                        State = (int)GetAllCategoriesState.Success,
                         Categories = categoryTree
                     };
                 }
@@ -100,7 +100,7 @@ namespace Pisheyar.Application.Categories.Queries.GetAllCategories
                 return new AllCategoriesVm()
                 {
                     Message = "موردی یافت نشد",
-                    Result = true,
+                    State = (int)GetAllCategoriesState.NotFound
                 };
             }
         }

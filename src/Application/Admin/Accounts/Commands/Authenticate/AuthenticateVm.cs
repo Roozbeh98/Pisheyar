@@ -12,6 +12,6 @@ namespace Pisheyar.Application.Accounts.Commands.Authenticate
 
         public string Token { get; set; }
 
-        public DateTime? Expires { get; set; }
+        public string Expires { get; set; }
     }
 }

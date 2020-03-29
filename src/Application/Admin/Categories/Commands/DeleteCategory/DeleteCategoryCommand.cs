@@ -12,11 +12,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Pisheyar.Application.Categories.Commands.DeleteCategory
 {
-    public class DeleteCategoryCommand : IRequest<int>
+    public class DeleteCategoryCommand : IRequest<DeleteCategoryVm>
     {
-        public Guid CategoryGuid { get; set; }
+        public Guid Guid { get; set; }
 
-        public class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryCommand, int>
+        public class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryCommand, DeleteCategoryVm>
         {
             private readonly IPisheyarMagContext _context;
 
@@ -25,24 +25,78 @@ namespace Pisheyar.Application.Categories.Commands.DeleteCategory
                 _context = context;
             }
 
-            public async Task<int> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
+            public async Task<DeleteCategoryVm> RemoveCategoryTree(List<TblCategory> categories, Guid guid, CancellationToken cancellationToken)
             {
-                var query = await _context.TblCategory.SingleOrDefaultAsync(x => x.CategoryGuid == request.CategoryGuid && !x.CategoryIsDelete);
+                var parent = categories
+                    .Where(x => x.CategoryGuid == guid)
+                    .SingleOrDefault();
 
-                if (query != null)
+                if (parent != null)
                 {
-                    query.CategoryIsDelete = true;
-                    query.CategoryModifyDate = DateTime.Now;
+                    int deletedRecordsCount = 1;
+
+                    parent.CategoryIsDelete = true;
+                    parent.CategoryModifyDate = DateTime.Now;
+
+                    var children = categories
+                    .Where(x => x.CategoryCategoryGuid == guid)
+                    .OrderBy(x => x.CategoryOrder)
+                    .ToList();
+
+                    foreach (var child in children)
+                    {
+                        child.CategoryIsDelete = true;
+                        child.CategoryModifyDate = DateTime.Now;
+
+                        deletedRecordsCount++;
+
+                        deletedRecordsCount = await RemoveCategoryChildren(categories, child, deletedRecordsCount);
+                    }
 
                     await _context.SaveChangesAsync(cancellationToken);
 
-                    return 1;
+                    return new DeleteCategoryVm()
+                    {
+                        Message = "عملیات موفق آمیز",
+                        State = (int)DeleteCategoryState.Success,
+                        DeletedRecordsCount = deletedRecordsCount
+                    };
                 }
 
-                // Delete children too!
-                // Update parameter -_-
+                return new DeleteCategoryVm()
+                {
+                    Message = "موردی یافت نشد",
+                    State = (int)DeleteCategoryState.NotFound
+                };
+            }
 
-                return -1;
+            private async Task<int> RemoveCategoryChildren(List<TblCategory> categories, TblCategory parent, int deletedRecordsCount)
+            {
+                var children = categories
+                    .Where(x => x.CategoryCategoryGuid == parent.CategoryGuid)
+                    .OrderBy(x => x.CategoryOrder)
+                    .ToList();
+
+                foreach (var child in children)
+                {
+                    child.CategoryIsDelete = true;
+                    child.CategoryModifyDate = DateTime.Now;
+
+                    deletedRecordsCount++;
+
+                    deletedRecordsCount = await RemoveCategoryChildren(categories, child, deletedRecordsCount);
+                }
+
+                return deletedRecordsCount;
+            }
+
+            public async Task<DeleteCategoryVm> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
+            {
+                var categories = await _context.TblCategory
+                    .Where(x => !x.CategoryIsDelete)
+                    .ToListAsync(cancellationToken);
+
+                return await RemoveCategoryTree(categories, request.Guid, cancellationToken);
             }
         }
     }

@@ -24,14 +24,14 @@ namespace Pisheyar.Infrastructure.Identity
         private readonly IPisheyarMagContext _context;
         private readonly ISmsService _smsService;
         private readonly IMapper _mapper;
-        private readonly AppSettings _appSettings;
+        private readonly JwtSettings _jwtSettings;
 
-        public IdentityService(IPisheyarMagContext context, ISmsService smsService, IMapper mapper, IOptions<AppSettings> appSettings)
+        public IdentityService(IPisheyarMagContext context, ISmsService smsService, IMapper mapper, IOptions<JwtSettings> jwtSettings)
         {
             _context = context;
             _smsService = smsService;
             _mapper = mapper;
-            _appSettings = appSettings.Value;
+            _jwtSettings = jwtSettings.Value;
         }
 
         public async Task<AuthenticateVm> Authenticate(string mobile, string code, bool rememberMe)
@@ -52,30 +52,42 @@ namespace Pisheyar.Infrastructure.Identity
 
                     DateTime expireDate = rememberMe ? DateTime.Now.AddMonths(1) : DateTime.Now.AddDays(1);
 
-                    var tokenHandler = new JwtSecurityTokenHandler();
-                    var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
-                    var tokenDescriptor = new SecurityTokenDescriptor
-                    {
-                        Subject = new ClaimsIdentity(new Claim[]
-                        {
-                            new Claim(ClaimTypes.NameIdentifier, user.UserGuid.ToString())
-                            //new Claim(ClaimTypes.Role, await _context.TblRole.Where(x => x.RoleId == user.UserRoleId).Select(x => x.RoleName).SingleOrDefaultAsync())
-                        }),
-                        Expires = expireDate,
-                        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-                    };
-                    var token = tokenHandler.CreateToken(tokenDescriptor);
-                    return new AuthenticateVm() { Message = "عملیات موفق آمیز", State = (int)AuthenticateState.Success, Token = tokenHandler.WriteToken(token), Expires = expireDate };
+                    return new AuthenticateVm() { Message = "عملیات موفق آمیز", State = (int)AuthenticateState.Success, Token = GenerateJSONWebToken(user, expireDate), Expires = expireDate.ToString("yyyy/MM/dd HH:mm:ss") };
                 }
 
                 return new AuthenticateVm() { Message = "کد وارد شده اشتباه است", State = (int)AuthenticateState.WrongCode, Token = null, Expires = null };
             }
 
             return new AuthenticateVm() { Message = "کاربری یافت نشد", State = (int)AuthenticateState.UserNotFound, Token = null, Expires = null };
-
-            //user.Token = tokenHandler.WriteToken(token);
-
             //return user.WithoutPassword();
+        }
+
+        private string GenerateJSONWebToken(TblUser user, DateTime expireDate)
+        {
+            var roleName = _context.TblRole
+                .Where(x => x.RoleId == user.UserRoleId)
+                .SingleOrDefault()
+                .RoleName;
+
+            var key = Encoding.ASCII.GetBytes(_jwtSettings.Key);
+            var securityKey = new SymmetricSecurityKey(key);
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+            var claims = new[] {
+                new Claim(ClaimTypes.NameIdentifier, user.UserGuid.ToString()),
+                //new Claim(ClaimTypes.Sid, user.UserId.ToString()),
+                new Claim(ClaimTypes.MobilePhone, user.UserMobile),
+                new Claim(ClaimTypes.Role, roleName),
+                //new Claim(JwtRegisteredClaimNames.Sub, userInfo.Username),
+                new Claim(JwtRegisteredClaimNames.Email, user.UserEmail),
+                new Claim(JwtRegisteredClaimNames.Jti, user.UserGuid.ToString()),
+            };
+            var token = new JwtSecurityToken(_jwtSettings.Issuer,
+                _jwtSettings.Issuer,
+                claims,
+                expires: expireDate,
+                signingCredentials: credentials);
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
         public Task<string> GetUserFullNameAsync(Guid userGuid)

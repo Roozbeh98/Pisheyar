@@ -8,7 +8,7 @@ namespace Pisheyar.Application.Categories.Queries.GetPrimaryCategories
     {
         public string Message { get; set; }
 
-        public bool Result { get; set; }
+        public int State { get; set; }
 
         public List<PrimaryCategoryDto> PrimaryCategories { get; set; } = new List<PrimaryCategoryDto>();
     }

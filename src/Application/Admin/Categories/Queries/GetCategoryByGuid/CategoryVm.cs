@@ -8,7 +8,7 @@ namespace Pisheyar.Application.Categories.Queries.GetCategoryByGuid
     {
         public string Message { get; set; }
 
-        public bool Result { get; set; }
+        public int State { get; set; }
 
         public List<CategoryDto> Categories { get; set; } = new List<CategoryDto>();
     }

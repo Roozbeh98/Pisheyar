@@ -40,7 +40,7 @@ namespace Pisheyar.Application.Categories.Queries.GetPrimaryCategories
                     return new PrimaryCategoriesVm()
                     {
                         Message = "عملیات موفق آمیز",
-                        Result = true,
+                        State = (int)GetPrimaryCategoriesState.Success,
                         PrimaryCategories = primaryCategories
                     };
                 }
@@ -48,7 +48,7 @@ namespace Pisheyar.Application.Categories.Queries.GetPrimaryCategories
                 return new PrimaryCategoriesVm()
                 {
                     Message = "موردی یافت نشد",
-                    Result = true,
+                    State = (int)GetPrimaryCategoriesState.NotFound,
                 };
             }
         }

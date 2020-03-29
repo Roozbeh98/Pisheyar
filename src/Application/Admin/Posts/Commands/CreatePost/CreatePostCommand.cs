@@ -22,7 +22,7 @@ namespace Pisheyar.Application.Posts.Commands.CreatePost
 
         public bool IsShow { get; set; }
 
-        public Guid[] CategoriesGuid { get; set; }
+        //public Guid[] CategoriesGuid { get; set; }
 
         //public int[] Tags { get; set; }
 
@@ -48,16 +48,16 @@ namespace Pisheyar.Application.Posts.Commands.CreatePost
                     PostIsShow = request.IsShow
                 };
 
-                foreach (var categoryGuid in request.CategoriesGuid)
-                {
-                    var postCategoryEntity = new TblPostCategory()
-                    {
-                        PcPost = postEntity,
-                        PcCategoryGuid = categoryGuid
-                    };
+                //foreach (var categoryGuid in request.CategoriesGuid)
+                //{
+                //    var postCategoryEntity = new TblPostCategory()
+                //    {
+                //        PcPost = postEntity,
+                //        PcCategoryGuid = categoryGuid
+                //    };
 
-                    _context.TblPostCategory.Add(postCategoryEntity);
-                }
+                //    _context.TblPostCategory.Add(postCategoryEntity);
+                //}
 
                 _context.TblPost.Add(postEntity);
 

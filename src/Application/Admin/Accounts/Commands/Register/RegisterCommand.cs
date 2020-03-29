@@ -63,16 +63,16 @@ namespace Pisheyar.Application.Accounts.Commands.Register
 
                     await _context.SaveChangesAsync(cancellationToken);
 
-                    //object smsResult = await _smsService.SendServiceable(SmsTemplate.VerifyAccount, request.Mobile, token.ToString());
+                    object smsResult = await _smsService.SendServiceable(SmsTemplate.VerifyAccount, request.Mobile, token.ToString());
 
-                    //if (smsResult.GetType().Name != "SendResult")
-                    //{
-                    //    // sent result
-                    //}
-                    //else
-                    //{
-                    //    // sms error
-                    //}
+                    if (smsResult.GetType().Name != "SendResult")
+                    {
+                        // sent result
+                    }
+                    else
+                    {
+                        // sms error
+                    }
 
                     return new RegisterCommandVm() { Message = "عملیات موفق آمیز", State = (int)RegisterState.Success };
                 }
@@ -107,16 +107,16 @@ namespace Pisheyar.Application.Accounts.Commands.Register
 
                     await _context.SaveChangesAsync(cancellationToken);
 
-                    //object smsResult = await _smsService.SendServiceable(SmsTemplate.VerifyAccount, request.Mobile, token.ToString());
+                    object smsResult = await _smsService.SendServiceable(SmsTemplate.VerifyAccount, request.Mobile, token.ToString());
 
-                    //if (smsResult.GetType().Name != "SendResult")
-                    //{
-                    //    // sent result
-                    //}
-                    //else
-                    //{
-                    //    // sms error
-                    //}
+                    if (smsResult.GetType().Name != "SendResult")
+                    {
+                        // sent result
+                    }
+                    else
+                    {
+                        // sms error
+                    }
 
                     return new RegisterCommandVm() { Message = "عملیات موفق آمیز", State = (int)RegisterState.Success };
                 }

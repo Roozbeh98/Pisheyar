@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 
 namespace Pisheyar.Infrastructure.Identity
 {
-    public class AppSettings
+    public class JwtSettings
     {
-        public string Secret { get; set; }
+        public string Key { get; set; }
+
+        public string Issuer { get; set; }
     }
 }

@@ -72,12 +72,12 @@ namespace WebUI.Controllers
         /// <summary>
         /// حذف دسته بندی
         /// </summary>
-        /// <param name="guid">آیدی دسته بندی</param>
+        /// <param name="command">آیدی دسته بندی</param>
         /// <returns></returns>
-        [HttpPost("[action]/{guid}")]
-        public async Task<ActionResult<int>> Delete(Guid guid)
+        [HttpPost("[action]")]
+        public async Task<ActionResult<DeleteCategoryVm>> Delete(DeleteCategoryCommand command)
         {
-            return await Mediator.Send(new DeleteCategoryCommand { CategoryGuid = guid });
+            return await Mediator.Send(command);
         }
     }
 }
