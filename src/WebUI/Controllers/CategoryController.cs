@@ -8,6 +8,7 @@ using Pisheyar.Application.Categories.Commands.UpdateCategory;
 using Pisheyar.Application.Categories.Queries.GetAllCategories;
 using Pisheyar.Application.Categories.Queries.GetCategoryByGuid;
 using Pisheyar.Application.Categories.Queries.GetPrimaryCategories;
+using Pisheyar.Application.Categories.Queries.SearchCategories;
 
 namespace WebUI.Controllers
 {
@@ -45,6 +46,16 @@ namespace WebUI.Controllers
         public async Task<ActionResult<AllCategoriesVm>> GetAll()
         {
             return await Mediator.Send(new GetAllCategoriesQuery());
+        }
+
+        /// <summary>
+        /// جستجو دسته بندی ها
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("[action]")]
+        public async Task<ActionResult<SearchCategoriesVm>> Search(string input)
+        {
+            return await Mediator.Send(new SearchCategoriesQuery() { Input = input });
         }
 
         /// <summary>

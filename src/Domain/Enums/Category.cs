@@ -27,4 +27,10 @@ namespace Pisheyar.Domain.Enums
         Success = 1,
         NotFound = 2
     }
+
+    public enum SearchCategoriesState
+    {
+        Success = 1,
+        NotFound = 2
+    }
 }

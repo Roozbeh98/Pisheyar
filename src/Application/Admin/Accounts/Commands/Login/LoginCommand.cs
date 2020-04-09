@@ -63,7 +63,7 @@ namespace Pisheyar.Application.Accounts.Commands.Login
                         return new LoginCommandVm() { Message = "عملیات موفق آمیز", State = (int)LoginState.Success };
                     }
 
-                    return new LoginCommandVm() { Message = "حساب کار مورد نظر بسته است", State = (int)LoginState.UserNotActivated };
+                    return new LoginCommandVm() { Message = "حساب کار مورد نظر غیر فعال است", State = (int)LoginState.UserNotActivated };
                 }
 
                 return new LoginCommandVm() { Message = "کاربر مورد نظر یافت نشد", State = (int)LoginState.UserNotFound };
