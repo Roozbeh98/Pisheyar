@@ -15,13 +15,8 @@ namespace Pisheyar.Infrastructure.Persistence.Configurations
 
             entity.ToTable("Tbl_CodeGroup");
 
-            entity.HasIndex(e => e.CgCodeId);
-
             entity.Property(e => e.CgId)
                 .HasColumnName("CG_ID");
-
-            entity.Property(e => e.CgCodeId)
-                .HasColumnName("CG_CodeID");
 
             entity.Property(e => e.CgDisplay)
                 .IsRequired()
@@ -37,12 +32,6 @@ namespace Pisheyar.Infrastructure.Persistence.Configurations
                 .IsRequired()
                 .HasColumnName("CG_Name")
                 .HasMaxLength(128);
-
-            entity.HasOne(d => d.CgCode)
-                .WithMany(p => p.TblCodeGroup)
-                .HasForeignKey(d => d.CgCodeId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Tbl_CodeGroup_Tbl_Code");
         }
     }
 }

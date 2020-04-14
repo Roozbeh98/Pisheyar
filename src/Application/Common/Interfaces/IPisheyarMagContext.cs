@@ -7,13 +7,19 @@ namespace Pisheyar.Application.Common.Interfaces
 {
     public interface IPisheyarMagContext
     {
+        DbSet<TblAdvertisement> TblAdvertisement { get; set; }
+
         DbSet<TblCategory> TblCategory { get; set; }
+
+        DbSet<TblCategoryTag> TblCategoryTag { get; set; }
 
         DbSet<TblCode> TblCode { get; set; }
 
         DbSet<TblCodeGroup> TblCodeGroup { get; set; }
 
         DbSet<TblComment> TblComment { get; set; }
+
+        DbSet<TblDocument> TblDocument { get; set; }
 
         DbSet<TblPermission> TblPermission { get; set; }
 

@@ -16,6 +16,12 @@ namespace Pisheyar.Domain.Enums
         NotFound = 2
     }
 
+    public enum GetAllCategoriesNameState
+    {
+        Success = 1,
+        NotFound = 2
+    }
+
     public enum GetPrimaryCategoriesState
     {
         Success = 1,

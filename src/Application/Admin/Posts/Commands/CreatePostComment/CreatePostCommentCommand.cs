@@ -14,7 +14,7 @@ namespace Pisheyar.Application.Posts.Commands.CreatePostComment
 {
     public class CreatePostCommentCommand : IRequest<int>
     {
-        public int PostId { get; set; }
+        public Guid PostGuid { get; set; }
 
         public int UserId { get; set; }
 
@@ -41,7 +41,7 @@ namespace Pisheyar.Application.Posts.Commands.CreatePostComment
 
                 var postCommentEntity = new TblPostComment
                 {
-                    PcPostId = request.PostId,
+                    PcPostGuid = request.PostGuid,
                     PcComment = commentEntity,
                     PcIsAccept = request.IsAccept
                 };

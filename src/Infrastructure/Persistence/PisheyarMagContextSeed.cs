@@ -79,10 +79,52 @@ namespace Pisheyar.Infrastructure.Persistence
                         UserId = 1,
                         UserGuid = Guid.NewGuid(),
                         UserRoleId = 1,
-                        UserName = "Mahdi",
-                        UserFamily = "Roudaki",
+                        UserName = "سید مهدی",
+                        UserFamily = "رودکی",
                         UserEmail = "mahdiroudaki@hotmail.com",
                         UserMobile = "09227204305",
+                        UserCreateDate = DateTime.Now,
+                        UserModifyDate = DateTime.Now,
+                        UserIsActive = true,
+                        UserIsDelete = false
+                    },
+                    new TblUser
+                    {
+                        UserId = 2,
+                        UserGuid = Guid.NewGuid(),
+                        UserRoleId = 1,
+                        UserName = "مهدی",
+                        UserFamily = "حکمی زاده",
+                        UserEmail = "mahdiih@ymail.com",
+                        UserMobile = "09199390494",
+                        UserCreateDate = DateTime.Now,
+                        UserModifyDate = DateTime.Now,
+                        UserIsActive = true,
+                        UserIsDelete = false
+                    },
+                    new TblUser
+                    {
+                        UserId = 3,
+                        UserGuid = Guid.NewGuid(),
+                        UserRoleId = 1,
+                        UserName = "ارشیا",
+                        UserFamily = "اموری سرابی",
+                        UserEmail = "arshiasarabi@gmail.com",
+                        UserMobile = "09120509234",
+                        UserCreateDate = DateTime.Now,
+                        UserModifyDate = DateTime.Now,
+                        UserIsActive = true,
+                        UserIsDelete = false
+                    },
+                    new TblUser
+                    {
+                        UserId = 4,
+                        UserGuid = Guid.NewGuid(),
+                        UserRoleId = 1,
+                        UserName = "روزبه",
+                        UserFamily = "شامخی",
+                        UserEmail = "roozbehshamekhi@hotmail.com",
+                        UserMobile = "09128277075",
                         UserCreateDate = DateTime.Now,
                         UserModifyDate = DateTime.Now,
                         UserIsActive = true,
@@ -110,6 +152,46 @@ namespace Pisheyar.Infrastructure.Persistence
                         CategoryCreateDate = DateTime.Now,
                         CategoryModifyDate = DateTime.Now,
                         CategoryIsDelete = false
+                    }
+                );
+
+            modelBuilder.Entity<TblCodeGroup>().HasData(
+                    new TblCodeGroup
+                    {
+                        CgId = 1,
+                        CgGuid = Guid.NewGuid(),
+                        CgName = "FilepondType",
+                        CgDisplay = "نوع فایل"
+                    }
+                );
+
+            modelBuilder.Entity<TblCode>().HasData(
+                    new TblCode
+                    {
+                        CodeId = 1,
+                        CodeGuid = Guid.NewGuid(),
+                        CodeCgid = 1,
+                        CodeName = "image/png",
+                        CodeDisplay = "png",
+                        CodeIsDelete = false
+                    },
+                    new TblCode
+                    {
+                        CodeId = 2,
+                        CodeGuid = Guid.NewGuid(),
+                        CodeCgid = 1,
+                        CodeName = "image/jpg",
+                        CodeDisplay = "jpg",
+                        CodeIsDelete = false
+                    },
+                    new TblCode
+                    {
+                        CodeId = 3,
+                        CodeGuid = Guid.NewGuid(),
+                        CodeCgid = 1,
+                        CodeName = "image/jpeg",
+                        CodeDisplay = "jpeg",
+                        CodeIsDelete = false
                     }
                 );
         }

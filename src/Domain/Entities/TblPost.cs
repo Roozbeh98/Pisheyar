@@ -13,13 +13,11 @@ namespace Pisheyar.Domain.Entities
         }
 
 
-        public int PostId { get; set; }
-
         public Guid PostGuid { get; set; }
 
         public int PostUserId { get; set; }
 
-        public int? PostDocumentId { get; set; }
+        public Guid PostDocumentGuid { get; set; }
 
         public int PostViewCount { get; set; }
 

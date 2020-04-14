@@ -9,7 +9,7 @@ namespace Pisheyar.Domain.Entities
 
         public Guid AdvertisementGuid { get; set; }
 
-        public int AdvertisementDocumentId { get; set; }
+        public Guid AdvertisementDocumentGuid { get; set; }
 
         public string AdvertisementTitle { get; set; }
 

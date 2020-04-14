@@ -14,7 +14,7 @@ namespace Pisheyar.Application.Posts.Commands.DeletePostComment
 {
     public class DeletePostCommentCommand : IRequest<int>
     {
-        public int PostCommentId { get; set; }
+        public Guid PostCommentGuid { get; set; }
 
         public class DeletePostCommentCommandHandler : IRequestHandler<DeletePostCommentCommand, int>
         {
@@ -28,12 +28,12 @@ namespace Pisheyar.Application.Posts.Commands.DeletePostComment
             public async Task<int> Handle(DeletePostCommentCommand request, CancellationToken cancellationToken)
             {
                 var postComment = await _context.TblPostComment
-                    .SingleOrDefaultAsync(x => x.PcId == request.PostCommentId, cancellationToken);
+                    .SingleOrDefaultAsync(x => x.PcGuid == request.PostCommentGuid, cancellationToken);
 
                 if (postComment != null)
                 {
                     var comment = await _context.TblComment
-                        .SingleOrDefaultAsync(x => x.CommentId == postComment.PcCommentId, cancellationToken);
+                        .SingleOrDefaultAsync(x => x.CommentGuid == postComment.PcCommentGuid, cancellationToken);
 
                     if (comment != null)
                     {

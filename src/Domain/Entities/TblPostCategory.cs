@@ -5,13 +5,11 @@ namespace Pisheyar.Domain.Entities
 {
     public partial class TblPostCategory
     {
-        public int PcId { get; set; }
-
         public Guid PcGuid { get; set; }
 
         public Guid PcCategoryGuid { get; set; }
 
-        public int PcPostId { get; set; }
+        public Guid PcPostGuid { get; set; }
 
 
         public virtual TblCategory PcCategoryGu { get; set; }

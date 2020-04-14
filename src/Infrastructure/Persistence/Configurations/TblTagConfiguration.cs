@@ -11,12 +11,9 @@ namespace Pisheyar.Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<TblTag> entity)
         {
-            entity.HasKey(e => e.TagId);
+            entity.HasKey(e => e.TagGuid);
 
             entity.ToTable("Tbl_Tag");
-
-            entity.Property(e => e.TagId)
-                .HasColumnName("Tag_ID");
 
             entity.Property(e => e.TagCreateDate)
                 .HasColumnName("Tag_CreateDate")
@@ -24,7 +21,6 @@ namespace Pisheyar.Infrastructure.Persistence.Configurations
 
             entity.Property(e => e.TagGuid)
                 .HasColumnName("Tag_Guid")
-                .HasColumnType("UNIQUEIDENTIFIER ROWGUIDCOL")
                 .HasDefaultValueSql("(newid())");
 
             entity.Property(e => e.TagIsDelete)

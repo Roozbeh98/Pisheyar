@@ -11,14 +11,11 @@ namespace Pisheyar.Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<TblPost> entity)
         {
-            entity.HasKey(e => e.PostId);
+            entity.HasKey(e => e.PostGuid);
 
             entity.ToTable("Tbl_Post");
 
             entity.HasIndex(e => e.PostUserId);
-
-            entity.Property(e => e.PostId)
-                .HasColumnName("Post_ID");
 
             entity.Property(e => e.PostAbstract)
                 .IsRequired()
@@ -32,12 +29,11 @@ namespace Pisheyar.Infrastructure.Persistence.Configurations
                 .IsRequired()
                 .HasColumnName("Post_Description");
 
-            entity.Property(e => e.PostDocumentId)
-                .HasColumnName("Post_DocumentID");
+            entity.Property(e => e.PostDocumentGuid)
+                .HasColumnName("Post_DocumentGuid");
 
             entity.Property(e => e.PostGuid)
                 .HasColumnName("Post_Guid")
-                .HasColumnType("UNIQUEIDENTIFIER ROWGUIDCOL")
                 .HasDefaultValueSql("(newid())");
 
             entity.Property(e => e.PostIsDelete)
@@ -69,7 +65,7 @@ namespace Pisheyar.Infrastructure.Persistence.Configurations
 
             entity.HasOne(d => d.PostDocument)
                 .WithMany(p => p.TblPost)
-                .HasForeignKey(d => d.PostDocumentId)
+                .HasForeignKey(d => d.PostDocumentGuid)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Tbl_Post_Tbl_Document");
 

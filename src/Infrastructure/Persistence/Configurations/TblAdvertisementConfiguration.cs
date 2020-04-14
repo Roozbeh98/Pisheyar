@@ -15,7 +15,7 @@ namespace Pisheyar.Infrastructure.Persistence.Configurations
 
             entity.ToTable("Tbl_Advertisement");
 
-            entity.HasIndex(e => e.AdvertisementDocumentId);
+            entity.HasIndex(e => e.AdvertisementDocumentGuid);
 
             entity.Property(e => e.AdvertisementId)
                 .HasColumnName("Advertisement_ID");
@@ -28,8 +28,8 @@ namespace Pisheyar.Infrastructure.Persistence.Configurations
                 .HasColumnName("Advertisement_CreateDate")
                 .HasDefaultValueSql("(getdate())");
 
-            entity.Property(e => e.AdvertisementDocumentId)
-                .HasColumnName("Advertisement_DocumentID");
+            entity.Property(e => e.AdvertisementDocumentGuid)
+                .HasColumnName("Advertisement_DocumentGuid");
 
             entity.Property(e => e.AdvertisementGuid)
                 .HasColumnName("Advertisement_Guid")
@@ -60,7 +60,7 @@ namespace Pisheyar.Infrastructure.Persistence.Configurations
 
             entity.HasOne(d => d.AdvertisementDocument)
                 .WithMany(p => p.TblAdvertisement)
-                .HasForeignKey(d => d.AdvertisementDocumentId)
+                .HasForeignKey(d => d.AdvertisementDocumentGuid)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Tbl_Advertisement_Tbl_Document");
         }

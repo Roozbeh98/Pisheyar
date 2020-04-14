@@ -11,41 +11,34 @@ namespace Pisheyar.Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<TblPostComment> entity)
         {
-            entity.HasKey(e => e.PcId);
+            entity.HasKey(e => e.PcGuid);
 
             entity.ToTable("Tbl_PostComment");
 
-            entity.HasIndex(e => e.PcCommentId);
+            entity.HasIndex(e => e.PcCommentGuid);
 
-            entity.HasIndex(e => e.PcPostId);
-
-            entity.Property(e => e.PcId)
-                .HasColumnName("PC_ID");
-
-            entity.Property(e => e.PcCommentId)
-                .HasColumnName("PC_CommentID");
+            entity.HasIndex(e => e.PcPostGuid);
 
             entity.Property(e => e.PcGuid)
                 .HasColumnName("PC_Guid")
-                .HasColumnType("UNIQUEIDENTIFIER ROWGUIDCOL")
                 .HasDefaultValueSql("(newid())");
 
             entity.Property(e => e.PcIsAccept)
                 .HasColumnName("PC_IsAccept")
                 .HasDefaultValueSql("((1))");
 
-            entity.Property(e => e.PcPostId)
-                .HasColumnName("PC_PostID");
+            entity.Property(e => e.PcPostGuid)
+                .HasColumnName("PC_PostGuid");
 
             entity.HasOne(d => d.PcComment)
                 .WithMany(p => p.TblPostComment)
-                .HasForeignKey(d => d.PcCommentId)
+                .HasForeignKey(d => d.PcCommentGuid)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Tbl_PostComment_Tbl_Comment");
 
             entity.HasOne(d => d.PcPost)
                 .WithMany(p => p.TblPostComment)
-                .HasForeignKey(d => d.PcPostId)
+                .HasForeignKey(d => d.PcPostGuid)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Tbl_PostComment_Tbl_Post");
         }

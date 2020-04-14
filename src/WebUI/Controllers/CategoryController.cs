@@ -6,6 +6,7 @@ using Pisheyar.Application.Categories.Commands.CreateCategory;
 using Pisheyar.Application.Categories.Commands.DeleteCategory;
 using Pisheyar.Application.Categories.Commands.UpdateCategory;
 using Pisheyar.Application.Categories.Queries.GetAllCategories;
+using Pisheyar.Application.Categories.Queries.GetAllCategoriesName;
 using Pisheyar.Application.Categories.Queries.GetCategoryByGuid;
 using Pisheyar.Application.Categories.Queries.GetPrimaryCategories;
 using Pisheyar.Application.Categories.Queries.SearchCategories;
@@ -46,6 +47,16 @@ namespace WebUI.Controllers
         public async Task<ActionResult<AllCategoriesVm>> GetAll()
         {
             return await Mediator.Send(new GetAllCategoriesQuery());
+        }
+
+        /// <summary>
+        /// دریافت نام تمامی دسته بندی ها
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("[action]")]
+        public async Task<ActionResult<AllCategoriesNameVm>> GetAllNames()
+        {
+            return await Mediator.Send(new GetAllCategoriesNameQuery());
         }
 
         /// <summary>

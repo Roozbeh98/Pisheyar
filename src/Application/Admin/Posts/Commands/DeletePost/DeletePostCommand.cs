@@ -14,7 +14,7 @@ namespace Pisheyar.Application.Posts.Commands.DeletePost
 {
     public class DeletePostCommand : IRequest<int>
     {
-        public int PostId { get; set; }
+        public Guid PostGuid { get; set; }
 
         public class DeleteCategoryCommandHandler : IRequestHandler<DeletePostCommand, int>
         {
@@ -27,7 +27,7 @@ namespace Pisheyar.Application.Posts.Commands.DeletePost
 
             public async Task<int> Handle(DeletePostCommand request, CancellationToken cancellationToken)
             {
-                var query = await _context.TblPost.SingleOrDefaultAsync(x => x.PostId == request.PostId && !x.PostIsDelete);
+                var query = await _context.TblPost.SingleOrDefaultAsync(x => x.PostGuid == request.PostGuid && !x.PostIsDelete);
 
                 if (query != null)
                 {

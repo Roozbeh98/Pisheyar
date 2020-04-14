@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Pisheyar.Application.Common.Mappings;
+using Pisheyar.Application.Common.UploadHelper.Filepond;
 using Pisheyar.Domain.Entities;
 using System;
+using System.Collections.Generic;
 
 namespace Pisheyar.Application.Posts.Queries.GetPost
 {
@@ -9,9 +11,13 @@ namespace Pisheyar.Application.Posts.Queries.GetPost
     {
         public Guid PostGuid { get; set; }
 
-        public string UserFullName { get; set; }
+        public List<FilepondDto> Document { get; set; }
 
-        public string DocumentFileName { get; set; }
+        //public List<List<GetPostCategoryDto>> Categories { get; set; } = new List<List<GetPostCategoryDto>>();
+
+        public List<string> Categories { get; set; }
+
+        public string UserFullName { get; set; }
 
         public int PostViewCount { get; set; }
 
@@ -33,7 +39,27 @@ namespace Pisheyar.Application.Posts.Queries.GetPost
         {
             profile.CreateMap<TblPost, GetPostDto>()
                 .ForMember(d => d.UserFullName, opt => opt.MapFrom(s => s.PostUser.UserName + " " + s.PostUser.UserFamily))
-                .ForMember(d => d.DocumentFileName, opt => opt.MapFrom(s => s.PostDocument.DocumentFileName));
+                .ForMember(d => d.Document, opt => opt.MapFrom(s => new List<FilepondDto>
+                {
+                    new FilepondDto
+                    {
+                        Source = s.PostDocument.DocumentPath,
+                        Options = new FilepondOptions
+                        {
+                            Type = "local",
+                            Files = new FilepondFile
+                            {
+                                Name = s.PostDocument.DocumentFileName,
+                                Size = s.PostDocument.DocumentSize,
+                                Type = s.PostDocument.DocumentTypeCode.CodeName
+                            },
+                            Metadata = new FilepondMetadata
+                            {
+                                Poster = s.PostDocument.DocumentPath
+                            }
+                        }
+                    }
+                }));
         }
     }
 }

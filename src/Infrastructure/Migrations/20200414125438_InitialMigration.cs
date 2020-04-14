@@ -31,20 +31,18 @@ namespace Pisheyar.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tbl_Code",
+                name: "Tbl_CodeGroup",
                 columns: table => new
                 {
-                    Code_ID = table.Column<int>(nullable: false)
+                    CG_ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Code_Guid = table.Column<Guid>(type: "UNIQUEIDENTIFIER ROWGUIDCOL", nullable: false, defaultValueSql: "(newid())"),
-                    Code_CGID = table.Column<int>(nullable: false),
-                    Code_Name = table.Column<string>(maxLength: 128, nullable: false),
-                    Code_Display = table.Column<string>(maxLength: 128, nullable: false),
-                    Code_IsActive = table.Column<bool>(nullable: false, defaultValueSql: "((1))")
+                    CG_Guid = table.Column<Guid>(type: "UNIQUEIDENTIFIER ROWGUIDCOL", nullable: false, defaultValueSql: "(newid())"),
+                    CG_Name = table.Column<string>(maxLength: 128, nullable: false),
+                    CG_Display = table.Column<string>(maxLength: 128, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tbl_Code", x => x.Code_ID);
+                    table.PrimaryKey("PK_Tbl_CodeGroup", x => x.CG_ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -107,9 +105,7 @@ namespace Pisheyar.Infrastructure.Migrations
                 name: "Tbl_Tag",
                 columns: table => new
                 {
-                    Tag_ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Tag_Guid = table.Column<Guid>(type: "UNIQUEIDENTIFIER ROWGUIDCOL", nullable: false, defaultValueSql: "(newid())"),
+                    Tag_Guid = table.Column<Guid>(nullable: false, defaultValueSql: "(newid())"),
                     Tag_Name = table.Column<string>(nullable: false),
                     Tag_Usage = table.Column<int>(nullable: false, defaultValueSql: "((0))"),
                     Tag_CreateDate = table.Column<DateTime>(nullable: false, defaultValueSql: "(getdate())"),
@@ -118,53 +114,29 @@ namespace Pisheyar.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tbl_Tag", x => x.Tag_ID);
+                    table.PrimaryKey("PK_Tbl_Tag", x => x.Tag_Guid);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tbl_CodeGroup",
+                name: "Tbl_Code",
                 columns: table => new
                 {
-                    CG_ID = table.Column<int>(nullable: false)
+                    Code_ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CG_Guid = table.Column<Guid>(type: "UNIQUEIDENTIFIER ROWGUIDCOL", nullable: false, defaultValueSql: "(newid())"),
-                    CG_CodeID = table.Column<int>(nullable: false),
-                    CG_Name = table.Column<string>(maxLength: 128, nullable: false),
-                    CG_Display = table.Column<string>(maxLength: 128, nullable: false)
+                    Code_Guid = table.Column<Guid>(type: "UNIQUEIDENTIFIER ROWGUIDCOL", nullable: false, defaultValueSql: "(newid())"),
+                    Code_CGID = table.Column<int>(nullable: false),
+                    Code_Name = table.Column<string>(maxLength: 128, nullable: false),
+                    Code_Display = table.Column<string>(maxLength: 128, nullable: false),
+                    Code_IsDelete = table.Column<bool>(nullable: false, defaultValueSql: "((0))")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tbl_CodeGroup", x => x.CG_ID);
+                    table.PrimaryKey("PK_Tbl_Code", x => x.Code_ID);
                     table.ForeignKey(
-                        name: "FK_Tbl_CodeGroup_Tbl_Code",
-                        column: x => x.CG_CodeID,
-                        principalTable: "Tbl_Code",
-                        principalColumn: "Code_ID",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Tbl_Document",
-                columns: table => new
-                {
-                    Document_ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Document_Guid = table.Column<Guid>(type: "UNIQUEIDENTIFIER ROWGUIDCOL", nullable: false, defaultValueSql: "(newid())"),
-                    Document_TypeCodeID = table.Column<int>(nullable: false),
-                    Document_Path = table.Column<string>(maxLength: 512, nullable: false),
-                    Document_FileName = table.Column<string>(maxLength: 128, nullable: false),
-                    Document_CreateDate = table.Column<DateTime>(nullable: false, defaultValueSql: "(getdate())"),
-                    Document_ModifyDate = table.Column<DateTime>(nullable: false, defaultValueSql: "(getdate())"),
-                    Document_IsDelete = table.Column<bool>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Tbl_Document", x => x.Document_ID);
-                    table.ForeignKey(
-                        name: "FK_Tbl_Document_Tbl_Code",
-                        column: x => x.Document_TypeCodeID,
-                        principalTable: "Tbl_Code",
-                        principalColumn: "Code_ID",
+                        name: "FK_TblCode_TblCodeGroup",
+                        column: x => x.Code_CGID,
+                        principalTable: "Tbl_CodeGroup",
+                        principalColumn: "CG_ID",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -279,15 +251,13 @@ namespace Pisheyar.Infrastructure.Migrations
                 name: "Tbl_CategoryTag",
                 columns: table => new
                 {
-                    CT_ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CT_Guid = table.Column<Guid>(type: "UNIQUEIDENTIFIER ROWGUIDCOL", nullable: false, defaultValueSql: "(newid())"),
+                    CT_Guid = table.Column<Guid>(nullable: false, defaultValueSql: "(newid())"),
                     CT_CategoryGuid = table.Column<Guid>(nullable: false),
-                    CT_TagID = table.Column<int>(nullable: false)
+                    CT_TagGuid = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tbl_CategoryTag", x => x.CT_ID);
+                    table.PrimaryKey("PK_Tbl_CategoryTag", x => x.CT_Guid);
                     table.ForeignKey(
                         name: "FK_Tbl_CategoryTag_Tbl_Category",
                         column: x => x.CT_CategoryGuid,
@@ -296,36 +266,33 @@ namespace Pisheyar.Infrastructure.Migrations
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Tbl_CategoryTag_Tbl_Tag",
-                        column: x => x.CT_TagID,
+                        column: x => x.CT_TagGuid,
                         principalTable: "Tbl_Tag",
-                        principalColumn: "Tag_ID",
+                        principalColumn: "Tag_Guid",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tbl_Advertisement",
+                name: "Tbl_Document",
                 columns: table => new
                 {
-                    Advertisement_ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Advertisement_Guid = table.Column<Guid>(type: "UNIQUEIDENTIFIER ROWGUIDCOL", nullable: false, defaultValueSql: "(newid())"),
-                    Advertisement_DocumentID = table.Column<int>(nullable: false),
-                    Advertisement_Title = table.Column<string>(maxLength: 256, nullable: false),
-                    Advertisement_Abstract = table.Column<string>(nullable: false),
-                    Avertisement_Picture = table.Column<string>(maxLength: 512, nullable: false),
-                    Advertisement_CreateDate = table.Column<DateTime>(nullable: false, defaultValueSql: "(getdate())"),
-                    Advertisement_ModifyDate = table.Column<DateTime>(nullable: false, defaultValueSql: "(getdate())"),
-                    Advertisement_IsShow = table.Column<bool>(nullable: false, defaultValueSql: "((1))"),
-                    Advertisement_IsDelete = table.Column<bool>(nullable: false, defaultValueSql: "((0))")
+                    Document_Guid = table.Column<Guid>(nullable: false, defaultValueSql: "(newid())"),
+                    Document_TypeCodeID = table.Column<int>(nullable: false),
+                    Document_Path = table.Column<string>(maxLength: 512, nullable: false),
+                    Document_Size = table.Column<string>(maxLength: 128, nullable: false),
+                    Document_FileName = table.Column<string>(maxLength: 128, nullable: false),
+                    Document_CreateDate = table.Column<DateTime>(nullable: false, defaultValueSql: "(getdate())"),
+                    Document_ModifyDate = table.Column<DateTime>(nullable: false, defaultValueSql: "(getdate())"),
+                    Document_IsDelete = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tbl_Advertisement", x => x.Advertisement_ID);
+                    table.PrimaryKey("PK_Tbl_Document", x => x.Document_Guid);
                     table.ForeignKey(
-                        name: "FK_Tbl_Advertisement_Tbl_Document",
-                        column: x => x.Advertisement_DocumentID,
-                        principalTable: "Tbl_Document",
-                        principalColumn: "Document_ID",
+                        name: "FK_Tbl_Document_Tbl_Code",
+                        column: x => x.Document_TypeCodeID,
+                        principalTable: "Tbl_Code",
+                        principalColumn: "Code_ID",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -333,55 +300,17 @@ namespace Pisheyar.Infrastructure.Migrations
                 name: "Tbl_Comment",
                 columns: table => new
                 {
-                    Comment_ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Comment_Guid = table.Column<Guid>(type: "UNIQUEIDENTIFIER ROWGUIDCOL", nullable: false, defaultValueSql: "(newid())"),
+                    Comment_Guid = table.Column<Guid>(nullable: false, defaultValueSql: "(newid())"),
                     Comment_UserID = table.Column<int>(nullable: false),
                     Comment_Text = table.Column<string>(nullable: false),
                     Comment_Date = table.Column<DateTime>(nullable: false, defaultValueSql: "(getdate())")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tbl_Comment", x => x.Comment_ID);
+                    table.PrimaryKey("PK_Tbl_Comment", x => x.Comment_Guid);
                     table.ForeignKey(
                         name: "FK_Tbl_Comment_Tbl_User",
                         column: x => x.Comment_UserID,
-                        principalTable: "Tbl_User",
-                        principalColumn: "User_ID",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Tbl_Post",
-                columns: table => new
-                {
-                    Post_ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Post_Guid = table.Column<Guid>(type: "UNIQUEIDENTIFIER ROWGUIDCOL", nullable: false, defaultValueSql: "(newid())"),
-                    Post_UserID = table.Column<int>(nullable: false),
-                    Post_DocumentID = table.Column<int>(nullable: true),
-                    Post_ViewCount = table.Column<int>(nullable: false, defaultValueSql: "((0))"),
-                    Post_LikeCount = table.Column<int>(nullable: false, defaultValueSql: "((0))"),
-                    Post_Title = table.Column<string>(nullable: false),
-                    Post_Abstract = table.Column<string>(nullable: false),
-                    Post_Description = table.Column<string>(nullable: false),
-                    Post_CreateDate = table.Column<DateTime>(nullable: false, defaultValueSql: "(getdate())"),
-                    Post_ModifyDate = table.Column<DateTime>(nullable: false, defaultValueSql: "(getdate())"),
-                    Post_IsShow = table.Column<bool>(nullable: false, defaultValueSql: "((1))"),
-                    Post_IsDelete = table.Column<bool>(nullable: false, defaultValueSql: "((0))")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Tbl_Post", x => x.Post_ID);
-                    table.ForeignKey(
-                        name: "FK_Tbl_Post_Tbl_Document",
-                        column: x => x.Post_DocumentID,
-                        principalTable: "Tbl_Document",
-                        principalColumn: "Document_ID",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Tbl_Post_Tbl_User",
-                        column: x => x.Post_UserID,
                         principalTable: "Tbl_User",
                         principalColumn: "User_ID",
                         onDelete: ReferentialAction.Restrict);
@@ -465,84 +394,63 @@ namespace Pisheyar.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tbl_PostCategory",
+                name: "Tbl_Advertisement",
                 columns: table => new
                 {
-                    PC_ID = table.Column<int>(nullable: false)
+                    Advertisement_ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    PC_Guid = table.Column<Guid>(type: "UNIQUEIDENTIFIER ROWGUIDCOL", nullable: false, defaultValueSql: "(newid())"),
-                    PC_CategoryGuid = table.Column<Guid>(nullable: false),
-                    PC_PostID = table.Column<int>(nullable: false)
+                    Advertisement_Guid = table.Column<Guid>(type: "UNIQUEIDENTIFIER ROWGUIDCOL", nullable: false, defaultValueSql: "(newid())"),
+                    Advertisement_DocumentGuid = table.Column<Guid>(nullable: false),
+                    Advertisement_Title = table.Column<string>(maxLength: 256, nullable: false),
+                    Advertisement_Abstract = table.Column<string>(nullable: false),
+                    Avertisement_Picture = table.Column<string>(maxLength: 512, nullable: false),
+                    Advertisement_CreateDate = table.Column<DateTime>(nullable: false, defaultValueSql: "(getdate())"),
+                    Advertisement_ModifyDate = table.Column<DateTime>(nullable: false, defaultValueSql: "(getdate())"),
+                    Advertisement_IsShow = table.Column<bool>(nullable: false, defaultValueSql: "((1))"),
+                    Advertisement_IsDelete = table.Column<bool>(nullable: false, defaultValueSql: "((0))")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tbl_PostCategory", x => x.PC_ID);
+                    table.PrimaryKey("PK_Tbl_Advertisement", x => x.Advertisement_ID);
                     table.ForeignKey(
-                        name: "FK_Tbl_PostCategory_Tbl_Category",
-                        column: x => x.PC_CategoryGuid,
-                        principalTable: "Tbl_Category",
-                        principalColumn: "Category_Guid",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Tbl_PostCategory_Tbl_Post",
-                        column: x => x.PC_PostID,
-                        principalTable: "Tbl_Post",
-                        principalColumn: "Post_ID",
+                        name: "FK_Tbl_Advertisement_Tbl_Document",
+                        column: x => x.Advertisement_DocumentGuid,
+                        principalTable: "Tbl_Document",
+                        principalColumn: "Document_Guid",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tbl_PostComment",
+                name: "Tbl_Post",
                 columns: table => new
                 {
-                    PC_ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PC_Guid = table.Column<Guid>(type: "UNIQUEIDENTIFIER ROWGUIDCOL", nullable: false, defaultValueSql: "(newid())"),
-                    PC_CommentID = table.Column<int>(nullable: false),
-                    PC_PostID = table.Column<int>(nullable: false),
-                    PC_IsAccept = table.Column<bool>(nullable: false, defaultValueSql: "((1))")
+                    Post_Guid = table.Column<Guid>(nullable: false, defaultValueSql: "(newid())"),
+                    Post_UserID = table.Column<int>(nullable: false),
+                    Post_DocumentGuid = table.Column<Guid>(nullable: false),
+                    Post_ViewCount = table.Column<int>(nullable: false, defaultValueSql: "((0))"),
+                    Post_LikeCount = table.Column<int>(nullable: false, defaultValueSql: "((0))"),
+                    Post_Title = table.Column<string>(nullable: false),
+                    Post_Abstract = table.Column<string>(nullable: false),
+                    Post_Description = table.Column<string>(nullable: false),
+                    Post_CreateDate = table.Column<DateTime>(nullable: false, defaultValueSql: "(getdate())"),
+                    Post_ModifyDate = table.Column<DateTime>(nullable: false, defaultValueSql: "(getdate())"),
+                    Post_IsShow = table.Column<bool>(nullable: false, defaultValueSql: "((1))"),
+                    Post_IsDelete = table.Column<bool>(nullable: false, defaultValueSql: "((0))")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tbl_PostComment", x => x.PC_ID);
+                    table.PrimaryKey("PK_Tbl_Post", x => x.Post_Guid);
                     table.ForeignKey(
-                        name: "FK_Tbl_PostComment_Tbl_Comment",
-                        column: x => x.PC_CommentID,
-                        principalTable: "Tbl_Comment",
-                        principalColumn: "Comment_ID",
+                        name: "FK_Tbl_Post_Tbl_Document",
+                        column: x => x.Post_DocumentGuid,
+                        principalTable: "Tbl_Document",
+                        principalColumn: "Document_Guid",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Tbl_PostComment_Tbl_Post",
-                        column: x => x.PC_PostID,
-                        principalTable: "Tbl_Post",
-                        principalColumn: "Post_ID",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Tbl_PostTag",
-                columns: table => new
-                {
-                    PT_ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PT_Guid = table.Column<Guid>(type: "UNIQUEIDENTIFIER ROWGUIDCOL", nullable: false, defaultValueSql: "(newid())"),
-                    PT_PostID = table.Column<int>(nullable: false),
-                    PT_TagID = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Tbl_PostTag", x => x.PT_ID);
-                    table.ForeignKey(
-                        name: "FK_Tbl_PostTag_Tbl_Post",
-                        column: x => x.PT_PostID,
-                        principalTable: "Tbl_Post",
-                        principalColumn: "Post_ID",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Tbl_PostTag_Tbl_Tag",
-                        column: x => x.PT_TagID,
-                        principalTable: "Tbl_Tag",
-                        principalColumn: "Tag_ID",
+                        name: "FK_Tbl_Post_Tbl_User",
+                        column: x => x.Post_UserID,
+                        principalTable: "Tbl_User",
+                        principalColumn: "User_ID",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -586,48 +494,139 @@ namespace Pisheyar.Infrastructure.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Tbl_PostCategory",
+                columns: table => new
+                {
+                    PC_Guid = table.Column<Guid>(nullable: false, defaultValueSql: "(newid())"),
+                    PC_CategoryGuid = table.Column<Guid>(nullable: false),
+                    PC_PostGuid = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tbl_PostCategory", x => x.PC_Guid);
+                    table.ForeignKey(
+                        name: "FK_Tbl_PostCategory_Tbl_Category",
+                        column: x => x.PC_CategoryGuid,
+                        principalTable: "Tbl_Category",
+                        principalColumn: "Category_Guid",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Tbl_PostCategory_Tbl_Post",
+                        column: x => x.PC_PostGuid,
+                        principalTable: "Tbl_Post",
+                        principalColumn: "Post_Guid",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Tbl_PostComment",
+                columns: table => new
+                {
+                    PC_Guid = table.Column<Guid>(nullable: false, defaultValueSql: "(newid())"),
+                    PcCommentGuid = table.Column<Guid>(nullable: false),
+                    PC_PostGuid = table.Column<Guid>(nullable: false),
+                    PC_IsAccept = table.Column<bool>(nullable: false, defaultValueSql: "((1))")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tbl_PostComment", x => x.PC_Guid);
+                    table.ForeignKey(
+                        name: "FK_Tbl_PostComment_Tbl_Comment",
+                        column: x => x.PcCommentGuid,
+                        principalTable: "Tbl_Comment",
+                        principalColumn: "Comment_Guid",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Tbl_PostComment_Tbl_Post",
+                        column: x => x.PC_PostGuid,
+                        principalTable: "Tbl_Post",
+                        principalColumn: "Post_Guid",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Tbl_PostTag",
+                columns: table => new
+                {
+                    PT_Guid = table.Column<Guid>(nullable: false, defaultValueSql: "(newid())"),
+                    PT_PostGuid = table.Column<Guid>(nullable: false),
+                    PT_TagGuid = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tbl_PostTag", x => x.PT_Guid);
+                    table.ForeignKey(
+                        name: "FK_Tbl_PostTag_Tbl_Post",
+                        column: x => x.PT_PostGuid,
+                        principalTable: "Tbl_Post",
+                        principalColumn: "Post_Guid",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Tbl_PostTag_Tbl_Tag",
+                        column: x => x.PT_TagGuid,
+                        principalTable: "Tbl_Tag",
+                        principalColumn: "Tag_Guid",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.InsertData(
                 table: "Tbl_Category",
                 columns: new[] { "Category_Guid", "Category_CategoryGuid", "Category_CreateDate", "Category_Display", "Category_ModifyDate", "Category_Order" },
                 values: new object[,]
                 {
-                    { new Guid("f1b77c7c-dd98-428a-89fc-bb1f62718f3c"), null, new DateTime(2020, 3, 27, 18, 32, 59, 530, DateTimeKind.Local).AddTicks(9600), "سایت اصلی", new DateTime(2020, 3, 27, 18, 32, 59, 531, DateTimeKind.Local).AddTicks(137), 1 },
-                    { new Guid("d3bde41a-7a98-4fe3-a18b-ce8962a61beb"), null, new DateTime(2020, 3, 27, 18, 32, 59, 531, DateTimeKind.Local).AddTicks(1240), "وبلاگ", new DateTime(2020, 3, 27, 18, 32, 59, 531, DateTimeKind.Local).AddTicks(1266), 2 }
+                    { new Guid("a4c273c0-84c6-4b2f-be16-947bc08e10c9"), null, new DateTime(2020, 4, 14, 17, 24, 36, 907, DateTimeKind.Local).AddTicks(7391), "سایت اصلی", new DateTime(2020, 4, 14, 17, 24, 36, 907, DateTimeKind.Local).AddTicks(7925), 1 },
+                    { new Guid("c194f552-2359-46e9-a837-da016678860a"), null, new DateTime(2020, 4, 14, 17, 24, 36, 907, DateTimeKind.Local).AddTicks(8962), "وبلاگ", new DateTime(2020, 4, 14, 17, 24, 36, 907, DateTimeKind.Local).AddTicks(8986), 2 }
                 });
+
+            migrationBuilder.InsertData(
+                table: "Tbl_CodeGroup",
+                columns: new[] { "CG_ID", "CG_Display", "CG_Guid", "CG_Name" },
+                values: new object[] { 1, "نوع فایل", new Guid("67be0e37-731a-4a84-822b-02442d6aeefc"), "FilepondType" });
 
             migrationBuilder.InsertData(
                 table: "Tbl_Role",
                 columns: new[] { "Role_ID", "Role_CreateDate", "Role_Display", "Role_Guid", "Role_ModifyDate", "Role_Name" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2020, 3, 27, 18, 32, 59, 528, DateTimeKind.Local).AddTicks(9273), "کاربر عادی", new Guid("535f6b9b-f6be-4ab6-8436-c549d5f88d4e"), new DateTime(2020, 3, 27, 18, 32, 59, 528, DateTimeKind.Local).AddTicks(9822), "User" },
-                    { 2, new DateTime(2020, 3, 27, 18, 32, 59, 529, DateTimeKind.Local).AddTicks(866), "ادمین", new Guid("7cf7797c-45b1-4054-9a52-ed9b9f2c6319"), new DateTime(2020, 3, 27, 18, 32, 59, 529, DateTimeKind.Local).AddTicks(886), "Admin" }
+                    { 1, new DateTime(2020, 4, 14, 17, 24, 36, 905, DateTimeKind.Local).AddTicks(3675), "کاربر عادی", new Guid("ce01c462-7750-4bf3-adb5-87c4819b19c9"), new DateTime(2020, 4, 14, 17, 24, 36, 905, DateTimeKind.Local).AddTicks(4223), "User" },
+                    { 2, new DateTime(2020, 4, 14, 17, 24, 36, 905, DateTimeKind.Local).AddTicks(5640), "ادمین", new Guid("8d1b1a95-fe5a-411d-a948-9dc7edbfe3b1"), new DateTime(2020, 4, 14, 17, 24, 36, 905, DateTimeKind.Local).AddTicks(5663), "Admin" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Tbl_SMSProviderConfiguration",
                 columns: new[] { "SPC_ID", "SPC_ApiKey", "SPC_CreateDate", "SPC_Guid", "SPC_ModifyDate", "SPC_Password", "SPC_Username" },
-                values: new object[] { 1, "61726634455053586E44464E413462574A76535677436B547236574B56386D6A6F6E4F326A374A4C7755773D", new DateTime(2020, 3, 27, 18, 32, 59, 520, DateTimeKind.Local).AddTicks(155), new Guid("2193d749-f719-4459-9ea8-78895f1fef2e"), new DateTime(2020, 3, 27, 18, 32, 59, 523, DateTimeKind.Local).AddTicks(9215), "ptcoptco", "ptmgroupco@gmail.com" });
+                values: new object[] { 1, "61726634455053586E44464E413462574A76535677436B547236574B56386D6A6F6E4F326A374A4C7755773D", new DateTime(2020, 4, 14, 17, 24, 36, 898, DateTimeKind.Local).AddTicks(3639), new Guid("60bcb94f-0b6d-4620-9c92-dc4f79bcb161"), new DateTime(2020, 4, 14, 17, 24, 36, 901, DateTimeKind.Local).AddTicks(8324), "ptcoptco", "ptmgroupco@gmail.com" });
+
+            migrationBuilder.InsertData(
+                table: "Tbl_Code",
+                columns: new[] { "Code_ID", "Code_CGID", "Code_Display", "Code_Guid", "Code_Name" },
+                values: new object[,]
+                {
+                    { 1, 1, "png", new Guid("3e9c17fe-59a5-418f-9512-dac670833097"), "image/png" },
+                    { 2, 1, "jpg", new Guid("3c06b9b8-75ae-4186-82eb-6799970933a8"), "image/jpg" },
+                    { 3, 1, "jpeg", new Guid("56e9a431-a11b-4376-8097-17556a913197"), "image/jpeg" }
+                });
 
             migrationBuilder.InsertData(
                 table: "Tbl_SMSSetting",
                 columns: new[] { "SS_ID", "SS_CreateDate", "SS_Guid", "SS_ModifyDate", "SS_Name", "SS_SPCID" },
-                values: new object[] { 1, new DateTime(2020, 3, 27, 18, 32, 59, 527, DateTimeKind.Local).AddTicks(2839), new Guid("995ed660-7d46-4098-bb31-b0b38839e62e"), new DateTime(2020, 3, 27, 18, 32, 59, 527, DateTimeKind.Local).AddTicks(3793), "Kavenegar", 1 });
+                values: new object[] { 1, new DateTime(2020, 4, 14, 17, 24, 36, 903, DateTimeKind.Local).AddTicks(8363), new Guid("6fb3f03f-e702-4c2b-9c57-3096380f8452"), new DateTime(2020, 4, 14, 17, 24, 36, 903, DateTimeKind.Local).AddTicks(8915), "Kavenegar", 1 });
 
             migrationBuilder.InsertData(
                 table: "Tbl_User",
                 columns: new[] { "User_ID", "User_CreateDate", "User_Email", "User_Family", "User_Guid", "User_IsActive", "User_Mobile", "User_ModifyDate", "User_Name", "User_RoleID" },
-                values: new object[] { 1, new DateTime(2020, 3, 27, 18, 32, 59, 530, DateTimeKind.Local).AddTicks(816), "mahdiroudaki@hotmail.com", "Roudaki", new Guid("80e78a66-d617-44f2-8a77-c533bc73419a"), true, "09227204305", new DateTime(2020, 3, 27, 18, 32, 59, 530, DateTimeKind.Local).AddTicks(1356), "Mahdi", 1 });
+                values: new object[] { 1, new DateTime(2020, 4, 14, 17, 24, 36, 906, DateTimeKind.Local).AddTicks(7588), "mahdiroudaki@hotmail.com", "Roudaki", new Guid("52fa718e-a72d-4703-ae55-ffa37718193b"), true, "09227204305", new DateTime(2020, 4, 14, 17, 24, 36, 906, DateTimeKind.Local).AddTicks(8135), "Mahdi", 1 });
 
             migrationBuilder.InsertData(
                 table: "Tbl_SMSTemplate",
                 columns: new[] { "ST_ID", "ST_CreateDate", "ST_Guid", "ST_ModifyDate", "ST_Name", "ST_SSID" },
-                values: new object[] { 1, new DateTime(2020, 3, 27, 18, 32, 59, 528, DateTimeKind.Local).AddTicks(910), new Guid("03e5d887-3651-417a-a5ff-b82941615e3b"), new DateTime(2020, 3, 27, 18, 32, 59, 528, DateTimeKind.Local).AddTicks(1454), "VerifyAccount", 1 });
+                values: new object[] { 1, new DateTime(2020, 4, 14, 17, 24, 36, 904, DateTimeKind.Local).AddTicks(5658), new Guid("fcf59273-c434-4488-9006-fdf68fb1c1f9"), new DateTime(2020, 4, 14, 17, 24, 36, 904, DateTimeKind.Local).AddTicks(6193), "VerifyAccount", 1 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tbl_Advertisement_Advertisement_DocumentID",
+                name: "IX_Tbl_Advertisement_Advertisement_DocumentGuid",
                 table: "Tbl_Advertisement",
-                column: "Advertisement_DocumentID");
+                column: "Advertisement_DocumentGuid");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tbl_Category_Category_CategoryGuid",
@@ -640,14 +639,14 @@ namespace Pisheyar.Infrastructure.Migrations
                 column: "CT_CategoryGuid");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tbl_CategoryTag_CT_TagID",
+                name: "IX_Tbl_CategoryTag_CT_TagGuid",
                 table: "Tbl_CategoryTag",
-                column: "CT_TagID");
+                column: "CT_TagGuid");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tbl_CodeGroup_CG_CodeID",
-                table: "Tbl_CodeGroup",
-                column: "CG_CodeID");
+                name: "IX_Tbl_Code_Code_CGID",
+                table: "Tbl_Code",
+                column: "Code_CGID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tbl_Comment_Comment_UserID",
@@ -660,9 +659,9 @@ namespace Pisheyar.Infrastructure.Migrations
                 column: "Document_TypeCodeID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tbl_Post_Post_DocumentID",
+                name: "IX_Tbl_Post_Post_DocumentGuid",
                 table: "Tbl_Post",
-                column: "Post_DocumentID");
+                column: "Post_DocumentGuid");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tbl_Post_Post_UserID",
@@ -675,29 +674,29 @@ namespace Pisheyar.Infrastructure.Migrations
                 column: "PC_CategoryGuid");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tbl_PostCategory_PC_PostID",
+                name: "IX_Tbl_PostCategory_PC_PostGuid",
                 table: "Tbl_PostCategory",
-                column: "PC_PostID");
+                column: "PC_PostGuid");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tbl_PostComment_PC_CommentID",
+                name: "IX_Tbl_PostComment_PcCommentGuid",
                 table: "Tbl_PostComment",
-                column: "PC_CommentID");
+                column: "PcCommentGuid");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tbl_PostComment_PC_PostID",
+                name: "IX_Tbl_PostComment_PC_PostGuid",
                 table: "Tbl_PostComment",
-                column: "PC_PostID");
+                column: "PC_PostGuid");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tbl_PostTag_PT_PostID",
+                name: "IX_Tbl_PostTag_PT_PostGuid",
                 table: "Tbl_PostTag",
-                column: "PT_PostID");
+                column: "PT_PostGuid");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tbl_PostTag_PT_TagID",
+                name: "IX_Tbl_PostTag_PT_TagGuid",
                 table: "Tbl_PostTag",
-                column: "PT_TagID");
+                column: "PT_TagGuid");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tbl_RolePermission_RP_PermissionID",
@@ -764,9 +763,6 @@ namespace Pisheyar.Infrastructure.Migrations
                 name: "Tbl_CategoryTag");
 
             migrationBuilder.DropTable(
-                name: "Tbl_CodeGroup");
-
-            migrationBuilder.DropTable(
                 name: "Tbl_PostCategory");
 
             migrationBuilder.DropTable(
@@ -825,6 +821,9 @@ namespace Pisheyar.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Tbl_SMSProviderConfiguration");
+
+            migrationBuilder.DropTable(
+                name: "Tbl_CodeGroup");
         }
     }
 }

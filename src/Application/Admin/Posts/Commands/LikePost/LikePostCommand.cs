@@ -14,7 +14,7 @@ namespace Pisheyar.Application.Posts.Commands.LikePost
 {
     public class LikePostCommand : IRequest<int>
     {
-        public int PostId { get; set; }
+        public Guid PostGuid { get; set; }
 
         public class LikePostCommandHandler : IRequestHandler<LikePostCommand, int>
         {
@@ -27,7 +27,7 @@ namespace Pisheyar.Application.Posts.Commands.LikePost
 
             public async Task<int> Handle(LikePostCommand request, CancellationToken cancellationToken)
             {
-                var query = await _context.TblPost.SingleOrDefaultAsync(x => x.PostId == request.PostId && !x.PostIsDelete);
+                var query = await _context.TblPost.SingleOrDefaultAsync(x => x.PostGuid == request.PostGuid && !x.PostIsDelete);
 
                 if (query != null)
                 {

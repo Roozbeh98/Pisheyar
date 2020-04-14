@@ -10,7 +10,7 @@ using Pisheyar.Infrastructure.Persistence;
 namespace Pisheyar.Infrastructure.Migrations
 {
     [DbContext(typeof(PisheyarMagContext))]
-    [Migration("20200327140300_InitialMigration")]
+    [Migration("20200414125438_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,9 +40,9 @@ namespace Pisheyar.Infrastructure.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("(getdate())");
 
-                    b.Property<int>("AdvertisementDocumentId")
-                        .HasColumnName("Advertisement_DocumentID")
-                        .HasColumnType("int");
+                    b.Property<Guid>("AdvertisementDocumentGuid")
+                        .HasColumnName("Advertisement_DocumentGuid")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("AdvertisementGuid")
                         .ValueGeneratedOnAdd()
@@ -82,7 +82,7 @@ namespace Pisheyar.Infrastructure.Migrations
 
                     b.HasKey("AdvertisementId");
 
-                    b.HasIndex("AdvertisementDocumentId");
+                    b.HasIndex("AdvertisementDocumentGuid");
 
                     b.ToTable("Tbl_Advertisement");
                 });
@@ -136,51 +136,45 @@ namespace Pisheyar.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            CategoryGuid = new Guid("f1b77c7c-dd98-428a-89fc-bb1f62718f3c"),
-                            CategoryCreateDate = new DateTime(2020, 3, 27, 18, 32, 59, 530, DateTimeKind.Local).AddTicks(9600),
+                            CategoryGuid = new Guid("a4c273c0-84c6-4b2f-be16-947bc08e10c9"),
+                            CategoryCreateDate = new DateTime(2020, 4, 14, 17, 24, 36, 907, DateTimeKind.Local).AddTicks(7391),
                             CategoryDisplay = "سایت اصلی",
                             CategoryIsDelete = false,
-                            CategoryModifyDate = new DateTime(2020, 3, 27, 18, 32, 59, 531, DateTimeKind.Local).AddTicks(137),
+                            CategoryModifyDate = new DateTime(2020, 4, 14, 17, 24, 36, 907, DateTimeKind.Local).AddTicks(7925),
                             CategoryOrder = 1
                         },
                         new
                         {
-                            CategoryGuid = new Guid("d3bde41a-7a98-4fe3-a18b-ce8962a61beb"),
-                            CategoryCreateDate = new DateTime(2020, 3, 27, 18, 32, 59, 531, DateTimeKind.Local).AddTicks(1240),
+                            CategoryGuid = new Guid("c194f552-2359-46e9-a837-da016678860a"),
+                            CategoryCreateDate = new DateTime(2020, 4, 14, 17, 24, 36, 907, DateTimeKind.Local).AddTicks(8962),
                             CategoryDisplay = "وبلاگ",
                             CategoryIsDelete = false,
-                            CategoryModifyDate = new DateTime(2020, 3, 27, 18, 32, 59, 531, DateTimeKind.Local).AddTicks(1266),
+                            CategoryModifyDate = new DateTime(2020, 4, 14, 17, 24, 36, 907, DateTimeKind.Local).AddTicks(8986),
                             CategoryOrder = 2
                         });
                 });
 
             modelBuilder.Entity("Pisheyar.Domain.Entities.TblCategoryTag", b =>
                 {
-                    b.Property<int>("CtId")
+                    b.Property<Guid>("CtGuid")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("CT_ID")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnName("CT_Guid")
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("(newid())");
 
                     b.Property<Guid>("CtCategoryGuid")
                         .HasColumnName("CT_CategoryGuid")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CtGuid")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("CT_Guid")
-                        .HasColumnType("UNIQUEIDENTIFIER ROWGUIDCOL")
-                        .HasDefaultValueSql("(newid())");
+                    b.Property<Guid>("CtTagGuid")
+                        .HasColumnName("CT_TagGuid")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("CtTagId")
-                        .HasColumnName("CT_TagID")
-                        .HasColumnType("int");
-
-                    b.HasKey("CtId");
+                    b.HasKey("CtGuid");
 
                     b.HasIndex("CtCategoryGuid");
 
-                    b.HasIndex("CtTagId");
+                    b.HasIndex("CtTagGuid");
 
                     b.ToTable("Tbl_CategoryTag");
                 });
@@ -209,12 +203,11 @@ namespace Pisheyar.Infrastructure.Migrations
                         .HasColumnType("UNIQUEIDENTIFIER ROWGUIDCOL")
                         .HasDefaultValueSql("(newid())");
 
-                    b.Property<bool?>("CodeIsActive")
-                        .IsRequired()
+                    b.Property<bool>("CodeIsDelete")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("Code_IsActive")
+                        .HasColumnName("Code_IsDelete")
                         .HasColumnType("bit")
-                        .HasDefaultValueSql("((1))");
+                        .HasDefaultValueSql("((0))");
 
                     b.Property<string>("CodeName")
                         .IsRequired()
@@ -224,7 +217,38 @@ namespace Pisheyar.Infrastructure.Migrations
 
                     b.HasKey("CodeId");
 
+                    b.HasIndex("CodeCgid");
+
                     b.ToTable("Tbl_Code");
+
+                    b.HasData(
+                        new
+                        {
+                            CodeId = 1,
+                            CodeCgid = 1,
+                            CodeDisplay = "png",
+                            CodeGuid = new Guid("3e9c17fe-59a5-418f-9512-dac670833097"),
+                            CodeIsDelete = false,
+                            CodeName = "image/png"
+                        },
+                        new
+                        {
+                            CodeId = 2,
+                            CodeCgid = 1,
+                            CodeDisplay = "jpg",
+                            CodeGuid = new Guid("3c06b9b8-75ae-4186-82eb-6799970933a8"),
+                            CodeIsDelete = false,
+                            CodeName = "image/jpg"
+                        },
+                        new
+                        {
+                            CodeId = 3,
+                            CodeCgid = 1,
+                            CodeDisplay = "jpeg",
+                            CodeGuid = new Guid("56e9a431-a11b-4376-8097-17556a913197"),
+                            CodeIsDelete = false,
+                            CodeName = "image/jpeg"
+                        });
                 });
 
             modelBuilder.Entity("Pisheyar.Domain.Entities.TblCodeGroup", b =>
@@ -234,10 +258,6 @@ namespace Pisheyar.Infrastructure.Migrations
                         .HasColumnName("CG_ID")
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("CgCodeId")
-                        .HasColumnName("CG_CodeID")
-                        .HasColumnType("int");
 
                     b.Property<string>("CgDisplay")
                         .IsRequired()
@@ -259,30 +279,31 @@ namespace Pisheyar.Infrastructure.Migrations
 
                     b.HasKey("CgId");
 
-                    b.HasIndex("CgCodeId");
-
                     b.ToTable("Tbl_CodeGroup");
+
+                    b.HasData(
+                        new
+                        {
+                            CgId = 1,
+                            CgDisplay = "نوع فایل",
+                            CgGuid = new Guid("67be0e37-731a-4a84-822b-02442d6aeefc"),
+                            CgName = "FilepondType"
+                        });
                 });
 
             modelBuilder.Entity("Pisheyar.Domain.Entities.TblComment", b =>
                 {
-                    b.Property<int>("CommentId")
+                    b.Property<Guid>("CommentGuid")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("Comment_ID")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnName("Comment_Guid")
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("(newid())");
 
                     b.Property<DateTime>("CommentDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Comment_Date")
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("(getdate())");
-
-                    b.Property<Guid>("CommentGuid")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("Comment_Guid")
-                        .HasColumnType("UNIQUEIDENTIFIER ROWGUIDCOL")
-                        .HasDefaultValueSql("(newid())");
 
                     b.Property<string>("CommentText")
                         .IsRequired()
@@ -293,7 +314,7 @@ namespace Pisheyar.Infrastructure.Migrations
                         .HasColumnName("Comment_UserID")
                         .HasColumnType("int");
 
-                    b.HasKey("CommentId");
+                    b.HasKey("CommentGuid");
 
                     b.HasIndex("CommentUserId");
 
@@ -302,11 +323,11 @@ namespace Pisheyar.Infrastructure.Migrations
 
             modelBuilder.Entity("Pisheyar.Domain.Entities.TblDocument", b =>
                 {
-                    b.Property<int>("DocumentId")
+                    b.Property<Guid>("DocumentGuid")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("Document_ID")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnName("Document_Guid")
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("(newid())");
 
                     b.Property<DateTime>("DocumentCreateDate")
                         .ValueGeneratedOnAdd()
@@ -319,12 +340,6 @@ namespace Pisheyar.Infrastructure.Migrations
                         .HasColumnName("Document_FileName")
                         .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
-
-                    b.Property<Guid>("DocumentGuid")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("Document_Guid")
-                        .HasColumnType("UNIQUEIDENTIFIER ROWGUIDCOL")
-                        .HasDefaultValueSql("(newid())");
 
                     b.Property<bool>("DocumentIsDelete")
                         .HasColumnName("Document_IsDelete")
@@ -342,11 +357,17 @@ namespace Pisheyar.Infrastructure.Migrations
                         .HasColumnType("nvarchar(512)")
                         .HasMaxLength(512);
 
+                    b.Property<string>("DocumentSize")
+                        .IsRequired()
+                        .HasColumnName("Document_Size")
+                        .HasColumnType("nvarchar(128)")
+                        .HasMaxLength(128);
+
                     b.Property<int>("DocumentTypeCodeId")
                         .HasColumnName("Document_TypeCodeID")
                         .HasColumnType("int");
 
-                    b.HasKey("DocumentId");
+                    b.HasKey("DocumentGuid");
 
                     b.HasIndex("DocumentTypeCodeId");
 
@@ -411,11 +432,11 @@ namespace Pisheyar.Infrastructure.Migrations
 
             modelBuilder.Entity("Pisheyar.Domain.Entities.TblPost", b =>
                 {
-                    b.Property<int>("PostId")
+                    b.Property<Guid>("PostGuid")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("Post_ID")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnName("Post_Guid")
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("(newid())");
 
                     b.Property<string>("PostAbstract")
                         .IsRequired()
@@ -433,15 +454,9 @@ namespace Pisheyar.Infrastructure.Migrations
                         .HasColumnName("Post_Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PostDocumentId")
-                        .HasColumnName("Post_DocumentID")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("PostGuid")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("Post_Guid")
-                        .HasColumnType("UNIQUEIDENTIFIER ROWGUIDCOL")
-                        .HasDefaultValueSql("(newid())");
+                    b.Property<Guid>("PostDocumentGuid")
+                        .HasColumnName("Post_DocumentGuid")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("PostIsDelete")
                         .ValueGeneratedOnAdd()
@@ -482,9 +497,9 @@ namespace Pisheyar.Infrastructure.Migrations
                         .HasColumnType("int")
                         .HasDefaultValueSql("((0))");
 
-                    b.HasKey("PostId");
+                    b.HasKey("PostGuid");
 
-                    b.HasIndex("PostDocumentId");
+                    b.HasIndex("PostDocumentGuid");
 
                     b.HasIndex("PostUserId");
 
@@ -493,52 +508,39 @@ namespace Pisheyar.Infrastructure.Migrations
 
             modelBuilder.Entity("Pisheyar.Domain.Entities.TblPostCategory", b =>
                 {
-                    b.Property<int>("PcId")
+                    b.Property<Guid>("PcGuid")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("PC_ID")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnName("PC_Guid")
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("(newid())");
 
                     b.Property<Guid>("PcCategoryGuid")
                         .HasColumnName("PC_CategoryGuid")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("PcGuid")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("PC_Guid")
-                        .HasColumnType("UNIQUEIDENTIFIER ROWGUIDCOL")
-                        .HasDefaultValueSql("(newid())");
+                    b.Property<Guid>("PcPostGuid")
+                        .HasColumnName("PC_PostGuid")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("PcPostId")
-                        .HasColumnName("PC_PostID")
-                        .HasColumnType("int");
-
-                    b.HasKey("PcId");
+                    b.HasKey("PcGuid");
 
                     b.HasIndex("PcCategoryGuid");
 
-                    b.HasIndex("PcPostId");
+                    b.HasIndex("PcPostGuid");
 
                     b.ToTable("Tbl_PostCategory");
                 });
 
             modelBuilder.Entity("Pisheyar.Domain.Entities.TblPostComment", b =>
                 {
-                    b.Property<int>("PcId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("PC_ID")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("PcCommentId")
-                        .HasColumnName("PC_CommentID")
-                        .HasColumnType("int");
-
                     b.Property<Guid>("PcGuid")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("PC_Guid")
-                        .HasColumnType("UNIQUEIDENTIFIER ROWGUIDCOL")
+                        .HasColumnType("uniqueidentifier")
                         .HasDefaultValueSql("(newid())");
+
+                    b.Property<Guid>("PcCommentGuid")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("PcIsAccept")
                         .ValueGeneratedOnAdd()
@@ -546,46 +548,40 @@ namespace Pisheyar.Infrastructure.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValueSql("((1))");
 
-                    b.Property<int>("PcPostId")
-                        .HasColumnName("PC_PostID")
-                        .HasColumnType("int");
+                    b.Property<Guid>("PcPostGuid")
+                        .HasColumnName("PC_PostGuid")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("PcId");
+                    b.HasKey("PcGuid");
 
-                    b.HasIndex("PcCommentId");
+                    b.HasIndex("PcCommentGuid");
 
-                    b.HasIndex("PcPostId");
+                    b.HasIndex("PcPostGuid");
 
                     b.ToTable("Tbl_PostComment");
                 });
 
             modelBuilder.Entity("Pisheyar.Domain.Entities.TblPostTag", b =>
                 {
-                    b.Property<int>("PtId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("PT_ID")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
                     b.Property<Guid>("PtGuid")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("PT_Guid")
-                        .HasColumnType("UNIQUEIDENTIFIER ROWGUIDCOL")
+                        .HasColumnType("uniqueidentifier")
                         .HasDefaultValueSql("(newid())");
 
-                    b.Property<int>("PtPostId")
-                        .HasColumnName("PT_PostID")
-                        .HasColumnType("int");
+                    b.Property<Guid>("PtPostGuid")
+                        .HasColumnName("PT_PostGuid")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("PtTagId")
-                        .HasColumnName("PT_TagID")
-                        .HasColumnType("int");
+                    b.Property<Guid>("PtTagGuid")
+                        .HasColumnName("PT_TagGuid")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("PtId");
+                    b.HasKey("PtGuid");
 
-                    b.HasIndex("PtPostId");
+                    b.HasIndex("PtPostGuid");
 
-                    b.HasIndex("PtTagId");
+                    b.HasIndex("PtTagGuid");
 
                     b.ToTable("Tbl_PostTag");
                 });
@@ -642,21 +638,21 @@ namespace Pisheyar.Infrastructure.Migrations
                         new
                         {
                             RoleId = 1,
-                            RoleCreateDate = new DateTime(2020, 3, 27, 18, 32, 59, 528, DateTimeKind.Local).AddTicks(9273),
+                            RoleCreateDate = new DateTime(2020, 4, 14, 17, 24, 36, 905, DateTimeKind.Local).AddTicks(3675),
                             RoleDisplay = "کاربر عادی",
-                            RoleGuid = new Guid("535f6b9b-f6be-4ab6-8436-c549d5f88d4e"),
+                            RoleGuid = new Guid("ce01c462-7750-4bf3-adb5-87c4819b19c9"),
                             RoleIsDelete = false,
-                            RoleModifyDate = new DateTime(2020, 3, 27, 18, 32, 59, 528, DateTimeKind.Local).AddTicks(9822),
+                            RoleModifyDate = new DateTime(2020, 4, 14, 17, 24, 36, 905, DateTimeKind.Local).AddTicks(4223),
                             RoleName = "User"
                         },
                         new
                         {
                             RoleId = 2,
-                            RoleCreateDate = new DateTime(2020, 3, 27, 18, 32, 59, 529, DateTimeKind.Local).AddTicks(866),
+                            RoleCreateDate = new DateTime(2020, 4, 14, 17, 24, 36, 905, DateTimeKind.Local).AddTicks(5640),
                             RoleDisplay = "ادمین",
-                            RoleGuid = new Guid("7cf7797c-45b1-4054-9a52-ed9b9f2c6319"),
+                            RoleGuid = new Guid("8d1b1a95-fe5a-411d-a948-9dc7edbfe3b1"),
                             RoleIsDelete = false,
-                            RoleModifyDate = new DateTime(2020, 3, 27, 18, 32, 59, 529, DateTimeKind.Local).AddTicks(886),
+                            RoleModifyDate = new DateTime(2020, 4, 14, 17, 24, 36, 905, DateTimeKind.Local).AddTicks(5663),
                             RoleName = "Admin"
                         });
                 });
@@ -776,10 +772,10 @@ namespace Pisheyar.Infrastructure.Migrations
                         {
                             SpcId = 1,
                             SpcApiKey = "61726634455053586E44464E413462574A76535677436B547236574B56386D6A6F6E4F326A374A4C7755773D",
-                            SpcCreateDate = new DateTime(2020, 3, 27, 18, 32, 59, 520, DateTimeKind.Local).AddTicks(155),
-                            SpcGuid = new Guid("2193d749-f719-4459-9ea8-78895f1fef2e"),
+                            SpcCreateDate = new DateTime(2020, 4, 14, 17, 24, 36, 898, DateTimeKind.Local).AddTicks(3639),
+                            SpcGuid = new Guid("60bcb94f-0b6d-4620-9c92-dc4f79bcb161"),
                             SpcIsDelete = false,
-                            SpcModifyDate = new DateTime(2020, 3, 27, 18, 32, 59, 523, DateTimeKind.Local).AddTicks(9215),
+                            SpcModifyDate = new DateTime(2020, 4, 14, 17, 24, 36, 901, DateTimeKind.Local).AddTicks(8324),
                             SpcPassword = "ptcoptco",
                             SpcUsername = "ptmgroupco@gmail.com"
                         });
@@ -986,10 +982,10 @@ namespace Pisheyar.Infrastructure.Migrations
                         new
                         {
                             SsId = 1,
-                            SsCreateDate = new DateTime(2020, 3, 27, 18, 32, 59, 527, DateTimeKind.Local).AddTicks(2839),
-                            SsGuid = new Guid("995ed660-7d46-4098-bb31-b0b38839e62e"),
+                            SsCreateDate = new DateTime(2020, 4, 14, 17, 24, 36, 903, DateTimeKind.Local).AddTicks(8363),
+                            SsGuid = new Guid("6fb3f03f-e702-4c2b-9c57-3096380f8452"),
                             SsIsDelete = false,
-                            SsModifyDate = new DateTime(2020, 3, 27, 18, 32, 59, 527, DateTimeKind.Local).AddTicks(3793),
+                            SsModifyDate = new DateTime(2020, 4, 14, 17, 24, 36, 903, DateTimeKind.Local).AddTicks(8915),
                             SsName = "Kavenegar",
                             SsSpcid = 1
                         });
@@ -1047,10 +1043,10 @@ namespace Pisheyar.Infrastructure.Migrations
                         new
                         {
                             StId = 1,
-                            StCreateDate = new DateTime(2020, 3, 27, 18, 32, 59, 528, DateTimeKind.Local).AddTicks(910),
-                            StGuid = new Guid("03e5d887-3651-417a-a5ff-b82941615e3b"),
+                            StCreateDate = new DateTime(2020, 4, 14, 17, 24, 36, 904, DateTimeKind.Local).AddTicks(5658),
+                            StGuid = new Guid("fcf59273-c434-4488-9006-fdf68fb1c1f9"),
                             StIsDelete = false,
-                            StModifyDate = new DateTime(2020, 3, 27, 18, 32, 59, 528, DateTimeKind.Local).AddTicks(1454),
+                            StModifyDate = new DateTime(2020, 4, 14, 17, 24, 36, 904, DateTimeKind.Local).AddTicks(6193),
                             StName = "VerifyAccount",
                             StSsid = 1
                         });
@@ -1058,23 +1054,17 @@ namespace Pisheyar.Infrastructure.Migrations
 
             modelBuilder.Entity("Pisheyar.Domain.Entities.TblTag", b =>
                 {
-                    b.Property<int>("TagId")
+                    b.Property<Guid>("TagGuid")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("Tag_ID")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnName("Tag_Guid")
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("(newid())");
 
                     b.Property<DateTime>("TagCreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Tag_CreateDate")
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("(getdate())");
-
-                    b.Property<Guid>("TagGuid")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("Tag_Guid")
-                        .HasColumnType("UNIQUEIDENTIFIER ROWGUIDCOL")
-                        .HasDefaultValueSql("(newid())");
 
                     b.Property<bool>("TagIsDelete")
                         .ValueGeneratedOnAdd()
@@ -1099,7 +1089,7 @@ namespace Pisheyar.Infrastructure.Migrations
                         .HasColumnType("int")
                         .HasDefaultValueSql("((0))");
 
-                    b.HasKey("TagId");
+                    b.HasKey("TagGuid");
 
                     b.ToTable("Tbl_Tag");
                 });
@@ -1181,14 +1171,14 @@ namespace Pisheyar.Infrastructure.Migrations
                         new
                         {
                             UserId = 1,
-                            UserCreateDate = new DateTime(2020, 3, 27, 18, 32, 59, 530, DateTimeKind.Local).AddTicks(816),
+                            UserCreateDate = new DateTime(2020, 4, 14, 17, 24, 36, 906, DateTimeKind.Local).AddTicks(7588),
                             UserEmail = "mahdiroudaki@hotmail.com",
                             UserFamily = "Roudaki",
-                            UserGuid = new Guid("80e78a66-d617-44f2-8a77-c533bc73419a"),
+                            UserGuid = new Guid("52fa718e-a72d-4703-ae55-ffa37718193b"),
                             UserIsActive = true,
                             UserIsDelete = false,
                             UserMobile = "09227204305",
-                            UserModifyDate = new DateTime(2020, 3, 27, 18, 32, 59, 530, DateTimeKind.Local).AddTicks(1356),
+                            UserModifyDate = new DateTime(2020, 4, 14, 17, 24, 36, 906, DateTimeKind.Local).AddTicks(8135),
                             UserName = "Mahdi",
                             UserRoleId = 1
                         });
@@ -1289,7 +1279,7 @@ namespace Pisheyar.Infrastructure.Migrations
                 {
                     b.HasOne("Pisheyar.Domain.Entities.TblDocument", "AdvertisementDocument")
                         .WithMany("TblAdvertisement")
-                        .HasForeignKey("AdvertisementDocumentId")
+                        .HasForeignKey("AdvertisementDocumentGuid")
                         .HasConstraintName("FK_Tbl_Advertisement_Tbl_Document")
                         .IsRequired();
                 });
@@ -1312,17 +1302,17 @@ namespace Pisheyar.Infrastructure.Migrations
 
                     b.HasOne("Pisheyar.Domain.Entities.TblTag", "CtTag")
                         .WithMany("TblCategoryTag")
-                        .HasForeignKey("CtTagId")
+                        .HasForeignKey("CtTagGuid")
                         .HasConstraintName("FK_Tbl_CategoryTag_Tbl_Tag")
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Pisheyar.Domain.Entities.TblCodeGroup", b =>
+            modelBuilder.Entity("Pisheyar.Domain.Entities.TblCode", b =>
                 {
-                    b.HasOne("Pisheyar.Domain.Entities.TblCode", "CgCode")
-                        .WithMany("TblCodeGroup")
-                        .HasForeignKey("CgCodeId")
-                        .HasConstraintName("FK_Tbl_CodeGroup_Tbl_Code")
+                    b.HasOne("Pisheyar.Domain.Entities.TblCodeGroup", "TblCodeGroup")
+                        .WithMany("TblCode")
+                        .HasForeignKey("CodeCgid")
+                        .HasConstraintName("FK_TblCode_TblCodeGroup")
                         .IsRequired();
                 });
 
@@ -1348,8 +1338,9 @@ namespace Pisheyar.Infrastructure.Migrations
                 {
                     b.HasOne("Pisheyar.Domain.Entities.TblDocument", "PostDocument")
                         .WithMany("TblPost")
-                        .HasForeignKey("PostDocumentId")
-                        .HasConstraintName("FK_Tbl_Post_Tbl_Document");
+                        .HasForeignKey("PostDocumentGuid")
+                        .HasConstraintName("FK_Tbl_Post_Tbl_Document")
+                        .IsRequired();
 
                     b.HasOne("Pisheyar.Domain.Entities.TblUser", "PostUser")
                         .WithMany("TblPost")
@@ -1368,7 +1359,7 @@ namespace Pisheyar.Infrastructure.Migrations
 
                     b.HasOne("Pisheyar.Domain.Entities.TblPost", "PcPost")
                         .WithMany("TblPostCategory")
-                        .HasForeignKey("PcPostId")
+                        .HasForeignKey("PcPostGuid")
                         .HasConstraintName("FK_Tbl_PostCategory_Tbl_Post")
                         .IsRequired();
                 });
@@ -1377,13 +1368,13 @@ namespace Pisheyar.Infrastructure.Migrations
                 {
                     b.HasOne("Pisheyar.Domain.Entities.TblComment", "PcComment")
                         .WithMany("TblPostComment")
-                        .HasForeignKey("PcCommentId")
+                        .HasForeignKey("PcCommentGuid")
                         .HasConstraintName("FK_Tbl_PostComment_Tbl_Comment")
                         .IsRequired();
 
                     b.HasOne("Pisheyar.Domain.Entities.TblPost", "PcPost")
                         .WithMany("TblPostComment")
-                        .HasForeignKey("PcPostId")
+                        .HasForeignKey("PcPostGuid")
                         .HasConstraintName("FK_Tbl_PostComment_Tbl_Post")
                         .IsRequired();
                 });
@@ -1392,13 +1383,13 @@ namespace Pisheyar.Infrastructure.Migrations
                 {
                     b.HasOne("Pisheyar.Domain.Entities.TblPost", "PtPost")
                         .WithMany("TblPostTag")
-                        .HasForeignKey("PtPostId")
+                        .HasForeignKey("PtPostGuid")
                         .HasConstraintName("FK_Tbl_PostTag_Tbl_Post")
                         .IsRequired();
 
                     b.HasOne("Pisheyar.Domain.Entities.TblTag", "PtTag")
                         .WithMany("TblPostTag")
-                        .HasForeignKey("PtTagId")
+                        .HasForeignKey("PtTagGuid")
                         .HasConstraintName("FK_Tbl_PostTag_Tbl_Tag")
                         .IsRequired();
                 });

@@ -22,9 +22,11 @@ namespace Pisheyar.Application.Posts.Commands.CreatePost
 
         public bool IsShow { get; set; }
 
-        //public Guid[] CategoriesGuid { get; set; }
+        public string DocumentGuid { get; set; }
 
-        //public int[] Tags { get; set; }
+        public Guid[] Categories { get; set; }
+
+        public string[] Tags { get; set; }
 
         public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, CreatePostCommandVm>
         {
@@ -39,27 +41,87 @@ namespace Pisheyar.Application.Posts.Commands.CreatePost
 
             public async Task<CreatePostCommandVm> Handle(CreatePostCommand request, CancellationToken cancellationToken)
             {
-                var postEntity = new TblPost
+                var document = _context.TblDocument
+                    .AnyAsync(x => x.DocumentGuid == Guid.Parse(request.DocumentGuid), cancellationToken);
+
+                if (!document.Result)
                 {
-                    PostUserId = await _context.TblUser.Where(x => x.UserGuid == Guid.Parse(_currentUserService.NameIdentifier)).Select(x => x.UserId).SingleOrDefaultAsync(cancellationToken),
+                    return new CreatePostCommandVm()
+                    {
+                        Message = "تصویر مورد نظر یافت نشد",
+                        State = (int)CreatePostState.DocumentNotFound
+                    };
+                }
+
+                var currentUser = await _context.TblUser
+                    .Where(x => x.UserGuid == Guid.Parse(_currentUserService.NameIdentifier))
+                    .SingleOrDefaultAsync(cancellationToken);
+
+                if (currentUser == null)
+                {
+                    return new CreatePostCommandVm()
+                    {
+                        Message = "کاربر مورد نظر یافت نشد",
+                        State = (int)CreatePostState.UserNotFound
+                    };
+                }
+
+                var post = new TblPost
+                {
+                    PostUserId = currentUser.UserId,
                     PostTitle = request.Title,
                     PostAbstract = request.Abstract,
                     PostDescription = request.Description,
-                    PostIsShow = request.IsShow
+                    PostIsShow = request.IsShow,
+                    PostDocumentGuid = Guid.Parse(request.DocumentGuid)
                 };
 
-                //foreach (var categoryGuid in request.CategoriesGuid)
-                //{
-                //    var postCategoryEntity = new TblPostCategory()
-                //    {
-                //        PcPost = postEntity,
-                //        PcCategoryGuid = categoryGuid
-                //    };
+                foreach (var categoryGuid in request.Categories)
+                {
+                    var postCategory = new TblPostCategory()
+                    {
+                        PcPost = post,
+                        PcCategoryGuid = categoryGuid
+                    };
 
-                //    _context.TblPostCategory.Add(postCategoryEntity);
-                //}
+                    _context.TblPostCategory.Add(postCategory);
+                }
 
-                _context.TblPost.Add(postEntity);
+                TblPostTag postTag;
+
+                foreach (var tag in request.Tags)
+                {
+                    Guid.TryParse(tag, out Guid guid);
+
+                    if (guid == Guid.Empty)
+                    {
+                        var newTag = new TblTag()
+                        {
+                            TagName = tag
+                        };
+
+                        _context.TblTag.Add(newTag);
+
+                        postTag = new TblPostTag()
+                        {
+                            PtPost = post
+                        };
+
+                        postTag.PtTag = newTag;
+                    }
+                    else
+                    {
+                        postTag = new TblPostTag()
+                        {
+                            PtPost = post,
+                            PtTagGuid = Guid.Parse(tag)
+                        };
+                    }
+                    
+                    _context.TblPostTag.Add(postTag);
+                }
+
+                _context.TblPost.Add(post);
 
                 await _context.SaveChangesAsync(cancellationToken);
 

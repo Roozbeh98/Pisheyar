@@ -14,7 +14,7 @@ namespace Pisheyar.Application.Posts.Commands.ChangePostShow
 {
     public class ChangePostShowCommand : IRequest<int>
     {
-        public int PostId { get; set; }
+        public Guid PostGuid { get; set; }
 
         public bool IsShow { get; set; }
 
@@ -29,7 +29,7 @@ namespace Pisheyar.Application.Posts.Commands.ChangePostShow
 
             public async Task<int> Handle(ChangePostShowCommand request, CancellationToken cancellationToken)
             {
-                var query = await _context.TblPost.SingleOrDefaultAsync(x => x.PostId == request.PostId && !x.PostIsDelete);
+                var query = await _context.TblPost.SingleOrDefaultAsync(x => x.PostGuid == request.PostGuid && !x.PostIsDelete);
 
                 if (query != null)
                 {

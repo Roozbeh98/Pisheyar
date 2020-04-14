@@ -17,7 +17,6 @@ namespace Pisheyar.Infrastructure.Persistence.Configurations
 
             entity.Property(e => e.CategoryGuid)
                 .HasColumnName("Category_Guid")
-                //.HasColumnType("UNIQUEIDENTIFIER ROWGUIDCOL")
                 .HasDefaultValueSql("(newid())");
 
             entity.Property(e => e.CategoryCategoryGuid)

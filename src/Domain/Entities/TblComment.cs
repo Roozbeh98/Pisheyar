@@ -11,8 +11,6 @@ namespace Pisheyar.Domain.Entities
         }
 
 
-        public int CommentId { get; set; }
-
         public Guid CommentGuid { get; set; }
 
         public int CommentUserId { get; set; }

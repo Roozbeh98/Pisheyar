@@ -11,14 +11,11 @@ namespace Pisheyar.Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<TblComment> entity)
         {
-            entity.HasKey(e => e.CommentId);
+            entity.HasKey(e => e.CommentGuid);
 
             entity.ToTable("Tbl_Comment");
 
             entity.HasIndex(e => e.CommentUserId);
-
-            entity.Property(e => e.CommentId)
-                .HasColumnName("Comment_ID");
 
             entity.Property(e => e.CommentDate)
                 .HasColumnName("Comment_Date")
@@ -26,7 +23,6 @@ namespace Pisheyar.Infrastructure.Persistence.Configurations
 
             entity.Property(e => e.CommentGuid)
                 .HasColumnName("Comment_Guid")
-                .HasColumnType("UNIQUEIDENTIFIER ROWGUIDCOL")
                 .HasDefaultValueSql("(newid())");
 
             entity.Property(e => e.CommentText)

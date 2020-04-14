@@ -33,7 +33,7 @@ namespace Pisheyar.Application.Posts.Queries.GetPostsByCategory
             {
                 var posts = await (from pc in _context.TblPostCategory
                                    where pc.PcCategoryGuid == request.CategoryGuid
-                                   join p in _context.TblPost on pc.PcPostId equals p.PostId
+                                   join p in _context.TblPost on pc.PcPostGuid equals p.PostGuid
                                    orderby p.PostModifyDate descending
                                    select new GetPostsByCategoryDto
                                    {
@@ -48,6 +48,7 @@ namespace Pisheyar.Application.Posts.Queries.GetPostsByCategory
                                        PostCreateDate = p.PostCreateDate,
                                        PostModifyDate = p.PostModifyDate,
                                        PostIsShow = p.PostIsShow
+
                                    }).Skip(12 * (request.Page - 1))
                                    .Take(12)
                                    .ToListAsync(cancellationToken);

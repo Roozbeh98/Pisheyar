@@ -16,7 +16,7 @@ namespace Pisheyar.Application.Posts.Queries.GetRejectedPostCommentsQuery
 {
     public class GetRejectedPostCommentsQuery : IRequest<RejectedPostCommentsVm>
     {
-        public int PostId { get; set; }
+        public Guid PostGuid { get; set; }
 
         public class GetRejectedPostCommentsQueryHandler : IRequestHandler<GetRejectedPostCommentsQuery, RejectedPostCommentsVm>
         {
@@ -32,7 +32,7 @@ namespace Pisheyar.Application.Posts.Queries.GetRejectedPostCommentsQuery
             public async Task<RejectedPostCommentsVm> Handle(GetRejectedPostCommentsQuery request, CancellationToken cancellationToken)
             {
                 var comments = await _context.TblPostComment
-                    .Where(x => x.PcPostId == request.PostId && !x.PcIsAccept)
+                    .Where(x => x.PcPostGuid == request.PostGuid && !x.PcIsAccept)
                     .ProjectTo<RejectedPostCommentDto>(_mapper.ConfigurationProvider)
                     .ToListAsync(cancellationToken);
 

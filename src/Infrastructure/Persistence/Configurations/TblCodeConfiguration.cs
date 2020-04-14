@@ -31,15 +31,20 @@ namespace Pisheyar.Infrastructure.Persistence.Configurations
                 .HasColumnType("UNIQUEIDENTIFIER ROWGUIDCOL")
                 .HasDefaultValueSql("(newid())");
 
-            entity.Property(e => e.CodeIsActive)
-                .IsRequired()
-                .HasColumnName("Code_IsActive")
-                .HasDefaultValueSql("((1))");
+            entity.Property(e => e.CodeIsDelete)
+                .HasColumnName("Code_IsDelete")
+                .HasDefaultValueSql("((0))");
 
             entity.Property(e => e.CodeName)
                 .IsRequired()
                 .HasColumnName("Code_Name")
                 .HasMaxLength(128);
+
+            entity.HasOne(d => d.TblCodeGroup)
+                .WithMany(p => p.TblCode)
+                .HasForeignKey(d => d.CodeCgid)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_TblCode_TblCodeGroup");
         }
     }
 }

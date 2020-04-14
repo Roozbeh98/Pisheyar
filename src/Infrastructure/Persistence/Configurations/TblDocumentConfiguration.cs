@@ -11,12 +11,9 @@ namespace Pisheyar.Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<TblDocument> entity)
         {
-            entity.HasKey(e => e.DocumentId);
+            entity.HasKey(e => e.DocumentGuid);
 
             entity.ToTable("Tbl_Document");
-
-            entity.Property(e => e.DocumentId)
-                .HasColumnName("Document_ID");
 
             entity.Property(e => e.DocumentCreateDate)
                 .HasColumnName("Document_CreateDate")
@@ -29,7 +26,6 @@ namespace Pisheyar.Infrastructure.Persistence.Configurations
 
             entity.Property(e => e.DocumentGuid)
                 .HasColumnName("Document_Guid")
-                .HasColumnType("UNIQUEIDENTIFIER ROWGUIDCOL")
                 .HasDefaultValueSql("(newid())");
 
             entity.Property(e => e.DocumentIsDelete)
@@ -43,6 +39,11 @@ namespace Pisheyar.Infrastructure.Persistence.Configurations
                 .IsRequired()
                 .HasColumnName("Document_Path")
                 .HasMaxLength(512);
+
+            entity.Property(e => e.DocumentSize)
+                .IsRequired()
+                .HasColumnName("Document_Size")
+                .HasMaxLength(128);
 
             entity.Property(e => e.DocumentTypeCodeId)
                 .HasColumnName("Document_TypeCodeID");

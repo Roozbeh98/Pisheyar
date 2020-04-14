@@ -14,7 +14,7 @@ namespace Pisheyar.Application.Posts.Commands.ChangePostCommentAcceptance
 {
     public class ChangePostCommentAcceptanceCommand : IRequest<int>
     {
-        public int PostCommentId { get; set; }
+        public Guid PostCommentGuid { get; set; }
 
         public bool IsAccept { get; set; }
 
@@ -29,7 +29,7 @@ namespace Pisheyar.Application.Posts.Commands.ChangePostCommentAcceptance
 
             public async Task<int> Handle(ChangePostCommentAcceptanceCommand request, CancellationToken cancellationToken)
             {
-                var query = await _context.TblPostComment.SingleOrDefaultAsync(x => x.PcId == request.PostCommentId);
+                var query = await _context.TblPostComment.SingleOrDefaultAsync(x => x.PcGuid == request.PostCommentGuid);
 
                 if (query != null)
                 {

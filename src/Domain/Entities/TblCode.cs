@@ -7,7 +7,6 @@ namespace Pisheyar.Domain.Entities
     {
         public TblCode()
         {
-            TblCodeGroup = new HashSet<TblCodeGroup>();
             TblDocument = new HashSet<TblDocument>();
         }
 
@@ -22,10 +21,10 @@ namespace Pisheyar.Domain.Entities
 
         public string CodeDisplay { get; set; }
 
-        public bool? CodeIsActive { get; set; }
+        public bool CodeIsDelete { get; set; }
 
 
-        public virtual ICollection<TblCodeGroup> TblCodeGroup { get; set; }
+        public virtual TblCodeGroup TblCodeGroup { get; set; }
 
         public virtual ICollection<TblDocument> TblDocument { get; set; }
     }

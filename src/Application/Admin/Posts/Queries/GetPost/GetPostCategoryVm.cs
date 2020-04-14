@@ -4,12 +4,12 @@ using System.Text;
 
 namespace Pisheyar.Application.Posts.Queries.GetPost
 {
-    public class GetPostVm
+    public class GetPostCategoryVm
     {
         public string Message { get; set; }
 
         public int State { get; set; }
 
-        public GetPostDto Post { get; set; }
+        public List<GetPostCategoryDto> Categories { get; set; } = new List<GetPostCategoryDto>();
     }
 }

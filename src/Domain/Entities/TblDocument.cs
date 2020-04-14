@@ -12,13 +12,13 @@ namespace Pisheyar.Domain.Entities
         }
 
 
-        public int DocumentId { get; set; }
-
         public Guid DocumentGuid { get; set; }
 
         public int DocumentTypeCodeId { get; set; }
 
         public string DocumentPath { get; set; }
+
+        public string DocumentSize { get; set; }
 
         public string DocumentFileName { get; set; }
 

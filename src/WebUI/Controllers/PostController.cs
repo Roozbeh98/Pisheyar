@@ -73,23 +73,23 @@ namespace WebUI.Controllers
         /// <summary>
         /// دریافت نظرات پذیرفته شده
         /// </summary>
-        /// <param name="postId">آیدی پست</param>
+        /// <param name="postGuid">آیدی پست</param>
         /// <returns></returns>
-        [HttpGet("{postId}/[action]")]
-        public async Task<ActionResult<AcceptedPostCommentsVm>> GetAcceptedComments(int postId)
+        [HttpGet("{postGuid}/[action]")]
+        public async Task<ActionResult<AcceptedPostCommentsVm>> GetAcceptedComments(Guid postGuid)
         {
-            return await Mediator.Send(new GetAcceptedPostCommentsQuery() { PostId = postId });
+            return await Mediator.Send(new GetAcceptedPostCommentsQuery() { PostGuid = postGuid });
         }
 
         /// <summary>
         /// دریافت نظرات پذیرفته نشده
         /// </summary>
-        /// <param name="postId">آیدی پست</param>
+        /// <param name="postGuid">آیدی پست</param>
         /// <returns></returns>
-        [HttpGet("{postId}/[action]")]
-        public async Task<ActionResult<RejectedPostCommentsVm>> GetRejectedComments(int postId)
+        [HttpGet("{postGuid}/[action]")]
+        public async Task<ActionResult<RejectedPostCommentsVm>> GetRejectedComments(Guid postGuid)
         {
-            return await Mediator.Send(new GetRejectedPostCommentsQuery() { PostId = postId });
+            return await Mediator.Send(new GetRejectedPostCommentsQuery() { PostGuid = postGuid });
         }
 
         /// <summary>
@@ -161,23 +161,23 @@ namespace WebUI.Controllers
         /// <summary>
         /// حذف پست
         /// </summary>
-        /// <param name="id">آیدی پست</param>
+        /// <param name="guid">آیدی پست</param>
         /// <returns></returns>
-        [HttpPost("[action]/{id}")]
-        public async Task<ActionResult<int>> Delete(int id)
+        [HttpPost("[action]/{guid}")]
+        public async Task<ActionResult<int>> Delete(Guid guid)
         {
-            return await Mediator.Send(new DeletePostCommand { PostId = id });
+            return await Mediator.Send(new DeletePostCommand { PostGuid = guid });
         }
 
         /// <summary>
         /// حذف نظر
         /// </summary>
-        /// <param name="id">آیدی نظر</param>
+        /// <param name="guid">آیدی نظر</param>
         /// <returns></returns>
-        [HttpPost("[action]/{id}")]
-        public async Task<ActionResult<int>> DeleteComment(int id)
+        [HttpPost("[action]/{guid}")]
+        public async Task<ActionResult<int>> DeleteComment(Guid guid)
         {
-            return await Mediator.Send(new DeletePostCommentCommand { PostCommentId = id });
+            return await Mediator.Send(new DeletePostCommentCommand { PostCommentGuid = guid });
         }
     }
 }

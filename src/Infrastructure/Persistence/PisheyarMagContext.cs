@@ -28,13 +28,19 @@ namespace Pisheyar.Infrastructure.Persistence
             _dateTime = dateTime;
         }
 
+        public virtual DbSet<TblAdvertisement> TblAdvertisement { get; set; }
+
         public virtual DbSet<TblCategory> TblCategory { get; set; }
+
+        public virtual DbSet<TblCategoryTag> TblCategoryTag { get; set; }
 
         public virtual DbSet<TblCode> TblCode { get; set; }
 
         public virtual DbSet<TblCodeGroup> TblCodeGroup { get; set; }
 
         public virtual DbSet<TblComment> TblComment { get; set; }
+
+        public virtual DbSet<TblDocument> TblDocument { get; set; }
 
         public virtual DbSet<TblPermission> TblPermission { get; set; }
 
