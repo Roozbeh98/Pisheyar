@@ -19,64 +19,121 @@ namespace Pisheyar.Application.Categories.Queries.GetAllCategoriesName
         public class GetCategoriesQueryHandler : IRequestHandler<GetAllCategoriesNameQuery, AllCategoriesNameVm>
         {
             private readonly IPisheyarMagContext _context;
+            private bool b = false;
 
             public GetCategoriesQueryHandler(IPisheyarMagContext context)
             {
                 _context = context;
             }
 
-            //public async Task<List<AllCategoryNameDto>> GetCategoryTree(List<TblCategory> allCategories, Guid? parentGuid = null)
-            //{
-            //    var categories = new List<AllCategoryNameDto>();
+            public async Task<List<string>> GetCategoryTree(List<TblCategory> allCategories, Guid? parentGuid = null)
+            {
+                var test = new List<string>();
 
-            //    var children = allCategories
-            //        .Where(x => x.CategoryCategoryGuid == parentGuid)
-            //        .OrderBy(x => x.CategoryOrder)
-            //        .ToList();
+                var categories = new List<AllCategoryNameDto>();
 
-            //    foreach (var child in children)
-            //    {
-            //        AllCategoryNameDto category = new AllCategoryNameDto
-            //        {
-            //            Guid = child.CategoryGuid,
-            //            Title = child.CategoryDisplay
-            //        };
+                var children = allCategories
+                    .Where(x => x.CategoryCategoryGuid == parentGuid)
+                    .OrderBy(x => x.CategoryOrder)
+                    .ToList();
 
-            //        category.Children = await GetCategoryChildren(allCategories, category);
+                foreach (var child in children)
+                {
+                    AllCategoryNameDto category = new AllCategoryNameDto
+                    {
+                        Guid = child.CategoryGuid,
+                        ParentGuid = child.CategoryCategoryGuid,
+                        Title = child.CategoryDisplay,
+                        Order = child.CategoryOrder
+                    };
 
-            //        categories.Add(category);
-            //    }
+                    b = false;
+                    test.Add(category.Title);
 
-            //    return categories;
-            //}
+                    category.Children = await GetCategoryChildren(allCategories, category, test);
 
-            //private async Task<List<AllCategoryNameDto>> GetCategoryChildren(List<TblCategory> allCategories, AllCategoryNameDto category)
-            //{
-            //    var subCategories = allCategories
-            //        .Where(x => x.CategoryCategoryGuid == category.Guid)
-            //        .OrderBy(x => x.CategoryOrder)
-            //        .Select(x => new AllCategoryNameDto
-            //        {
-            //            Guid = x.CategoryGuid,
-            //            Title = x.CategoryDisplay
+                    categories.Add(category);
+                }
 
-            //        }).ToList();
+                return test/*.OrderBy(x => x).ToList()*/;
+            }
 
-            //    if (subCategories != null)
-            //    {
-            //        category.Children = subCategories;
+            private async Task<List<AllCategoryNameDto>> GetCategoryChildren(List<TblCategory> allCategories, AllCategoryNameDto category, List<string> test)
+            {
+                var subCategories = allCategories
+                    .Where(x => x.CategoryCategoryGuid == category.Guid)
+                    .OrderBy(x => x.CategoryOrder)
+                    .Select(x => new AllCategoryNameDto
+                    {
+                        Guid = x.CategoryGuid,
+                        ParentGuid = x.CategoryCategoryGuid,
+                        Title = x.CategoryDisplay,
+                        Order = x.CategoryOrder
 
-            //        foreach (var item in category.Children)
-            //        {
-            //            item.Children = await GetCategoryChildren(allCategories, item);
-            //        }
-            //    }
+                    }).ToList();
 
-            //    return category.Children;
-            //}
+                if (subCategories != null)
+                {
+                    category.Children = subCategories;
+
+                    foreach (var item in category.Children)
+                    {
+                        string t;
+
+                        if (!b && item.Equals(category.Children.Last()))
+                        {
+                            string result = test[^1] + ", " + item.Title;
+                            test.Add(result);
+
+                            b = true;
+                        }
+                        else
+                        {
+                            if (b)
+                            {
+                                t = test[^1].Remove(test[^1].LastIndexOf(","));
+                                if (t.Contains(","))
+                                {
+                                    t = t.Remove(t.LastIndexOf(","));
+                                }
+
+                                string result = t + ", " + item.Title;
+                                test.Add(result);
+
+                                b = false;
+                            }
+                            else
+                            {
+                                string result = test[^1] + ", " + item.Title;
+                                test.Add(result);
+                            }
+                        }
+
+                        item.Children = await GetCategoryChildren(allCategories, item, test);
+                    }
+                }
+
+                return category.Children;
+            }
 
             public async Task<AllCategoriesNameVm> Handle(GetAllCategoriesNameQuery request, CancellationToken cancellationToken)
             {
+                //var categories = await _context.TblCategory
+                //    .Where(x => !x.CategoryIsDelete)
+                //    .ToListAsync(cancellationToken);
+
+                //var categoryTree = await GetCategoryTree(categories);
+
+                //if (categoryTree.Count > 0)
+                //{
+                //    return new AllCategoriesNameVm()
+                //    {
+                //        Message = "عملیات موفق آمیز",
+                //        State = (int)GetAllCategoriesNameState.Success,
+                //        Categories = categoryTree
+                //    };
+                //}
+
                 var categories = await _context.TblCategory
                     .Where(x => !x.CategoryIsDelete)
                     .OrderBy(x => x.CategoryOrder)

@@ -9,24 +9,15 @@ using System.Threading.Tasks;
 using Pisheyar.Domain.Enums;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System.IO;
 
 namespace Pisheyar.Application.Posts.Commands.UpdatePost
 {
     public class UpdatePostCommand : IRequest<UpdatePostCommandVm>
     {
-        public Guid PostGuid { get; set; }
+        public UpdatePostCommandDto Command { get; set; }
 
-        public string Title { get; set; }
-
-        public string Abstract { get; set; }
-
-        public string Description { get; set; }
-
-        public bool IsShow { get; set; }
-
-        public int[] CategoriesIds { get; set; }
-
-        //public int[] Tags { get; set; }
+        public string WebRootPath { get; set; }
 
         public class UpdatePostCommandHandler : IRequestHandler<UpdatePostCommand, UpdatePostCommandVm>
         {
@@ -41,34 +32,141 @@ namespace Pisheyar.Application.Posts.Commands.UpdatePost
 
             public async Task<UpdatePostCommandVm> Handle(UpdatePostCommand request, CancellationToken cancellationToken)
             {
-                var query = await _context.TblPost.SingleOrDefaultAsync(x => x.PostGuid == request.PostGuid && !x.PostIsDelete);
+                var post = await _context.TblPost
+                    .SingleOrDefaultAsync(x => x.PostGuid == request.Command.PostGuid && !x.PostIsDelete);
 
-                if (query != null)
+                if (post == null)
                 {
-                    query.PostUserId = await _context.TblUser.Where(x => x.UserGuid == Guid.Parse(_currentUserService.NameIdentifier)).Select(x => x.UserId).SingleOrDefaultAsync(cancellationToken);
-                    query.PostTitle = request.Title;
-                    query.PostAbstract = request.Abstract;
-                    query.PostDescription = request.Description;
-                    query.PostIsShow = request.IsShow;
-                    query.PostModifyDate = DateTime.Now;
-
-                    //foreach (var categoryId in request.CategoriesIds)
-                    //{
-                    //    var postCategoryEntity = new TblPostCategory()
-                    //    {
-                    //        PcPost = postEntity,
-                    //        PcCategoryId = categoryId
-                    //    };
-
-                    //    _context.TblPostCategory.Add(postCategoryEntity);
-                    //}
-
-                    await _context.SaveChangesAsync(cancellationToken);
-
-                    return new UpdatePostCommandVm() { Message = "عملیات موفق آمیز", State = (int)UpdatePostState.Success };
+                    return new UpdatePostCommandVm()
+                    {
+                        Message = "پست مورد نظر یافت نشد",
+                        State = (int)UpdatePostState.PostNotFound
+                    };
                 }
 
-                return new UpdatePostCommandVm() { Message = "پست مورد نظر یافت نشد", State = (int)UpdatePostState.PostNotFound };
+                var currentUser = await _context.TblUser
+                    .Where(x => x.UserGuid == Guid.Parse(_currentUserService.NameIdentifier))
+                    .SingleOrDefaultAsync(cancellationToken);
+
+                if (currentUser == null)
+                {
+                    return new UpdatePostCommandVm()
+                    {
+                        Message = "کاربر مورد نظر یافت نشد",
+                        State = (int)UpdatePostState.UserNotFound
+                    };
+                }
+
+                if (!string.IsNullOrEmpty(request.Command.DocumentGuid))
+                {
+                    var document = await _context.TblDocument
+                        .AnyAsync(x => x.DocumentGuid == Guid.Parse(request.Command.DocumentGuid), cancellationToken);
+
+                    if (!document)
+                    {
+                        return new UpdatePostCommandVm()
+                        {
+                            Message = "تصویر مورد نظر یافت نشد",
+                            State = (int)UpdatePostState.DocumentNotFound
+                        };
+                    }
+
+                    var oldDocument = await _context.TblDocument
+                        .FirstOrDefaultAsync(x => x.DocumentGuid == post.PostDocumentGuid, cancellationToken);
+
+                    post.PostDocumentGuid = Guid.Parse(request.Command.DocumentGuid);
+
+                    if (oldDocument != null)
+                    {
+                        var uploadsIndex = oldDocument.DocumentPath.IndexOf("Uploads");
+                        var documentPath = Path.Combine(Directory.GetCurrentDirectory(), request.WebRootPath, oldDocument.DocumentPath.Substring(uploadsIndex));
+
+                        if (File.Exists(documentPath))
+                        {
+                            File.Delete(documentPath);
+                        }
+
+                        _context.TblDocument.Remove(oldDocument);
+                    }
+                }
+
+                post.PostUserId = currentUser.UserId;
+                post.PostTitle = request.Command.Title;
+                post.PostAbstract = request.Command.Abstract;
+                post.PostDescription = request.Command.Description;
+                post.PostIsShow = request.Command.IsShow;
+                post.PostModifyDate = DateTime.Now;
+
+                var oldCategories = await _context.TblPostCategory
+                    .Where(x => x.PcPostGuid == post.PostGuid)
+                    .ToListAsync(cancellationToken);
+
+                foreach (var oldCategory in oldCategories)
+                {
+                    _context.TblPostCategory.Remove(oldCategory);
+                }
+
+                foreach (var categoryGuid in request.Command.Categories)
+                {
+                    var postCategory = new TblPostCategory()
+                    {
+                        PcPost = post,
+                        PcCategoryGuid = categoryGuid
+                    };
+
+                    _context.TblPostCategory.Add(postCategory);
+                }
+
+                var oldTags = await _context.TblPostTag
+                    .Where(x => x.PtPostGuid == post.PostGuid)
+                    .ToListAsync(cancellationToken);
+
+                foreach (var oldTag in oldTags)
+                {
+                    _context.TblPostTag.Remove(oldTag);
+                }
+
+                TblPostTag postTag;
+
+                foreach (var tag in request.Command.Tags)
+                {
+                    Guid.TryParse(tag, out Guid guid);
+
+                    if (guid == Guid.Empty)
+                    {
+                        var newTag = new TblTag()
+                        {
+                            TagName = tag
+                        };
+
+                        _context.TblTag.Add(newTag);
+
+                        postTag = new TblPostTag()
+                        {
+                            PtPost = post
+                        };
+
+                        postTag.PtTag = newTag;
+                    }
+                    else
+                    {
+                        postTag = new TblPostTag()
+                        {
+                            PtPost = post,
+                            PtTagGuid = Guid.Parse(tag)
+                        };
+                    }
+
+                    _context.TblPostTag.Add(postTag);
+                }
+
+                await _context.SaveChangesAsync(cancellationToken);
+
+                return new UpdatePostCommandVm()
+                {
+                    Message = "عملیات موفق آمیز",
+                    State = (int)UpdatePostState.Success
+                };
             }
         }
     }

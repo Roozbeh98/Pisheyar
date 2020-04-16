@@ -11,11 +11,11 @@ namespace Pisheyar.Application.Posts.Queries.GetPost
     {
         public Guid PostGuid { get; set; }
 
-        public List<FilepondDto> Document { get; set; }
+        public FilepondDto Document { get; set; }
 
-        //public List<List<GetPostCategoryDto>> Categories { get; set; } = new List<List<GetPostCategoryDto>>();
+        public CategoryNameDto Category { get; set; }
 
-        public List<string> Categories { get; set; }
+        public List<TagNameDto> Tags { get; set; }
 
         public string UserFullName { get; set; }
 
@@ -39,27 +39,38 @@ namespace Pisheyar.Application.Posts.Queries.GetPost
         {
             profile.CreateMap<TblPost, GetPostDto>()
                 .ForMember(d => d.UserFullName, opt => opt.MapFrom(s => s.PostUser.UserName + " " + s.PostUser.UserFamily))
-                .ForMember(d => d.Document, opt => opt.MapFrom(s => new List<FilepondDto>
+                .ForMember(d => d.Document, opt => opt.MapFrom(s => new FilepondDto
                 {
-                    new FilepondDto
+                    Source = s.PostDocument.DocumentPath,
+                    Options = new FilepondOptions
                     {
-                        Source = s.PostDocument.DocumentPath,
-                        Options = new FilepondOptions
+                        Type = "local",
+                        Files = new FilepondFile
                         {
-                            Type = "local",
-                            Files = new FilepondFile
-                            {
-                                Name = s.PostDocument.DocumentFileName,
-                                Size = s.PostDocument.DocumentSize,
-                                Type = s.PostDocument.DocumentTypeCode.CodeName
-                            },
-                            Metadata = new FilepondMetadata
-                            {
-                                Poster = s.PostDocument.DocumentPath
-                            }
+                            Name = s.PostDocument.DocumentFileName,
+                            Size = s.PostDocument.DocumentSize,
+                            Type = s.PostDocument.DocumentTypeCode.CodeName
+                        },
+                        Metadata = new FilepondMetadata
+                        {
+                            Poster = s.PostDocument.DocumentPath
                         }
                     }
                 }));
         }
+    }
+
+    public class CategoryNameDto
+    {
+        public Guid Guid { get; set; }
+
+        public string Title { get; set; }
+    }
+
+    public class TagNameDto
+    {
+        public Guid Guid { get; set; }
+
+        public string Name { get; set; }
     }
 }

@@ -10,6 +10,12 @@ namespace Pisheyar.Application.Categories.Queries.GetAllCategoriesName
     {
         public Guid Guid { get; set; }
 
+        public Guid? ParentGuid { get; set; }
+
         public string Title { get; set; }
+
+        public int Order { get; set; }
+
+        public List<AllCategoryNameDto> Children { get; set; }
     }
 }

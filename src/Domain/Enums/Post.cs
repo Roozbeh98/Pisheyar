@@ -14,7 +14,9 @@ namespace Pisheyar.Domain.Enums
     public enum UpdatePostState
     {
         Success = 1,
-        PostNotFound = 2
+        DocumentNotFound = 2,
+        UserNotFound = 3,
+        PostNotFound = 4
     }
 
     public enum GetPostState

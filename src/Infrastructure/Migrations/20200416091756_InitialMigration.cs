@@ -575,53 +575,59 @@ namespace Pisheyar.Infrastructure.Migrations
                 columns: new[] { "Category_Guid", "Category_CategoryGuid", "Category_CreateDate", "Category_Display", "Category_ModifyDate", "Category_Order" },
                 values: new object[,]
                 {
-                    { new Guid("a4c273c0-84c6-4b2f-be16-947bc08e10c9"), null, new DateTime(2020, 4, 14, 17, 24, 36, 907, DateTimeKind.Local).AddTicks(7391), "سایت اصلی", new DateTime(2020, 4, 14, 17, 24, 36, 907, DateTimeKind.Local).AddTicks(7925), 1 },
-                    { new Guid("c194f552-2359-46e9-a837-da016678860a"), null, new DateTime(2020, 4, 14, 17, 24, 36, 907, DateTimeKind.Local).AddTicks(8962), "وبلاگ", new DateTime(2020, 4, 14, 17, 24, 36, 907, DateTimeKind.Local).AddTicks(8986), 2 }
+                    { new Guid("7e72a9ad-dcb7-47c5-a19d-32ab99d004d4"), null, new DateTime(2020, 4, 16, 13, 47, 55, 70, DateTimeKind.Local).AddTicks(9225), "سایت اصلی", new DateTime(2020, 4, 16, 13, 47, 55, 71, DateTimeKind.Local).AddTicks(142), 1 },
+                    { new Guid("6b5bc097-5d25-4394-90b0-688ced89739a"), null, new DateTime(2020, 4, 16, 13, 47, 55, 71, DateTimeKind.Local).AddTicks(1309), "وبلاگ", new DateTime(2020, 4, 16, 13, 47, 55, 71, DateTimeKind.Local).AddTicks(1334), 2 }
                 });
 
             migrationBuilder.InsertData(
                 table: "Tbl_CodeGroup",
                 columns: new[] { "CG_ID", "CG_Display", "CG_Guid", "CG_Name" },
-                values: new object[] { 1, "نوع فایل", new Guid("67be0e37-731a-4a84-822b-02442d6aeefc"), "FilepondType" });
+                values: new object[] { 1, "نوع فایل", new Guid("7997c359-b76c-436e-af14-9c13dffb41d9"), "FilepondType" });
 
             migrationBuilder.InsertData(
                 table: "Tbl_Role",
                 columns: new[] { "Role_ID", "Role_CreateDate", "Role_Display", "Role_Guid", "Role_ModifyDate", "Role_Name" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2020, 4, 14, 17, 24, 36, 905, DateTimeKind.Local).AddTicks(3675), "کاربر عادی", new Guid("ce01c462-7750-4bf3-adb5-87c4819b19c9"), new DateTime(2020, 4, 14, 17, 24, 36, 905, DateTimeKind.Local).AddTicks(4223), "User" },
-                    { 2, new DateTime(2020, 4, 14, 17, 24, 36, 905, DateTimeKind.Local).AddTicks(5640), "ادمین", new Guid("8d1b1a95-fe5a-411d-a948-9dc7edbfe3b1"), new DateTime(2020, 4, 14, 17, 24, 36, 905, DateTimeKind.Local).AddTicks(5663), "Admin" }
+                    { 1, new DateTime(2020, 4, 16, 13, 47, 55, 67, DateTimeKind.Local).AddTicks(2372), "کاربر عادی", new Guid("7ef6a373-6ff5-4ae9-b6fa-82365c9cc7c4"), new DateTime(2020, 4, 16, 13, 47, 55, 67, DateTimeKind.Local).AddTicks(2943), "User" },
+                    { 2, new DateTime(2020, 4, 16, 13, 47, 55, 67, DateTimeKind.Local).AddTicks(4044), "ادمین", new Guid("a63afaf3-a31a-457a-abb3-32aba7b2580e"), new DateTime(2020, 4, 16, 13, 47, 55, 67, DateTimeKind.Local).AddTicks(4070), "Admin" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Tbl_SMSProviderConfiguration",
                 columns: new[] { "SPC_ID", "SPC_ApiKey", "SPC_CreateDate", "SPC_Guid", "SPC_ModifyDate", "SPC_Password", "SPC_Username" },
-                values: new object[] { 1, "61726634455053586E44464E413462574A76535677436B547236574B56386D6A6F6E4F326A374A4C7755773D", new DateTime(2020, 4, 14, 17, 24, 36, 898, DateTimeKind.Local).AddTicks(3639), new Guid("60bcb94f-0b6d-4620-9c92-dc4f79bcb161"), new DateTime(2020, 4, 14, 17, 24, 36, 901, DateTimeKind.Local).AddTicks(8324), "ptcoptco", "ptmgroupco@gmail.com" });
+                values: new object[] { 1, "61726634455053586E44464E413462574A76535677436B547236574B56386D6A6F6E4F326A374A4C7755773D", new DateTime(2020, 4, 16, 13, 47, 55, 59, DateTimeKind.Local).AddTicks(1424), new Guid("adc95494-0b5c-44da-975d-76e9fe35567b"), new DateTime(2020, 4, 16, 13, 47, 55, 62, DateTimeKind.Local).AddTicks(4736), "ptcoptco", "ptmgroupco@gmail.com" });
 
             migrationBuilder.InsertData(
                 table: "Tbl_Code",
                 columns: new[] { "Code_ID", "Code_CGID", "Code_Display", "Code_Guid", "Code_Name" },
                 values: new object[,]
                 {
-                    { 1, 1, "png", new Guid("3e9c17fe-59a5-418f-9512-dac670833097"), "image/png" },
-                    { 2, 1, "jpg", new Guid("3c06b9b8-75ae-4186-82eb-6799970933a8"), "image/jpg" },
-                    { 3, 1, "jpeg", new Guid("56e9a431-a11b-4376-8097-17556a913197"), "image/jpeg" }
+                    { 1, 1, "png", new Guid("dc00257f-ec66-4d0f-a3d9-b7b85eea9773"), "image/png" },
+                    { 2, 1, "jpg", new Guid("cf95370f-b8f3-4e35-8d12-ec26698eca69"), "image/jpg" },
+                    { 3, 1, "jpeg", new Guid("293fa709-a623-4830-9ecb-95bc2396cda7"), "image/jpeg" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Tbl_SMSSetting",
                 columns: new[] { "SS_ID", "SS_CreateDate", "SS_Guid", "SS_ModifyDate", "SS_Name", "SS_SPCID" },
-                values: new object[] { 1, new DateTime(2020, 4, 14, 17, 24, 36, 903, DateTimeKind.Local).AddTicks(8363), new Guid("6fb3f03f-e702-4c2b-9c57-3096380f8452"), new DateTime(2020, 4, 14, 17, 24, 36, 903, DateTimeKind.Local).AddTicks(8915), "Kavenegar", 1 });
+                values: new object[] { 1, new DateTime(2020, 4, 16, 13, 47, 55, 65, DateTimeKind.Local).AddTicks(2602), new Guid("b617447e-3a89-4c12-94e2-5cd38282fb26"), new DateTime(2020, 4, 16, 13, 47, 55, 65, DateTimeKind.Local).AddTicks(3599), "Kavenegar", 1 });
 
             migrationBuilder.InsertData(
                 table: "Tbl_User",
                 columns: new[] { "User_ID", "User_CreateDate", "User_Email", "User_Family", "User_Guid", "User_IsActive", "User_Mobile", "User_ModifyDate", "User_Name", "User_RoleID" },
-                values: new object[] { 1, new DateTime(2020, 4, 14, 17, 24, 36, 906, DateTimeKind.Local).AddTicks(7588), "mahdiroudaki@hotmail.com", "Roudaki", new Guid("52fa718e-a72d-4703-ae55-ffa37718193b"), true, "09227204305", new DateTime(2020, 4, 14, 17, 24, 36, 906, DateTimeKind.Local).AddTicks(8135), "Mahdi", 1 });
+                values: new object[,]
+                {
+                    { 1, new DateTime(2020, 4, 16, 13, 47, 55, 69, DateTimeKind.Local).AddTicks(3441), "mahdiroudaki@hotmail.com", "رودکی", new Guid("e74b6789-d908-4c1f-b3cc-0c994ad9e422"), true, "09227204305", new DateTime(2020, 4, 16, 13, 47, 55, 69, DateTimeKind.Local).AddTicks(4623), "سید مهدی", 1 },
+                    { 2, new DateTime(2020, 4, 16, 13, 47, 55, 69, DateTimeKind.Local).AddTicks(7753), "mahdiih@ymail.com", "حکمی زاده", new Guid("e3c8ca25-17ee-4eb0-95b7-1e1ec6ba5af2"), true, "09199390494", new DateTime(2020, 4, 16, 13, 47, 55, 69, DateTimeKind.Local).AddTicks(7786), "مهدی", 1 },
+                    { 3, new DateTime(2020, 4, 16, 13, 47, 55, 69, DateTimeKind.Local).AddTicks(7833), "arshiasarabi@gmail.com", "اموری سرابی", new Guid("b72720a4-1a28-464c-b928-c67509876add"), true, "09120509234", new DateTime(2020, 4, 16, 13, 47, 55, 69, DateTimeKind.Local).AddTicks(7838), "ارشیا", 1 },
+                    { 4, new DateTime(2020, 4, 16, 13, 47, 55, 69, DateTimeKind.Local).AddTicks(7845), "roozbehshamekhi@hotmail.com", "شامخی", new Guid("860af325-997a-4496-9711-d3dc4e45b823"), true, "09128277075", new DateTime(2020, 4, 16, 13, 47, 55, 69, DateTimeKind.Local).AddTicks(7849), "روزبه", 1 }
+                });
 
             migrationBuilder.InsertData(
                 table: "Tbl_SMSTemplate",
                 columns: new[] { "ST_ID", "ST_CreateDate", "ST_Guid", "ST_ModifyDate", "ST_Name", "ST_SSID" },
-                values: new object[] { 1, new DateTime(2020, 4, 14, 17, 24, 36, 904, DateTimeKind.Local).AddTicks(5658), new Guid("fcf59273-c434-4488-9006-fdf68fb1c1f9"), new DateTime(2020, 4, 14, 17, 24, 36, 904, DateTimeKind.Local).AddTicks(6193), "VerifyAccount", 1 });
+                values: new object[] { 1, new DateTime(2020, 4, 16, 13, 47, 55, 66, DateTimeKind.Local).AddTicks(3325), new Guid("244e7bc9-7149-4ef5-8e61-073e6e68a918"), new DateTime(2020, 4, 16, 13, 47, 55, 66, DateTimeKind.Local).AddTicks(4225), "VerifyAccount", 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tbl_Advertisement_Advertisement_DocumentGuid",

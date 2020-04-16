@@ -41,18 +41,6 @@ namespace Pisheyar.Application.Posts.Commands.CreatePost
 
             public async Task<CreatePostCommandVm> Handle(CreatePostCommand request, CancellationToken cancellationToken)
             {
-                var document = _context.TblDocument
-                    .AnyAsync(x => x.DocumentGuid == Guid.Parse(request.DocumentGuid), cancellationToken);
-
-                if (!document.Result)
-                {
-                    return new CreatePostCommandVm()
-                    {
-                        Message = "تصویر مورد نظر یافت نشد",
-                        State = (int)CreatePostState.DocumentNotFound
-                    };
-                }
-
                 var currentUser = await _context.TblUser
                     .Where(x => x.UserGuid == Guid.Parse(_currentUserService.NameIdentifier))
                     .SingleOrDefaultAsync(cancellationToken);
@@ -63,6 +51,18 @@ namespace Pisheyar.Application.Posts.Commands.CreatePost
                     {
                         Message = "کاربر مورد نظر یافت نشد",
                         State = (int)CreatePostState.UserNotFound
+                    };
+                }
+
+                var document = await _context.TblDocument
+                    .AnyAsync(x => x.DocumentGuid == Guid.Parse(request.DocumentGuid), cancellationToken);
+
+                if (!document)
+                {
+                    return new CreatePostCommandVm()
+                    {
+                        Message = "تصویر مورد نظر یافت نشد",
+                        State = (int)CreatePostState.DocumentNotFound
                     };
                 }
 

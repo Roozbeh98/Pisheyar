@@ -29,60 +29,6 @@ namespace Pisheyar.Application.Posts.Queries.GetPost
                 _mapper = mapper;
             }
 
-            //public async Task<List<GetPostCategoryDto>> GetCategoryTree(List<TblCategory> allCategories, Guid parentGuid)
-            //{
-            //    var categories = new List<GetPostCategoryDto>();
-
-            //    var children = allCategories
-            //        .Where(x => x.CategoryCategoryGuid == parentGuid)
-            //        .OrderBy(x => x.CategoryOrder)
-            //        .ToList();
-
-            //    foreach (var child in children)
-            //    {
-            //        GetPostCategoryDto category = new GetPostCategoryDto
-            //        {
-            //            Guid = child.CategoryGuid,
-            //            ParentGuid = child.CategoryCategoryGuid,
-            //            Title = child.CategoryDisplay,
-            //            Order = child.CategoryOrder
-            //        };
-
-            //        category.Children = await GetCategoryChildren(allCategories, category);
-
-            //        categories.Add(category);
-            //    }
-
-            //    return categories;
-            //}
-
-            //private async Task<List<GetPostCategoryDto>> GetCategoryChildren(List<TblCategory> allCategories, GetPostCategoryDto category)
-            //{
-            //    var subCategories = allCategories
-            //        .Where(x => x.CategoryCategoryGuid == category.Guid)
-            //        .OrderBy(x => x.CategoryOrder)
-            //        .Select(x => new GetPostCategoryDto
-            //        {
-            //            Guid = x.CategoryGuid,
-            //            ParentGuid = x.CategoryCategoryGuid,
-            //            Title = x.CategoryDisplay,
-            //            Order = x.CategoryOrder
-
-            //        }).ToList();
-
-            //    if (subCategories != null)
-            //    {
-            //        category.Children = subCategories;
-
-            //        foreach (var item in category.Children)
-            //        {
-            //            item.Children = await GetCategoryChildren(allCategories, item);
-            //        }
-            //    }
-
-            //    return category.Children;
-            //}
-
             public async Task<GetPostVm> Handle(GetPostQuery request, CancellationToken cancellationToken)
             {
                 var post = await _context.TblPost
@@ -99,34 +45,35 @@ namespace Pisheyar.Application.Posts.Queries.GetPost
                     };
                 }
 
-                var postCategories = await _context.TblPostCategory
+                var postCategory = await _context.TblPostCategory
                     .Where(x => x.PcPostGuid == request.Guid)
                     .OrderBy(x => x.PcCategoryGu.CategoryDisplay)
-                    .Select(x => x.PcCategoryGu.CategoryDisplay)
-                    .ToListAsync(cancellationToken);
+                    .Select(x => new CategoryNameDto
+                    {
+                        Guid = x.PcCategoryGu.CategoryGuid,
+                        Title = x.PcCategoryGu.CategoryDisplay
 
-                if (postCategories.Count > 0)
+                    }).FirstOrDefaultAsync(cancellationToken);
+
+                if (postCategory != null)
                 {
-                    post.Categories = postCategories;
+                    post.Category = postCategory;
                 }
 
-                //var postCategories = await _context.TblPostCategory
-                //    .Where(x => x.PcPostGuid == request.Guid)
-                //    .ToListAsync(cancellationToken);
+                var postTags = await _context.TblPostTag
+                    .Where(x => x.PtPostGuid == request.Guid)
+                    .OrderBy(x => x.PtTag.TagName)
+                    .Select(x => new TagNameDto
+                    {
+                        Guid = x.PtTag.TagGuid,
+                        Name = x.PtTag.TagName
 
-                //foreach (var postCategory in postCategories)
-                //{
-                //    var categories = await _context.TblCategory
-                //        .Where(x => !x.CategoryIsDelete)
-                //        .ToListAsync(cancellationToken);
+                    }).ToListAsync(cancellationToken);
 
-                //    var categoryTree = await GetCategoryTree(categories, postCategory.PcCategoryGuid);
-
-                //    if (categoryTree.Count > 0)
-                //    {
-                //        post.Categories.Add(categoryTree);
-                //    }
-                //}
+                if (postTags.Count > 0)
+                {
+                    post.Tags = postTags;
+                }
 
                 return new GetPostVm()
                 {

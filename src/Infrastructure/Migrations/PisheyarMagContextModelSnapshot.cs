@@ -134,20 +134,20 @@ namespace Pisheyar.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            CategoryGuid = new Guid("a4c273c0-84c6-4b2f-be16-947bc08e10c9"),
-                            CategoryCreateDate = new DateTime(2020, 4, 14, 17, 24, 36, 907, DateTimeKind.Local).AddTicks(7391),
+                            CategoryGuid = new Guid("7e72a9ad-dcb7-47c5-a19d-32ab99d004d4"),
+                            CategoryCreateDate = new DateTime(2020, 4, 16, 13, 47, 55, 70, DateTimeKind.Local).AddTicks(9225),
                             CategoryDisplay = "سایت اصلی",
                             CategoryIsDelete = false,
-                            CategoryModifyDate = new DateTime(2020, 4, 14, 17, 24, 36, 907, DateTimeKind.Local).AddTicks(7925),
+                            CategoryModifyDate = new DateTime(2020, 4, 16, 13, 47, 55, 71, DateTimeKind.Local).AddTicks(142),
                             CategoryOrder = 1
                         },
                         new
                         {
-                            CategoryGuid = new Guid("c194f552-2359-46e9-a837-da016678860a"),
-                            CategoryCreateDate = new DateTime(2020, 4, 14, 17, 24, 36, 907, DateTimeKind.Local).AddTicks(8962),
+                            CategoryGuid = new Guid("6b5bc097-5d25-4394-90b0-688ced89739a"),
+                            CategoryCreateDate = new DateTime(2020, 4, 16, 13, 47, 55, 71, DateTimeKind.Local).AddTicks(1309),
                             CategoryDisplay = "وبلاگ",
                             CategoryIsDelete = false,
-                            CategoryModifyDate = new DateTime(2020, 4, 14, 17, 24, 36, 907, DateTimeKind.Local).AddTicks(8986),
+                            CategoryModifyDate = new DateTime(2020, 4, 16, 13, 47, 55, 71, DateTimeKind.Local).AddTicks(1334),
                             CategoryOrder = 2
                         });
                 });
@@ -225,7 +225,7 @@ namespace Pisheyar.Infrastructure.Migrations
                             CodeId = 1,
                             CodeCgid = 1,
                             CodeDisplay = "png",
-                            CodeGuid = new Guid("3e9c17fe-59a5-418f-9512-dac670833097"),
+                            CodeGuid = new Guid("dc00257f-ec66-4d0f-a3d9-b7b85eea9773"),
                             CodeIsDelete = false,
                             CodeName = "image/png"
                         },
@@ -234,7 +234,7 @@ namespace Pisheyar.Infrastructure.Migrations
                             CodeId = 2,
                             CodeCgid = 1,
                             CodeDisplay = "jpg",
-                            CodeGuid = new Guid("3c06b9b8-75ae-4186-82eb-6799970933a8"),
+                            CodeGuid = new Guid("cf95370f-b8f3-4e35-8d12-ec26698eca69"),
                             CodeIsDelete = false,
                             CodeName = "image/jpg"
                         },
@@ -243,7 +243,7 @@ namespace Pisheyar.Infrastructure.Migrations
                             CodeId = 3,
                             CodeCgid = 1,
                             CodeDisplay = "jpeg",
-                            CodeGuid = new Guid("56e9a431-a11b-4376-8097-17556a913197"),
+                            CodeGuid = new Guid("293fa709-a623-4830-9ecb-95bc2396cda7"),
                             CodeIsDelete = false,
                             CodeName = "image/jpeg"
                         });
@@ -284,7 +284,7 @@ namespace Pisheyar.Infrastructure.Migrations
                         {
                             CgId = 1,
                             CgDisplay = "نوع فایل",
-                            CgGuid = new Guid("67be0e37-731a-4a84-822b-02442d6aeefc"),
+                            CgGuid = new Guid("7997c359-b76c-436e-af14-9c13dffb41d9"),
                             CgName = "FilepondType"
                         });
                 });
@@ -636,21 +636,21 @@ namespace Pisheyar.Infrastructure.Migrations
                         new
                         {
                             RoleId = 1,
-                            RoleCreateDate = new DateTime(2020, 4, 14, 17, 24, 36, 905, DateTimeKind.Local).AddTicks(3675),
+                            RoleCreateDate = new DateTime(2020, 4, 16, 13, 47, 55, 67, DateTimeKind.Local).AddTicks(2372),
                             RoleDisplay = "کاربر عادی",
-                            RoleGuid = new Guid("ce01c462-7750-4bf3-adb5-87c4819b19c9"),
+                            RoleGuid = new Guid("7ef6a373-6ff5-4ae9-b6fa-82365c9cc7c4"),
                             RoleIsDelete = false,
-                            RoleModifyDate = new DateTime(2020, 4, 14, 17, 24, 36, 905, DateTimeKind.Local).AddTicks(4223),
+                            RoleModifyDate = new DateTime(2020, 4, 16, 13, 47, 55, 67, DateTimeKind.Local).AddTicks(2943),
                             RoleName = "User"
                         },
                         new
                         {
                             RoleId = 2,
-                            RoleCreateDate = new DateTime(2020, 4, 14, 17, 24, 36, 905, DateTimeKind.Local).AddTicks(5640),
+                            RoleCreateDate = new DateTime(2020, 4, 16, 13, 47, 55, 67, DateTimeKind.Local).AddTicks(4044),
                             RoleDisplay = "ادمین",
-                            RoleGuid = new Guid("8d1b1a95-fe5a-411d-a948-9dc7edbfe3b1"),
+                            RoleGuid = new Guid("a63afaf3-a31a-457a-abb3-32aba7b2580e"),
                             RoleIsDelete = false,
-                            RoleModifyDate = new DateTime(2020, 4, 14, 17, 24, 36, 905, DateTimeKind.Local).AddTicks(5663),
+                            RoleModifyDate = new DateTime(2020, 4, 16, 13, 47, 55, 67, DateTimeKind.Local).AddTicks(4070),
                             RoleName = "Admin"
                         });
                 });
@@ -770,10 +770,10 @@ namespace Pisheyar.Infrastructure.Migrations
                         {
                             SpcId = 1,
                             SpcApiKey = "61726634455053586E44464E413462574A76535677436B547236574B56386D6A6F6E4F326A374A4C7755773D",
-                            SpcCreateDate = new DateTime(2020, 4, 14, 17, 24, 36, 898, DateTimeKind.Local).AddTicks(3639),
-                            SpcGuid = new Guid("60bcb94f-0b6d-4620-9c92-dc4f79bcb161"),
+                            SpcCreateDate = new DateTime(2020, 4, 16, 13, 47, 55, 59, DateTimeKind.Local).AddTicks(1424),
+                            SpcGuid = new Guid("adc95494-0b5c-44da-975d-76e9fe35567b"),
                             SpcIsDelete = false,
-                            SpcModifyDate = new DateTime(2020, 4, 14, 17, 24, 36, 901, DateTimeKind.Local).AddTicks(8324),
+                            SpcModifyDate = new DateTime(2020, 4, 16, 13, 47, 55, 62, DateTimeKind.Local).AddTicks(4736),
                             SpcPassword = "ptcoptco",
                             SpcUsername = "ptmgroupco@gmail.com"
                         });
@@ -980,10 +980,10 @@ namespace Pisheyar.Infrastructure.Migrations
                         new
                         {
                             SsId = 1,
-                            SsCreateDate = new DateTime(2020, 4, 14, 17, 24, 36, 903, DateTimeKind.Local).AddTicks(8363),
-                            SsGuid = new Guid("6fb3f03f-e702-4c2b-9c57-3096380f8452"),
+                            SsCreateDate = new DateTime(2020, 4, 16, 13, 47, 55, 65, DateTimeKind.Local).AddTicks(2602),
+                            SsGuid = new Guid("b617447e-3a89-4c12-94e2-5cd38282fb26"),
                             SsIsDelete = false,
-                            SsModifyDate = new DateTime(2020, 4, 14, 17, 24, 36, 903, DateTimeKind.Local).AddTicks(8915),
+                            SsModifyDate = new DateTime(2020, 4, 16, 13, 47, 55, 65, DateTimeKind.Local).AddTicks(3599),
                             SsName = "Kavenegar",
                             SsSpcid = 1
                         });
@@ -1041,10 +1041,10 @@ namespace Pisheyar.Infrastructure.Migrations
                         new
                         {
                             StId = 1,
-                            StCreateDate = new DateTime(2020, 4, 14, 17, 24, 36, 904, DateTimeKind.Local).AddTicks(5658),
-                            StGuid = new Guid("fcf59273-c434-4488-9006-fdf68fb1c1f9"),
+                            StCreateDate = new DateTime(2020, 4, 16, 13, 47, 55, 66, DateTimeKind.Local).AddTicks(3325),
+                            StGuid = new Guid("244e7bc9-7149-4ef5-8e61-073e6e68a918"),
                             StIsDelete = false,
-                            StModifyDate = new DateTime(2020, 4, 14, 17, 24, 36, 904, DateTimeKind.Local).AddTicks(6193),
+                            StModifyDate = new DateTime(2020, 4, 16, 13, 47, 55, 66, DateTimeKind.Local).AddTicks(4225),
                             StName = "VerifyAccount",
                             StSsid = 1
                         });
@@ -1169,15 +1169,57 @@ namespace Pisheyar.Infrastructure.Migrations
                         new
                         {
                             UserId = 1,
-                            UserCreateDate = new DateTime(2020, 4, 14, 17, 24, 36, 906, DateTimeKind.Local).AddTicks(7588),
+                            UserCreateDate = new DateTime(2020, 4, 16, 13, 47, 55, 69, DateTimeKind.Local).AddTicks(3441),
                             UserEmail = "mahdiroudaki@hotmail.com",
-                            UserFamily = "Roudaki",
-                            UserGuid = new Guid("52fa718e-a72d-4703-ae55-ffa37718193b"),
+                            UserFamily = "رودکی",
+                            UserGuid = new Guid("e74b6789-d908-4c1f-b3cc-0c994ad9e422"),
                             UserIsActive = true,
                             UserIsDelete = false,
                             UserMobile = "09227204305",
-                            UserModifyDate = new DateTime(2020, 4, 14, 17, 24, 36, 906, DateTimeKind.Local).AddTicks(8135),
-                            UserName = "Mahdi",
+                            UserModifyDate = new DateTime(2020, 4, 16, 13, 47, 55, 69, DateTimeKind.Local).AddTicks(4623),
+                            UserName = "سید مهدی",
+                            UserRoleId = 1
+                        },
+                        new
+                        {
+                            UserId = 2,
+                            UserCreateDate = new DateTime(2020, 4, 16, 13, 47, 55, 69, DateTimeKind.Local).AddTicks(7753),
+                            UserEmail = "mahdiih@ymail.com",
+                            UserFamily = "حکمی زاده",
+                            UserGuid = new Guid("e3c8ca25-17ee-4eb0-95b7-1e1ec6ba5af2"),
+                            UserIsActive = true,
+                            UserIsDelete = false,
+                            UserMobile = "09199390494",
+                            UserModifyDate = new DateTime(2020, 4, 16, 13, 47, 55, 69, DateTimeKind.Local).AddTicks(7786),
+                            UserName = "مهدی",
+                            UserRoleId = 1
+                        },
+                        new
+                        {
+                            UserId = 3,
+                            UserCreateDate = new DateTime(2020, 4, 16, 13, 47, 55, 69, DateTimeKind.Local).AddTicks(7833),
+                            UserEmail = "arshiasarabi@gmail.com",
+                            UserFamily = "اموری سرابی",
+                            UserGuid = new Guid("b72720a4-1a28-464c-b928-c67509876add"),
+                            UserIsActive = true,
+                            UserIsDelete = false,
+                            UserMobile = "09120509234",
+                            UserModifyDate = new DateTime(2020, 4, 16, 13, 47, 55, 69, DateTimeKind.Local).AddTicks(7838),
+                            UserName = "ارشیا",
+                            UserRoleId = 1
+                        },
+                        new
+                        {
+                            UserId = 4,
+                            UserCreateDate = new DateTime(2020, 4, 16, 13, 47, 55, 69, DateTimeKind.Local).AddTicks(7845),
+                            UserEmail = "roozbehshamekhi@hotmail.com",
+                            UserFamily = "شامخی",
+                            UserGuid = new Guid("860af325-997a-4496-9711-d3dc4e45b823"),
+                            UserIsActive = true,
+                            UserIsDelete = false,
+                            UserMobile = "09128277075",
+                            UserModifyDate = new DateTime(2020, 4, 16, 13, 47, 55, 69, DateTimeKind.Local).AddTicks(7849),
+                            UserName = "روزبه",
                             UserRoleId = 1
                         });
                 });

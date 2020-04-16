@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Pisheyar.Application.Posts.Commands.ChangePostCommentAcceptance;
@@ -26,6 +27,13 @@ namespace WebUI.Controllers
     [ApiController]
     public class PostController : ApiController
     {
+        private readonly IWebHostEnvironment _hostingEnvironment;
+
+        public PostController(IWebHostEnvironment hostingEnvironment)
+        {
+            _hostingEnvironment = hostingEnvironment;
+        }
+
         /// <summary>
         /// دریافت اطلاعات پست از طریق آیدی
         /// </summary>
@@ -153,9 +161,9 @@ namespace WebUI.Controllers
         /// <param name="command">اطلاعات نظر</param>
         /// <returns></returns>
         [HttpPost("[action]")]
-        public async Task<ActionResult<UpdatePostCommandVm>> Update(UpdatePostCommand command)
+        public async Task<ActionResult<UpdatePostCommandVm>> Update(UpdatePostCommandDto command)
         {
-            return await Mediator.Send(command);
+            return await Mediator.Send(new UpdatePostCommand { Command = command, WebRootPath = _hostingEnvironment.WebRootPath });
         }
 
         /// <summary>
