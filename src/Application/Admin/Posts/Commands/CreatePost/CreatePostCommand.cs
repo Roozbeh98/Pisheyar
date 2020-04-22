@@ -68,7 +68,7 @@ namespace Pisheyar.Application.Posts.Commands.CreatePost
 
                 var post = new TblPost
                 {
-                    PostUserId = currentUser.UserId,
+                    PostUserGuid = currentUser.UserGuid,
                     PostTitle = request.Title,
                     PostAbstract = request.Abstract,
                     PostDescription = request.Description,

@@ -76,7 +76,6 @@ namespace Pisheyar.Infrastructure.Persistence
             modelBuilder.Entity<TblUser>().HasData(
                     new TblUser
                     {
-                        UserId = 1,
                         UserGuid = Guid.NewGuid(),
                         UserRoleId = 1,
                         UserName = "سید مهدی",
@@ -90,7 +89,6 @@ namespace Pisheyar.Infrastructure.Persistence
                     },
                     new TblUser
                     {
-                        UserId = 2,
                         UserGuid = Guid.NewGuid(),
                         UserRoleId = 1,
                         UserName = "مهدی",
@@ -104,7 +102,6 @@ namespace Pisheyar.Infrastructure.Persistence
                     },
                     new TblUser
                     {
-                        UserId = 3,
                         UserGuid = Guid.NewGuid(),
                         UserRoleId = 1,
                         UserName = "ارشیا",
@@ -118,7 +115,6 @@ namespace Pisheyar.Infrastructure.Persistence
                     },
                     new TblUser
                     {
-                        UserId = 4,
                         UserGuid = Guid.NewGuid(),
                         UserRoleId = 1,
                         UserName = "روزبه",

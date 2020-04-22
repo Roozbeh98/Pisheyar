@@ -9,7 +9,7 @@ namespace Pisheyar.Domain.Entities
 
         public Guid UtGuid { get; set; }
 
-        public int UtUserId { get; set; }
+        public Guid UtUserGuid { get; set; }
 
         public int UtToken { get; set; }
 

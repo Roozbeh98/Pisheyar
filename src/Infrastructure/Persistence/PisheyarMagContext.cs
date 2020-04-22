@@ -28,6 +28,10 @@ namespace Pisheyar.Infrastructure.Persistence
             _dateTime = dateTime;
         }
 
+        public virtual DbSet<TblChatMessage> TblChatMessage { get; set; }
+
+        public virtual DbSet<TblChatRoom> TblChatRoom { get; set; }
+
         public virtual DbSet<TblAdvertisement> TblAdvertisement { get; set; }
 
         public virtual DbSet<TblCategory> TblCategory { get; set; }
@@ -73,6 +77,11 @@ namespace Pisheyar.Infrastructure.Persistence
         public virtual DbSet<TblUserPermission> TblUserPermission { get; set; }
 
         public virtual DbSet<TblUserToken> TblUserToken { get; set; }
+
+        public override int SaveChanges()
+        {
+            return base.SaveChanges();
+        }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {

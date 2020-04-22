@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Pisheyar.Application.Posts.Queries.GetAllPosts
+namespace Pisheyar.Application.Posts.Commands.DeletePost
 {
-    public class GetAllPostVm
+    public class DeletePostCommandVm
     {
         public string Message { get; set; }
 
         public int State { get; set; }
-
-        public IEnumerable<GetAllPostDto> Posts { get; set; }
     }
 }

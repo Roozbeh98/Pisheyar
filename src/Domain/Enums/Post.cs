@@ -24,4 +24,28 @@ namespace Pisheyar.Domain.Enums
         Success = 1,
         PostNotFound = 2
     }
+
+    public enum GetAllPostsState
+    {
+        Success = 1,
+        NoPosts = 2
+    }
+
+    public enum GetMostViewedPostsState
+    {
+        Success = 1,
+        NoPosts = 2
+    }
+
+    public enum GetIndexPostsState
+    {
+        Success = 1,
+        NoPosts = 2
+    }
+
+    public enum DeletePostState
+    {
+        Success = 1,
+        PostNotFound = 2
+    }
 }

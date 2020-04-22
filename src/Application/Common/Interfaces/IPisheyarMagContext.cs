@@ -7,6 +7,10 @@ namespace Pisheyar.Application.Common.Interfaces
 {
     public interface IPisheyarMagContext
     {
+        DbSet<TblChatMessage> TblChatMessage { get; set; }
+
+        DbSet<TblChatRoom> TblChatRoom { get; set; }
+
         DbSet<TblAdvertisement> TblAdvertisement { get; set; }
 
         DbSet<TblCategory> TblCategory { get; set; }
@@ -54,5 +58,7 @@ namespace Pisheyar.Application.Common.Interfaces
         DbSet<TblUserToken> TblUserToken { get; set; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
+
+        int SaveChanges();
     }
 }

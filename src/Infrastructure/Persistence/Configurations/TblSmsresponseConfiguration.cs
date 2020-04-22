@@ -17,7 +17,7 @@ namespace Pisheyar.Infrastructure.Persistence.Configurations
 
             entity.HasIndex(e => e.SmsStid);
 
-            entity.HasIndex(e => e.SmsUserId);
+            entity.HasIndex(e => e.SmsUserGuid);
 
             entity.Property(e => e.SmsId)
                 .HasColumnName("SMS_ID");
@@ -82,8 +82,8 @@ namespace Pisheyar.Infrastructure.Persistence.Configurations
                 .HasColumnName("SMS_Token2")
                 .HasMaxLength(128);
 
-            entity.Property(e => e.SmsUserId)
-                .HasColumnName("SMS_UserID");
+            entity.Property(e => e.SmsUserGuid)
+                .HasColumnName("SMS_UserGuid");
 
             entity.HasOne(d => d.SmsSt)
                 .WithMany(p => p.TblSmsresponse)
@@ -92,7 +92,7 @@ namespace Pisheyar.Infrastructure.Persistence.Configurations
 
             entity.HasOne(d => d.SmsUser)
                 .WithMany(p => p.TblSmsresponse)
-                .HasForeignKey(d => d.SmsUserId)
+                .HasForeignKey(d => d.SmsUserGuid)
                 .HasConstraintName("FK_Tbl_SMSResponse_Tbl_User");
         }
     }

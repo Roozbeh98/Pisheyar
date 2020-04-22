@@ -15,7 +15,7 @@ namespace Pisheyar.Infrastructure.Persistence.Configurations
 
             entity.ToTable("Tbl_Post");
 
-            entity.HasIndex(e => e.PostUserId);
+            entity.HasIndex(e => e.PostUserGuid);
 
             entity.Property(e => e.PostAbstract)
                 .IsRequired()
@@ -56,8 +56,8 @@ namespace Pisheyar.Infrastructure.Persistence.Configurations
                 .IsRequired()
                 .HasColumnName("Post_Title");
 
-            entity.Property(e => e.PostUserId)
-                .HasColumnName("Post_UserID");
+            entity.Property(e => e.PostUserGuid)
+                .HasColumnName("Post_UserGuid");
 
             entity.Property(e => e.PostViewCount)
                 .HasColumnName("Post_ViewCount")
@@ -71,7 +71,7 @@ namespace Pisheyar.Infrastructure.Persistence.Configurations
 
             entity.HasOne(d => d.PostUser)
                 .WithMany(p => p.TblPost)
-                .HasForeignKey(d => d.PostUserId)
+                .HasForeignKey(d => d.PostUserGuid)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Tbl_Post_Tbl_User");
         }

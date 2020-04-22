@@ -17,7 +17,7 @@ namespace Pisheyar.Infrastructure.Persistence.Configurations
 
             entity.HasIndex(e => e.UpPermissionId);
 
-            entity.HasIndex(e => e.UpUserId);
+            entity.HasIndex(e => e.UpUserGuid);
 
             entity.Property(e => e.UpId)
                 .HasColumnName("UP_ID");
@@ -47,8 +47,8 @@ namespace Pisheyar.Infrastructure.Persistence.Configurations
             entity.Property(e => e.UpPermissionId)
                 .HasColumnName("UP_PermissionID");
 
-            entity.Property(e => e.UpUserId)
-                .HasColumnName("UP_UserID");
+            entity.Property(e => e.UpUserGuid)
+                .HasColumnName("UP_UserGuid");
 
             entity.HasOne(d => d.UpPermission)
                 .WithMany(p => p.TblUserPermission)
@@ -58,7 +58,7 @@ namespace Pisheyar.Infrastructure.Persistence.Configurations
 
             entity.HasOne(d => d.UpUser)
                 .WithMany(p => p.TblUserPermission)
-                .HasForeignKey(d => d.UpUserId)
+                .HasForeignKey(d => d.UpUserGuid)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Tbl_UserPermission_Tbl_User");
         }

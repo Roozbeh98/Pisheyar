@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Pisheyar.Application.Common;
 using Pisheyar.Application.Common.Mappings;
 using Pisheyar.Application.Common.UploadHelper.Filepond;
 using Pisheyar.Domain.Entities;
@@ -13,9 +14,9 @@ namespace Pisheyar.Application.Posts.Queries.GetPost
 
         public FilepondDto Document { get; set; }
 
-        public CategoryNameDto Category { get; set; }
+        public GetPostCategoryNameDto Category { get; set; }
 
-        public List<TagNameDto> Tags { get; set; }
+        public List<GetPostTagNameDto> Tags { get; set; }
 
         public string UserFullName { get; set; }
 
@@ -29,16 +30,21 @@ namespace Pisheyar.Application.Posts.Queries.GetPost
 
         public string PostDescription { get; set; }
 
-        public DateTime PostCreateDate { get; set; }
+        public string PostCreateDate { get; set; }
 
-        public DateTime PostModifyDate { get; set; }
+        public string PostModifyDate { get; set; }
 
         public bool PostIsShow { get; set; }
+
+        public string Slug { get; set; }
 
         public void Mapping(Profile profile)
         {
             profile.CreateMap<TblPost, GetPostDto>()
                 .ForMember(d => d.UserFullName, opt => opt.MapFrom(s => s.PostUser.UserName + " " + s.PostUser.UserFamily))
+                .ForMember(d => d.PostCreateDate, opt => opt.MapFrom(s => PersianDateExtensionMethods.ToPeString(s.PostCreateDate, "yyyy/MM/dd HH:mm")))
+                .ForMember(d => d.PostModifyDate, opt => opt.MapFrom(s => PersianDateExtensionMethods.ToPeString(s.PostModifyDate, "yyyy/MM/dd HH:mm")))
+                .ForMember(d => d.Slug, opt => opt.MapFrom(s => s.PostTitle.Trim().ToLowerInvariant().Replace(" ", "-")))
                 .ForMember(d => d.Document, opt => opt.MapFrom(s => new FilepondDto
                 {
                     Source = s.PostDocument.DocumentPath,
@@ -60,14 +66,14 @@ namespace Pisheyar.Application.Posts.Queries.GetPost
         }
     }
 
-    public class CategoryNameDto
+    public class GetPostCategoryNameDto
     {
         public Guid Guid { get; set; }
 
         public string Title { get; set; }
     }
 
-    public class TagNameDto
+    public class GetPostTagNameDto
     {
         public Guid Guid { get; set; }
 

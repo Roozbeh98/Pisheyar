@@ -57,11 +57,29 @@ namespace Pisheyar.Infrastructure
                         IssuerSigningKey = new SymmetricSecurityKey(key),
                         ClockSkew = TimeSpan.FromSeconds(0)
                     };
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnMessageReceived = context =>
+                        {
+                            var accessToken = context.Request.Query["access_token"];
+
+                            // If the request is for our hub...
+                            var path = context.HttpContext.Request.Path;
+                            if (!string.IsNullOrEmpty(accessToken) &&
+                                path.StartsWithSegments("/chatHub"))
+                            {
+                                // Read the token out of the query string
+                                context.Token = accessToken;
+                            }
+                            return System.Threading.Tasks.Task.CompletedTask;
+                        }
+                    };
                 });
-            
+
             services.AddTransient<IDateTime, DateTimeService>();
             services.AddTransient<IIdentityService, IdentityService>();
             services.AddTransient<ISmsService, SmsService>();
+            services.AddTransient<IChatRoomService, InMemoryChatRoomService>();
 
             return services;
         }

@@ -11,14 +11,11 @@ namespace Pisheyar.Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<TblUser> entity)
         {
-            entity.HasKey(e => e.UserId);
+            entity.HasKey(e => e.UserGuid);
 
             entity.ToTable("Tbl_User");
 
             entity.HasIndex(e => e.UserRoleId);
-
-            entity.Property(e => e.UserId)
-                .HasColumnName("User_ID");
 
             entity.Property(e => e.UserCreateDate)
                 .HasColumnName("User_CreateDate")
@@ -36,7 +33,6 @@ namespace Pisheyar.Infrastructure.Persistence.Configurations
 
             entity.Property(e => e.UserGuid)
                 .HasColumnName("User_Guid")
-                .HasColumnType("UNIQUEIDENTIFIER ROWGUIDCOL")
                 .HasDefaultValueSql("(newid())");
 
             entity.Property(e => e.UserIsActive)

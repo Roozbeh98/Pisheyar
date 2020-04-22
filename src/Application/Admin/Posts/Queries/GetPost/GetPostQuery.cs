@@ -48,7 +48,7 @@ namespace Pisheyar.Application.Posts.Queries.GetPost
                 var postCategory = await _context.TblPostCategory
                     .Where(x => x.PcPostGuid == request.Guid)
                     .OrderBy(x => x.PcCategoryGu.CategoryDisplay)
-                    .Select(x => new CategoryNameDto
+                    .Select(x => new GetPostCategoryNameDto
                     {
                         Guid = x.PcCategoryGu.CategoryGuid,
                         Title = x.PcCategoryGu.CategoryDisplay
@@ -63,7 +63,7 @@ namespace Pisheyar.Application.Posts.Queries.GetPost
                 var postTags = await _context.TblPostTag
                     .Where(x => x.PtPostGuid == request.Guid)
                     .OrderBy(x => x.PtTag.TagName)
-                    .Select(x => new TagNameDto
+                    .Select(x => new GetPostTagNameDto
                     {
                         Guid = x.PtTag.TagGuid,
                         Name = x.PtTag.TagName

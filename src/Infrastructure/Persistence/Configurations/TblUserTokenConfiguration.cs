@@ -15,7 +15,7 @@ namespace Pisheyar.Infrastructure.Persistence.Configurations
 
             entity.ToTable("Tbl_UserToken");
 
-            entity.HasIndex(e => e.UtUserId);
+            entity.HasIndex(e => e.UtUserGuid);
 
             entity.Property(e => e.UtId)
                 .HasColumnName("UT_ID");
@@ -32,12 +32,12 @@ namespace Pisheyar.Infrastructure.Persistence.Configurations
             entity.Property(e => e.UtToken)
                 .HasColumnName("UT_Token");
 
-            entity.Property(e => e.UtUserId)
-                .HasColumnName("UT_UserID");
+            entity.Property(e => e.UtUserGuid)
+                .HasColumnName("UT_UserGuid");
 
             entity.HasOne(d => d.UtUser)
                 .WithMany(p => p.TblUserToken)
-                .HasForeignKey(d => d.UtUserId)
+                .HasForeignKey(d => d.UtUserGuid)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Tbl_UserToken_Tbl_User");
         }

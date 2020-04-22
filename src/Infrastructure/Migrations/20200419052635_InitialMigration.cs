@@ -175,9 +175,7 @@ namespace Pisheyar.Infrastructure.Migrations
                 name: "Tbl_User",
                 columns: table => new
                 {
-                    User_ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    User_Guid = table.Column<Guid>(type: "UNIQUEIDENTIFIER ROWGUIDCOL", nullable: false, defaultValueSql: "(newid())"),
+                    User_Guid = table.Column<Guid>(nullable: false, defaultValueSql: "(newid())"),
                     User_RoleID = table.Column<int>(nullable: false),
                     User_Name = table.Column<string>(maxLength: 128, nullable: false),
                     User_Family = table.Column<string>(maxLength: 128, nullable: false),
@@ -190,7 +188,7 @@ namespace Pisheyar.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tbl_User", x => x.User_ID);
+                    table.PrimaryKey("PK_Tbl_User", x => x.User_Guid);
                     table.ForeignKey(
                         name: "FK_Tbl_User_Tbl_Role",
                         column: x => x.User_RoleID,
@@ -297,11 +295,34 @@ namespace Pisheyar.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Tbl_ChatRoom",
+                columns: table => new
+                {
+                    Guid = table.Column<Guid>(nullable: false, defaultValueSql: "(newid())"),
+                    UserGuid = table.Column<Guid>(nullable: false),
+                    OwnerConnectionId = table.Column<string>(maxLength: 450, nullable: false),
+                    Name = table.Column<string>(maxLength: 450, nullable: true),
+                    IsDelete = table.Column<bool>(nullable: false, defaultValueSql: "((0))"),
+                    CreationDate = table.Column<DateTime>(nullable: false, defaultValueSql: "(getdate())"),
+                    ModifiedDate = table.Column<DateTime>(nullable: false, defaultValueSql: "(getdate())")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tbl_ChatRoom", x => x.Guid);
+                    table.ForeignKey(
+                        name: "FK_Tbl_ChatRoom_Tbl_User_UserGuid",
+                        column: x => x.UserGuid,
+                        principalTable: "Tbl_User",
+                        principalColumn: "User_Guid",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Tbl_Comment",
                 columns: table => new
                 {
                     Comment_Guid = table.Column<Guid>(nullable: false, defaultValueSql: "(newid())"),
-                    Comment_UserID = table.Column<int>(nullable: false),
+                    Comment_UserGuid = table.Column<Guid>(nullable: false),
                     Comment_Text = table.Column<string>(nullable: false),
                     Comment_Date = table.Column<DateTime>(nullable: false, defaultValueSql: "(getdate())")
                 },
@@ -310,9 +331,9 @@ namespace Pisheyar.Infrastructure.Migrations
                     table.PrimaryKey("PK_Tbl_Comment", x => x.Comment_Guid);
                     table.ForeignKey(
                         name: "FK_Tbl_Comment_Tbl_User",
-                        column: x => x.Comment_UserID,
+                        column: x => x.Comment_UserGuid,
                         principalTable: "Tbl_User",
-                        principalColumn: "User_ID",
+                        principalColumn: "User_Guid",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -323,7 +344,7 @@ namespace Pisheyar.Infrastructure.Migrations
                     UP_ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UP_Guid = table.Column<Guid>(type: "UNIQUEIDENTIFIER ROWGUIDCOL", nullable: false, defaultValueSql: "(newid())"),
-                    UP_UserID = table.Column<int>(nullable: false),
+                    UP_UserGuid = table.Column<Guid>(nullable: false),
                     UP_PermissionID = table.Column<int>(nullable: false),
                     UP_CreateDate = table.Column<DateTime>(nullable: false, defaultValueSql: "(getdate())"),
                     UP_ModifyDate = table.Column<DateTime>(nullable: false, defaultValueSql: "(getdate())"),
@@ -341,9 +362,9 @@ namespace Pisheyar.Infrastructure.Migrations
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Tbl_UserPermission_Tbl_User",
-                        column: x => x.UP_UserID,
+                        column: x => x.UP_UserGuid,
                         principalTable: "Tbl_User",
-                        principalColumn: "User_ID",
+                        principalColumn: "User_Guid",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -354,7 +375,7 @@ namespace Pisheyar.Infrastructure.Migrations
                     UT_ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UT_Guid = table.Column<Guid>(type: "UNIQUEIDENTIFIER ROWGUIDCOL", nullable: false, defaultValueSql: "(newid())"),
-                    UT_UserID = table.Column<int>(nullable: false),
+                    UT_UserGuid = table.Column<Guid>(nullable: false),
                     UT_Token = table.Column<int>(nullable: false),
                     UT_ExpireDate = table.Column<DateTime>(nullable: false, defaultValueSql: "(getdate())")
                 },
@@ -363,9 +384,9 @@ namespace Pisheyar.Infrastructure.Migrations
                     table.PrimaryKey("PK_Tbl_UserToken", x => x.UT_ID);
                     table.ForeignKey(
                         name: "FK_Tbl_UserToken_Tbl_User",
-                        column: x => x.UT_UserID,
+                        column: x => x.UT_UserGuid,
                         principalTable: "Tbl_User",
-                        principalColumn: "User_ID",
+                        principalColumn: "User_Guid",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -425,7 +446,7 @@ namespace Pisheyar.Infrastructure.Migrations
                 columns: table => new
                 {
                     Post_Guid = table.Column<Guid>(nullable: false, defaultValueSql: "(newid())"),
-                    Post_UserID = table.Column<int>(nullable: false),
+                    Post_UserGuid = table.Column<Guid>(nullable: false),
                     Post_DocumentGuid = table.Column<Guid>(nullable: false),
                     Post_ViewCount = table.Column<int>(nullable: false, defaultValueSql: "((0))"),
                     Post_LikeCount = table.Column<int>(nullable: false, defaultValueSql: "((0))"),
@@ -448,9 +469,34 @@ namespace Pisheyar.Infrastructure.Migrations
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Tbl_Post_Tbl_User",
-                        column: x => x.Post_UserID,
+                        column: x => x.Post_UserGuid,
                         principalTable: "Tbl_User",
-                        principalColumn: "User_ID",
+                        principalColumn: "User_Guid",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Tbl_ChatMessage",
+                columns: table => new
+                {
+                    Guid = table.Column<Guid>(nullable: false, defaultValueSql: "(newid())"),
+                    ChatRoomGuid = table.Column<Guid>(nullable: false),
+                    SenderName = table.Column<string>(nullable: true),
+                    Text = table.Column<string>(nullable: false),
+                    IsSeen = table.Column<bool>(nullable: false, defaultValueSql: "((0))"),
+                    IsModified = table.Column<bool>(nullable: false, defaultValueSql: "((0))"),
+                    IsDelete = table.Column<bool>(nullable: false, defaultValueSql: "((0))"),
+                    SentDate = table.Column<DateTime>(nullable: false, defaultValueSql: "(getdate())"),
+                    ModifiedDate = table.Column<DateTime>(nullable: false, defaultValueSql: "(getdate())")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tbl_ChatMessage", x => x.Guid);
+                    table.ForeignKey(
+                        name: "FK_Tbl_ChatMessage_Tbl_ChatRoom_ChatRoomGuid",
+                        column: x => x.ChatRoomGuid,
+                        principalTable: "Tbl_ChatRoom",
+                        principalColumn: "Guid",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -461,7 +507,7 @@ namespace Pisheyar.Infrastructure.Migrations
                     SMS_ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     SMS_Guid = table.Column<Guid>(type: "UNIQUEIDENTIFIER ROWGUIDCOL", nullable: false, defaultValueSql: "(newid())"),
-                    SMS_UserID = table.Column<int>(nullable: true),
+                    SMS_UserGuid = table.Column<Guid>(nullable: true),
                     SMS_STID = table.Column<int>(nullable: true),
                     SMS_Status = table.Column<int>(nullable: false),
                     SMS_StatusText = table.Column<string>(nullable: false),
@@ -488,9 +534,9 @@ namespace Pisheyar.Infrastructure.Migrations
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Tbl_SMSResponse_Tbl_User",
-                        column: x => x.SMS_UserID,
+                        column: x => x.SMS_UserGuid,
                         principalTable: "Tbl_User",
-                        principalColumn: "User_ID",
+                        principalColumn: "User_Guid",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -575,59 +621,59 @@ namespace Pisheyar.Infrastructure.Migrations
                 columns: new[] { "Category_Guid", "Category_CategoryGuid", "Category_CreateDate", "Category_Display", "Category_ModifyDate", "Category_Order" },
                 values: new object[,]
                 {
-                    { new Guid("7e72a9ad-dcb7-47c5-a19d-32ab99d004d4"), null, new DateTime(2020, 4, 16, 13, 47, 55, 70, DateTimeKind.Local).AddTicks(9225), "سایت اصلی", new DateTime(2020, 4, 16, 13, 47, 55, 71, DateTimeKind.Local).AddTicks(142), 1 },
-                    { new Guid("6b5bc097-5d25-4394-90b0-688ced89739a"), null, new DateTime(2020, 4, 16, 13, 47, 55, 71, DateTimeKind.Local).AddTicks(1309), "وبلاگ", new DateTime(2020, 4, 16, 13, 47, 55, 71, DateTimeKind.Local).AddTicks(1334), 2 }
+                    { new Guid("b10bdca5-406f-406d-ab39-8dc1f9522afd"), null, new DateTime(2020, 4, 19, 9, 56, 34, 380, DateTimeKind.Local).AddTicks(3920), "سایت اصلی", new DateTime(2020, 4, 19, 9, 56, 34, 380, DateTimeKind.Local).AddTicks(4556), 1 },
+                    { new Guid("e5609825-5d5c-40dd-bbb4-be22dca70893"), null, new DateTime(2020, 4, 19, 9, 56, 34, 380, DateTimeKind.Local).AddTicks(5894), "وبلاگ", new DateTime(2020, 4, 19, 9, 56, 34, 380, DateTimeKind.Local).AddTicks(5931), 2 }
                 });
 
             migrationBuilder.InsertData(
                 table: "Tbl_CodeGroup",
                 columns: new[] { "CG_ID", "CG_Display", "CG_Guid", "CG_Name" },
-                values: new object[] { 1, "نوع فایل", new Guid("7997c359-b76c-436e-af14-9c13dffb41d9"), "FilepondType" });
+                values: new object[] { 1, "نوع فایل", new Guid("dbd12002-d5e5-41b4-81dd-e67829dea5f0"), "FilepondType" });
 
             migrationBuilder.InsertData(
                 table: "Tbl_Role",
                 columns: new[] { "Role_ID", "Role_CreateDate", "Role_Display", "Role_Guid", "Role_ModifyDate", "Role_Name" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2020, 4, 16, 13, 47, 55, 67, DateTimeKind.Local).AddTicks(2372), "کاربر عادی", new Guid("7ef6a373-6ff5-4ae9-b6fa-82365c9cc7c4"), new DateTime(2020, 4, 16, 13, 47, 55, 67, DateTimeKind.Local).AddTicks(2943), "User" },
-                    { 2, new DateTime(2020, 4, 16, 13, 47, 55, 67, DateTimeKind.Local).AddTicks(4044), "ادمین", new Guid("a63afaf3-a31a-457a-abb3-32aba7b2580e"), new DateTime(2020, 4, 16, 13, 47, 55, 67, DateTimeKind.Local).AddTicks(4070), "Admin" }
+                    { 1, new DateTime(2020, 4, 19, 9, 56, 34, 377, DateTimeKind.Local).AddTicks(1360), "کاربر عادی", new Guid("ccd2d78a-4088-45c0-8892-d189218d7551"), new DateTime(2020, 4, 19, 9, 56, 34, 377, DateTimeKind.Local).AddTicks(2197), "User" },
+                    { 2, new DateTime(2020, 4, 19, 9, 56, 34, 377, DateTimeKind.Local).AddTicks(3780), "ادمین", new Guid("b6d59587-4a7c-40a6-af56-7fe6a6e1ac26"), new DateTime(2020, 4, 19, 9, 56, 34, 377, DateTimeKind.Local).AddTicks(3815), "Admin" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Tbl_SMSProviderConfiguration",
                 columns: new[] { "SPC_ID", "SPC_ApiKey", "SPC_CreateDate", "SPC_Guid", "SPC_ModifyDate", "SPC_Password", "SPC_Username" },
-                values: new object[] { 1, "61726634455053586E44464E413462574A76535677436B547236574B56386D6A6F6E4F326A374A4C7755773D", new DateTime(2020, 4, 16, 13, 47, 55, 59, DateTimeKind.Local).AddTicks(1424), new Guid("adc95494-0b5c-44da-975d-76e9fe35567b"), new DateTime(2020, 4, 16, 13, 47, 55, 62, DateTimeKind.Local).AddTicks(4736), "ptcoptco", "ptmgroupco@gmail.com" });
+                values: new object[] { 1, "61726634455053586E44464E413462574A76535677436B547236574B56386D6A6F6E4F326A374A4C7755773D", new DateTime(2020, 4, 19, 9, 56, 34, 369, DateTimeKind.Local).AddTicks(3469), new Guid("fcc16abf-0512-44d5-8894-026d791d4c84"), new DateTime(2020, 4, 19, 9, 56, 34, 372, DateTimeKind.Local).AddTicks(9962), "ptcoptco", "ptmgroupco@gmail.com" });
 
             migrationBuilder.InsertData(
                 table: "Tbl_Code",
                 columns: new[] { "Code_ID", "Code_CGID", "Code_Display", "Code_Guid", "Code_Name" },
                 values: new object[,]
                 {
-                    { 1, 1, "png", new Guid("dc00257f-ec66-4d0f-a3d9-b7b85eea9773"), "image/png" },
-                    { 2, 1, "jpg", new Guid("cf95370f-b8f3-4e35-8d12-ec26698eca69"), "image/jpg" },
-                    { 3, 1, "jpeg", new Guid("293fa709-a623-4830-9ecb-95bc2396cda7"), "image/jpeg" }
+                    { 1, 1, "png", new Guid("b2d5a677-51cb-4e81-8091-a7ecf32db3ce"), "image/png" },
+                    { 2, 1, "jpg", new Guid("a9cc62f7-3397-4799-8989-966ed1142476"), "image/jpg" },
+                    { 3, 1, "jpeg", new Guid("c6ac4f7f-bde4-46aa-b001-81c39216fa1e"), "image/jpeg" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Tbl_SMSSetting",
                 columns: new[] { "SS_ID", "SS_CreateDate", "SS_Guid", "SS_ModifyDate", "SS_Name", "SS_SPCID" },
-                values: new object[] { 1, new DateTime(2020, 4, 16, 13, 47, 55, 65, DateTimeKind.Local).AddTicks(2602), new Guid("b617447e-3a89-4c12-94e2-5cd38282fb26"), new DateTime(2020, 4, 16, 13, 47, 55, 65, DateTimeKind.Local).AddTicks(3599), "Kavenegar", 1 });
+                values: new object[] { 1, new DateTime(2020, 4, 19, 9, 56, 34, 375, DateTimeKind.Local).AddTicks(2001), new Guid("aee87d64-5757-4fa9-b5f4-be91ec8fedb0"), new DateTime(2020, 4, 19, 9, 56, 34, 375, DateTimeKind.Local).AddTicks(2863), "Kavenegar", 1 });
 
             migrationBuilder.InsertData(
                 table: "Tbl_User",
-                columns: new[] { "User_ID", "User_CreateDate", "User_Email", "User_Family", "User_Guid", "User_IsActive", "User_Mobile", "User_ModifyDate", "User_Name", "User_RoleID" },
+                columns: new[] { "User_Guid", "User_CreateDate", "User_Email", "User_Family", "User_IsActive", "User_Mobile", "User_ModifyDate", "User_Name", "User_RoleID" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2020, 4, 16, 13, 47, 55, 69, DateTimeKind.Local).AddTicks(3441), "mahdiroudaki@hotmail.com", "رودکی", new Guid("e74b6789-d908-4c1f-b3cc-0c994ad9e422"), true, "09227204305", new DateTime(2020, 4, 16, 13, 47, 55, 69, DateTimeKind.Local).AddTicks(4623), "سید مهدی", 1 },
-                    { 2, new DateTime(2020, 4, 16, 13, 47, 55, 69, DateTimeKind.Local).AddTicks(7753), "mahdiih@ymail.com", "حکمی زاده", new Guid("e3c8ca25-17ee-4eb0-95b7-1e1ec6ba5af2"), true, "09199390494", new DateTime(2020, 4, 16, 13, 47, 55, 69, DateTimeKind.Local).AddTicks(7786), "مهدی", 1 },
-                    { 3, new DateTime(2020, 4, 16, 13, 47, 55, 69, DateTimeKind.Local).AddTicks(7833), "arshiasarabi@gmail.com", "اموری سرابی", new Guid("b72720a4-1a28-464c-b928-c67509876add"), true, "09120509234", new DateTime(2020, 4, 16, 13, 47, 55, 69, DateTimeKind.Local).AddTicks(7838), "ارشیا", 1 },
-                    { 4, new DateTime(2020, 4, 16, 13, 47, 55, 69, DateTimeKind.Local).AddTicks(7845), "roozbehshamekhi@hotmail.com", "شامخی", new Guid("860af325-997a-4496-9711-d3dc4e45b823"), true, "09128277075", new DateTime(2020, 4, 16, 13, 47, 55, 69, DateTimeKind.Local).AddTicks(7849), "روزبه", 1 }
+                    { new Guid("18871c7e-3569-41db-ba88-c4c23a2fa65c"), new DateTime(2020, 4, 19, 9, 56, 34, 379, DateTimeKind.Local).AddTicks(475), "mahdiroudaki@hotmail.com", "رودکی", true, "09227204305", new DateTime(2020, 4, 19, 9, 56, 34, 379, DateTimeKind.Local).AddTicks(1326), "سید مهدی", 1 },
+                    { new Guid("4c8bac07-1f49-42f2-aead-5d72607304e8"), new DateTime(2020, 4, 19, 9, 56, 34, 379, DateTimeKind.Local).AddTicks(3707), "mahdiih@ymail.com", "حکمی زاده", true, "09199390494", new DateTime(2020, 4, 19, 9, 56, 34, 379, DateTimeKind.Local).AddTicks(3747), "مهدی", 1 },
+                    { new Guid("a38ccdf5-3c25-4670-b093-be8fee5c3ad9"), new DateTime(2020, 4, 19, 9, 56, 34, 379, DateTimeKind.Local).AddTicks(3856), "arshiasarabi@gmail.com", "اموری سرابی", true, "09120509234", new DateTime(2020, 4, 19, 9, 56, 34, 379, DateTimeKind.Local).AddTicks(3864), "ارشیا", 1 },
+                    { new Guid("b876db25-f7ba-4468-9f78-67679c340a3b"), new DateTime(2020, 4, 19, 9, 56, 34, 379, DateTimeKind.Local).AddTicks(3878), "roozbehshamekhi@hotmail.com", "شامخی", true, "09128277075", new DateTime(2020, 4, 19, 9, 56, 34, 379, DateTimeKind.Local).AddTicks(3883), "روزبه", 1 }
                 });
 
             migrationBuilder.InsertData(
                 table: "Tbl_SMSTemplate",
                 columns: new[] { "ST_ID", "ST_CreateDate", "ST_Guid", "ST_ModifyDate", "ST_Name", "ST_SSID" },
-                values: new object[] { 1, new DateTime(2020, 4, 16, 13, 47, 55, 66, DateTimeKind.Local).AddTicks(3325), new Guid("244e7bc9-7149-4ef5-8e61-073e6e68a918"), new DateTime(2020, 4, 16, 13, 47, 55, 66, DateTimeKind.Local).AddTicks(4225), "VerifyAccount", 1 });
+                values: new object[] { 1, new DateTime(2020, 4, 19, 9, 56, 34, 375, DateTimeKind.Local).AddTicks(9876), new Guid("89a6fc7a-b1ac-43ef-b8be-ab65c15b464a"), new DateTime(2020, 4, 19, 9, 56, 34, 376, DateTimeKind.Local).AddTicks(514), "VerifyAccount", 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tbl_Advertisement_Advertisement_DocumentGuid",
@@ -650,14 +696,24 @@ namespace Pisheyar.Infrastructure.Migrations
                 column: "CT_TagGuid");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Tbl_ChatMessage_ChatRoomGuid",
+                table: "Tbl_ChatMessage",
+                column: "ChatRoomGuid");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tbl_ChatRoom_UserGuid",
+                table: "Tbl_ChatRoom",
+                column: "UserGuid");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Tbl_Code_Code_CGID",
                 table: "Tbl_Code",
                 column: "Code_CGID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tbl_Comment_Comment_UserID",
+                name: "IX_Tbl_Comment_Comment_UserGuid",
                 table: "Tbl_Comment",
-                column: "Comment_UserID");
+                column: "Comment_UserGuid");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tbl_Document_Document_TypeCodeID",
@@ -670,9 +726,9 @@ namespace Pisheyar.Infrastructure.Migrations
                 column: "Post_DocumentGuid");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tbl_Post_Post_UserID",
+                name: "IX_Tbl_Post_Post_UserGuid",
                 table: "Tbl_Post",
-                column: "Post_UserID");
+                column: "Post_UserGuid");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tbl_PostCategory_PC_CategoryGuid",
@@ -725,9 +781,9 @@ namespace Pisheyar.Infrastructure.Migrations
                 column: "SMS_STID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tbl_SMSResponse_SMS_UserID",
+                name: "IX_Tbl_SMSResponse_SMS_UserGuid",
                 table: "Tbl_SMSResponse",
-                column: "SMS_UserID");
+                column: "SMS_UserGuid");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tbl_SMSSetting_SS_SPCID",
@@ -750,14 +806,14 @@ namespace Pisheyar.Infrastructure.Migrations
                 column: "UP_PermissionID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tbl_UserPermission_UP_UserID",
+                name: "IX_Tbl_UserPermission_UP_UserGuid",
                 table: "Tbl_UserPermission",
-                column: "UP_UserID");
+                column: "UP_UserGuid");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tbl_UserToken_UT_UserID",
+                name: "IX_Tbl_UserToken_UT_UserGuid",
                 table: "Tbl_UserToken",
-                column: "UT_UserID");
+                column: "UT_UserGuid");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -767,6 +823,9 @@ namespace Pisheyar.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Tbl_CategoryTag");
+
+            migrationBuilder.DropTable(
+                name: "Tbl_ChatMessage");
 
             migrationBuilder.DropTable(
                 name: "Tbl_PostCategory");
@@ -791,6 +850,9 @@ namespace Pisheyar.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Tbl_UserToken");
+
+            migrationBuilder.DropTable(
+                name: "Tbl_ChatRoom");
 
             migrationBuilder.DropTable(
                 name: "Tbl_Category");

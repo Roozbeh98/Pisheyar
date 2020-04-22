@@ -90,7 +90,7 @@ namespace Pisheyar.Application.Posts.Commands.UpdatePost
                     }
                 }
 
-                post.PostUserId = currentUser.UserId;
+                post.PostUserGuid = currentUser.UserGuid;
                 post.PostTitle = request.Command.Title;
                 post.PostAbstract = request.Command.Abstract;
                 post.PostDescription = request.Command.Description;

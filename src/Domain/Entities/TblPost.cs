@@ -15,7 +15,7 @@ namespace Pisheyar.Domain.Entities
 
         public Guid PostGuid { get; set; }
 
-        public int PostUserId { get; set; }
+        public Guid PostUserGuid { get; set; }
 
         public Guid PostDocumentGuid { get; set; }
 

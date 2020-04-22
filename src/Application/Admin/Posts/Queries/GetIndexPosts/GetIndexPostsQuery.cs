@@ -12,35 +12,36 @@ using Microsoft.EntityFrameworkCore;
 using AutoMapper.QueryableExtensions;
 using AutoMapper;
 
-namespace Pisheyar.Application.Posts.Queries.GetAllPosts
+namespace Pisheyar.Application.Posts.Queries.GetIndexPosts
 {
-    public class GetAllPostsQuery : IRequest<GetAllPostVm>
+    public class GetIndexPostsQuery : IRequest<GetIndexPostsVm>
     {
-        public class GetAllPostsQueryHandler : IRequestHandler<GetAllPostsQuery, GetAllPostVm>
+        public class GetIndexPostsQueryHandler : IRequestHandler<GetIndexPostsQuery, GetIndexPostsVm>
         {
             private readonly IPisheyarMagContext _context;
             private readonly IMapper _mapper;
 
-            public GetAllPostsQueryHandler(IPisheyarMagContext context, IMapper mapper)
+            public GetIndexPostsQueryHandler(IPisheyarMagContext context, IMapper mapper)
             {
                 _context = context;
                 _mapper = mapper;
             }
 
-            public async Task<GetAllPostVm> Handle(GetAllPostsQuery request, CancellationToken cancellationToken)
+            public async Task<GetIndexPostsVm> Handle(GetIndexPostsQuery request, CancellationToken cancellationToken)
             {
                 var posts = await _context.TblPost
                     .Where(x => !x.PostIsDelete)
-                    .OrderByDescending(x => x.PostModifyDate)
-                    .ProjectTo<GetAllPostDto>(_mapper.ConfigurationProvider)
+                    .OrderByDescending(x => x.PostViewCount)
+                    .ProjectTo<GetIndexPostsDto>(_mapper.ConfigurationProvider)
+                    .Take(3)
                     .ToListAsync(cancellationToken);
 
                 if (posts.Count == 0)
                 {
-                    return new GetAllPostVm()
+                    return new GetIndexPostsVm()
                     {
                         Message = "پستی یافت نشد",
-                        State = (int)GetAllPostsState.NoPosts
+                        State = (int)GetIndexPostsState.NoPosts
                     };
                 }
 
@@ -49,7 +50,7 @@ namespace Pisheyar.Application.Posts.Queries.GetAllPosts
                     var postCategory = await _context.TblPostCategory
                     .Where(x => x.PcPostGuid == post.PostGuid)
                     .OrderBy(x => x.PcCategoryGu.CategoryDisplay)
-                    .Select(x => new GetAllPostCategoryNameDto
+                    .Select(x => new GetIndexPostsCategoryNameDto
                     {
                         Guid = x.PcCategoryGu.CategoryGuid,
                         Title = x.PcCategoryGu.CategoryDisplay
@@ -64,7 +65,7 @@ namespace Pisheyar.Application.Posts.Queries.GetAllPosts
                     var postTags = await _context.TblPostTag
                         .Where(x => x.PtPostGuid == post.PostGuid)
                         .OrderBy(x => x.PtTag.TagName)
-                        .Select(x => new GetAllPostTagNameDto
+                        .Select(x => new GetIndexPostsTagNameDto
                         {
                             Guid = x.PtTag.TagGuid,
                             Name = x.PtTag.TagName
@@ -77,10 +78,10 @@ namespace Pisheyar.Application.Posts.Queries.GetAllPosts
                     }
                 }
 
-                return new GetAllPostVm()
+                return new GetIndexPostsVm()
                 {
                     Message = "عملیات موفق آمیز",
-                    State = (int)GetAllPostsState.Success,
+                    State = (int)GetIndexPostsState.Success,
                     Posts = posts
                 };
             }

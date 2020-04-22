@@ -134,20 +134,20 @@ namespace Pisheyar.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            CategoryGuid = new Guid("7e72a9ad-dcb7-47c5-a19d-32ab99d004d4"),
-                            CategoryCreateDate = new DateTime(2020, 4, 16, 13, 47, 55, 70, DateTimeKind.Local).AddTicks(9225),
+                            CategoryGuid = new Guid("b10bdca5-406f-406d-ab39-8dc1f9522afd"),
+                            CategoryCreateDate = new DateTime(2020, 4, 19, 9, 56, 34, 380, DateTimeKind.Local).AddTicks(3920),
                             CategoryDisplay = "سایت اصلی",
                             CategoryIsDelete = false,
-                            CategoryModifyDate = new DateTime(2020, 4, 16, 13, 47, 55, 71, DateTimeKind.Local).AddTicks(142),
+                            CategoryModifyDate = new DateTime(2020, 4, 19, 9, 56, 34, 380, DateTimeKind.Local).AddTicks(4556),
                             CategoryOrder = 1
                         },
                         new
                         {
-                            CategoryGuid = new Guid("6b5bc097-5d25-4394-90b0-688ced89739a"),
-                            CategoryCreateDate = new DateTime(2020, 4, 16, 13, 47, 55, 71, DateTimeKind.Local).AddTicks(1309),
+                            CategoryGuid = new Guid("e5609825-5d5c-40dd-bbb4-be22dca70893"),
+                            CategoryCreateDate = new DateTime(2020, 4, 19, 9, 56, 34, 380, DateTimeKind.Local).AddTicks(5894),
                             CategoryDisplay = "وبلاگ",
                             CategoryIsDelete = false,
-                            CategoryModifyDate = new DateTime(2020, 4, 16, 13, 47, 55, 71, DateTimeKind.Local).AddTicks(1334),
+                            CategoryModifyDate = new DateTime(2020, 4, 19, 9, 56, 34, 380, DateTimeKind.Local).AddTicks(5931),
                             CategoryOrder = 2
                         });
                 });
@@ -175,6 +175,96 @@ namespace Pisheyar.Infrastructure.Migrations
                     b.HasIndex("CtTagGuid");
 
                     b.ToTable("Tbl_CategoryTag");
+                });
+
+            modelBuilder.Entity("Pisheyar.Domain.Entities.TblChatMessage", b =>
+                {
+                    b.Property<Guid>("Guid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("(newid())");
+
+                    b.Property<Guid>("ChatRoomGuid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDelete")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((0))");
+
+                    b.Property<bool>("IsModified")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((0))");
+
+                    b.Property<bool>("IsSeen")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((0))");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<string>("SenderName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("SentDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Guid");
+
+                    b.HasIndex("ChatRoomGuid");
+
+                    b.ToTable("Tbl_ChatMessage");
+                });
+
+            modelBuilder.Entity("Pisheyar.Domain.Entities.TblChatRoom", b =>
+                {
+                    b.Property<Guid>("Guid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("(newid())");
+
+                    b.Property<DateTime>("CreationDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<bool>("IsDelete")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("((0))");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)")
+                        .HasMaxLength(450);
+
+                    b.Property<string>("OwnerConnectionId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)")
+                        .HasMaxLength(450);
+
+                    b.Property<Guid>("UserGuid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Guid");
+
+                    b.HasIndex("UserGuid");
+
+                    b.ToTable("Tbl_ChatRoom");
                 });
 
             modelBuilder.Entity("Pisheyar.Domain.Entities.TblCode", b =>
@@ -225,7 +315,7 @@ namespace Pisheyar.Infrastructure.Migrations
                             CodeId = 1,
                             CodeCgid = 1,
                             CodeDisplay = "png",
-                            CodeGuid = new Guid("dc00257f-ec66-4d0f-a3d9-b7b85eea9773"),
+                            CodeGuid = new Guid("b2d5a677-51cb-4e81-8091-a7ecf32db3ce"),
                             CodeIsDelete = false,
                             CodeName = "image/png"
                         },
@@ -234,7 +324,7 @@ namespace Pisheyar.Infrastructure.Migrations
                             CodeId = 2,
                             CodeCgid = 1,
                             CodeDisplay = "jpg",
-                            CodeGuid = new Guid("cf95370f-b8f3-4e35-8d12-ec26698eca69"),
+                            CodeGuid = new Guid("a9cc62f7-3397-4799-8989-966ed1142476"),
                             CodeIsDelete = false,
                             CodeName = "image/jpg"
                         },
@@ -243,7 +333,7 @@ namespace Pisheyar.Infrastructure.Migrations
                             CodeId = 3,
                             CodeCgid = 1,
                             CodeDisplay = "jpeg",
-                            CodeGuid = new Guid("293fa709-a623-4830-9ecb-95bc2396cda7"),
+                            CodeGuid = new Guid("c6ac4f7f-bde4-46aa-b001-81c39216fa1e"),
                             CodeIsDelete = false,
                             CodeName = "image/jpeg"
                         });
@@ -284,7 +374,7 @@ namespace Pisheyar.Infrastructure.Migrations
                         {
                             CgId = 1,
                             CgDisplay = "نوع فایل",
-                            CgGuid = new Guid("7997c359-b76c-436e-af14-9c13dffb41d9"),
+                            CgGuid = new Guid("dbd12002-d5e5-41b4-81dd-e67829dea5f0"),
                             CgName = "FilepondType"
                         });
                 });
@@ -308,13 +398,13 @@ namespace Pisheyar.Infrastructure.Migrations
                         .HasColumnName("Comment_Text")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CommentUserId")
-                        .HasColumnName("Comment_UserID")
-                        .HasColumnType("int");
+                    b.Property<Guid>("CommentUserGuid")
+                        .HasColumnName("Comment_UserGuid")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("CommentGuid");
 
-                    b.HasIndex("CommentUserId");
+                    b.HasIndex("CommentUserGuid");
 
                     b.ToTable("Tbl_Comment");
                 });
@@ -485,9 +575,9 @@ namespace Pisheyar.Infrastructure.Migrations
                         .HasColumnName("Post_Title")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PostUserId")
-                        .HasColumnName("Post_UserID")
-                        .HasColumnType("int");
+                    b.Property<Guid>("PostUserGuid")
+                        .HasColumnName("Post_UserGuid")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("PostViewCount")
                         .ValueGeneratedOnAdd()
@@ -499,7 +589,7 @@ namespace Pisheyar.Infrastructure.Migrations
 
                     b.HasIndex("PostDocumentGuid");
 
-                    b.HasIndex("PostUserId");
+                    b.HasIndex("PostUserGuid");
 
                     b.ToTable("Tbl_Post");
                 });
@@ -636,21 +726,21 @@ namespace Pisheyar.Infrastructure.Migrations
                         new
                         {
                             RoleId = 1,
-                            RoleCreateDate = new DateTime(2020, 4, 16, 13, 47, 55, 67, DateTimeKind.Local).AddTicks(2372),
+                            RoleCreateDate = new DateTime(2020, 4, 19, 9, 56, 34, 377, DateTimeKind.Local).AddTicks(1360),
                             RoleDisplay = "کاربر عادی",
-                            RoleGuid = new Guid("7ef6a373-6ff5-4ae9-b6fa-82365c9cc7c4"),
+                            RoleGuid = new Guid("ccd2d78a-4088-45c0-8892-d189218d7551"),
                             RoleIsDelete = false,
-                            RoleModifyDate = new DateTime(2020, 4, 16, 13, 47, 55, 67, DateTimeKind.Local).AddTicks(2943),
+                            RoleModifyDate = new DateTime(2020, 4, 19, 9, 56, 34, 377, DateTimeKind.Local).AddTicks(2197),
                             RoleName = "User"
                         },
                         new
                         {
                             RoleId = 2,
-                            RoleCreateDate = new DateTime(2020, 4, 16, 13, 47, 55, 67, DateTimeKind.Local).AddTicks(4044),
+                            RoleCreateDate = new DateTime(2020, 4, 19, 9, 56, 34, 377, DateTimeKind.Local).AddTicks(3780),
                             RoleDisplay = "ادمین",
-                            RoleGuid = new Guid("a63afaf3-a31a-457a-abb3-32aba7b2580e"),
+                            RoleGuid = new Guid("b6d59587-4a7c-40a6-af56-7fe6a6e1ac26"),
                             RoleIsDelete = false,
-                            RoleModifyDate = new DateTime(2020, 4, 16, 13, 47, 55, 67, DateTimeKind.Local).AddTicks(4070),
+                            RoleModifyDate = new DateTime(2020, 4, 19, 9, 56, 34, 377, DateTimeKind.Local).AddTicks(3815),
                             RoleName = "Admin"
                         });
                 });
@@ -770,10 +860,10 @@ namespace Pisheyar.Infrastructure.Migrations
                         {
                             SpcId = 1,
                             SpcApiKey = "61726634455053586E44464E413462574A76535677436B547236574B56386D6A6F6E4F326A374A4C7755773D",
-                            SpcCreateDate = new DateTime(2020, 4, 16, 13, 47, 55, 59, DateTimeKind.Local).AddTicks(1424),
-                            SpcGuid = new Guid("adc95494-0b5c-44da-975d-76e9fe35567b"),
+                            SpcCreateDate = new DateTime(2020, 4, 19, 9, 56, 34, 369, DateTimeKind.Local).AddTicks(3469),
+                            SpcGuid = new Guid("fcc16abf-0512-44d5-8894-026d791d4c84"),
                             SpcIsDelete = false,
-                            SpcModifyDate = new DateTime(2020, 4, 16, 13, 47, 55, 62, DateTimeKind.Local).AddTicks(4736),
+                            SpcModifyDate = new DateTime(2020, 4, 19, 9, 56, 34, 372, DateTimeKind.Local).AddTicks(9962),
                             SpcPassword = "ptcoptco",
                             SpcUsername = "ptmgroupco@gmail.com"
                         });
@@ -915,15 +1005,15 @@ namespace Pisheyar.Infrastructure.Migrations
                         .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
-                    b.Property<int?>("SmsUserId")
-                        .HasColumnName("SMS_UserID")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("SmsUserGuid")
+                        .HasColumnName("SMS_UserGuid")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("SmsId");
 
                     b.HasIndex("SmsStid");
 
-                    b.HasIndex("SmsUserId");
+                    b.HasIndex("SmsUserGuid");
 
                     b.ToTable("Tbl_SMSResponse");
                 });
@@ -980,10 +1070,10 @@ namespace Pisheyar.Infrastructure.Migrations
                         new
                         {
                             SsId = 1,
-                            SsCreateDate = new DateTime(2020, 4, 16, 13, 47, 55, 65, DateTimeKind.Local).AddTicks(2602),
-                            SsGuid = new Guid("b617447e-3a89-4c12-94e2-5cd38282fb26"),
+                            SsCreateDate = new DateTime(2020, 4, 19, 9, 56, 34, 375, DateTimeKind.Local).AddTicks(2001),
+                            SsGuid = new Guid("aee87d64-5757-4fa9-b5f4-be91ec8fedb0"),
                             SsIsDelete = false,
-                            SsModifyDate = new DateTime(2020, 4, 16, 13, 47, 55, 65, DateTimeKind.Local).AddTicks(3599),
+                            SsModifyDate = new DateTime(2020, 4, 19, 9, 56, 34, 375, DateTimeKind.Local).AddTicks(2863),
                             SsName = "Kavenegar",
                             SsSpcid = 1
                         });
@@ -1041,10 +1131,10 @@ namespace Pisheyar.Infrastructure.Migrations
                         new
                         {
                             StId = 1,
-                            StCreateDate = new DateTime(2020, 4, 16, 13, 47, 55, 66, DateTimeKind.Local).AddTicks(3325),
-                            StGuid = new Guid("244e7bc9-7149-4ef5-8e61-073e6e68a918"),
+                            StCreateDate = new DateTime(2020, 4, 19, 9, 56, 34, 375, DateTimeKind.Local).AddTicks(9876),
+                            StGuid = new Guid("89a6fc7a-b1ac-43ef-b8be-ab65c15b464a"),
                             StIsDelete = false,
-                            StModifyDate = new DateTime(2020, 4, 16, 13, 47, 55, 66, DateTimeKind.Local).AddTicks(4225),
+                            StModifyDate = new DateTime(2020, 4, 19, 9, 56, 34, 376, DateTimeKind.Local).AddTicks(514),
                             StName = "VerifyAccount",
                             StSsid = 1
                         });
@@ -1094,11 +1184,11 @@ namespace Pisheyar.Infrastructure.Migrations
 
             modelBuilder.Entity("Pisheyar.Domain.Entities.TblUser", b =>
                 {
-                    b.Property<int>("UserId")
+                    b.Property<Guid>("UserGuid")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("User_ID")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnName("User_Guid")
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("(newid())");
 
                     b.Property<DateTime>("UserCreateDate")
                         .ValueGeneratedOnAdd()
@@ -1117,12 +1207,6 @@ namespace Pisheyar.Infrastructure.Migrations
                         .HasColumnName("User_Family")
                         .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
-
-                    b.Property<Guid>("UserGuid")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("User_Guid")
-                        .HasColumnType("UNIQUEIDENTIFIER ROWGUIDCOL")
-                        .HasDefaultValueSql("(newid())");
 
                     b.Property<bool>("UserIsActive")
                         .ValueGeneratedOnAdd()
@@ -1159,7 +1243,7 @@ namespace Pisheyar.Infrastructure.Migrations
                         .HasColumnName("User_RoleID")
                         .HasColumnType("int");
 
-                    b.HasKey("UserId");
+                    b.HasKey("UserGuid");
 
                     b.HasIndex("UserRoleId");
 
@@ -1168,57 +1252,53 @@ namespace Pisheyar.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = 1,
-                            UserCreateDate = new DateTime(2020, 4, 16, 13, 47, 55, 69, DateTimeKind.Local).AddTicks(3441),
+                            UserGuid = new Guid("18871c7e-3569-41db-ba88-c4c23a2fa65c"),
+                            UserCreateDate = new DateTime(2020, 4, 19, 9, 56, 34, 379, DateTimeKind.Local).AddTicks(475),
                             UserEmail = "mahdiroudaki@hotmail.com",
                             UserFamily = "رودکی",
-                            UserGuid = new Guid("e74b6789-d908-4c1f-b3cc-0c994ad9e422"),
                             UserIsActive = true,
                             UserIsDelete = false,
                             UserMobile = "09227204305",
-                            UserModifyDate = new DateTime(2020, 4, 16, 13, 47, 55, 69, DateTimeKind.Local).AddTicks(4623),
+                            UserModifyDate = new DateTime(2020, 4, 19, 9, 56, 34, 379, DateTimeKind.Local).AddTicks(1326),
                             UserName = "سید مهدی",
                             UserRoleId = 1
                         },
                         new
                         {
-                            UserId = 2,
-                            UserCreateDate = new DateTime(2020, 4, 16, 13, 47, 55, 69, DateTimeKind.Local).AddTicks(7753),
+                            UserGuid = new Guid("4c8bac07-1f49-42f2-aead-5d72607304e8"),
+                            UserCreateDate = new DateTime(2020, 4, 19, 9, 56, 34, 379, DateTimeKind.Local).AddTicks(3707),
                             UserEmail = "mahdiih@ymail.com",
                             UserFamily = "حکمی زاده",
-                            UserGuid = new Guid("e3c8ca25-17ee-4eb0-95b7-1e1ec6ba5af2"),
                             UserIsActive = true,
                             UserIsDelete = false,
                             UserMobile = "09199390494",
-                            UserModifyDate = new DateTime(2020, 4, 16, 13, 47, 55, 69, DateTimeKind.Local).AddTicks(7786),
+                            UserModifyDate = new DateTime(2020, 4, 19, 9, 56, 34, 379, DateTimeKind.Local).AddTicks(3747),
                             UserName = "مهدی",
                             UserRoleId = 1
                         },
                         new
                         {
-                            UserId = 3,
-                            UserCreateDate = new DateTime(2020, 4, 16, 13, 47, 55, 69, DateTimeKind.Local).AddTicks(7833),
+                            UserGuid = new Guid("a38ccdf5-3c25-4670-b093-be8fee5c3ad9"),
+                            UserCreateDate = new DateTime(2020, 4, 19, 9, 56, 34, 379, DateTimeKind.Local).AddTicks(3856),
                             UserEmail = "arshiasarabi@gmail.com",
                             UserFamily = "اموری سرابی",
-                            UserGuid = new Guid("b72720a4-1a28-464c-b928-c67509876add"),
                             UserIsActive = true,
                             UserIsDelete = false,
                             UserMobile = "09120509234",
-                            UserModifyDate = new DateTime(2020, 4, 16, 13, 47, 55, 69, DateTimeKind.Local).AddTicks(7838),
+                            UserModifyDate = new DateTime(2020, 4, 19, 9, 56, 34, 379, DateTimeKind.Local).AddTicks(3864),
                             UserName = "ارشیا",
                             UserRoleId = 1
                         },
                         new
                         {
-                            UserId = 4,
-                            UserCreateDate = new DateTime(2020, 4, 16, 13, 47, 55, 69, DateTimeKind.Local).AddTicks(7845),
+                            UserGuid = new Guid("b876db25-f7ba-4468-9f78-67679c340a3b"),
+                            UserCreateDate = new DateTime(2020, 4, 19, 9, 56, 34, 379, DateTimeKind.Local).AddTicks(3878),
                             UserEmail = "roozbehshamekhi@hotmail.com",
                             UserFamily = "شامخی",
-                            UserGuid = new Guid("860af325-997a-4496-9711-d3dc4e45b823"),
                             UserIsActive = true,
                             UserIsDelete = false,
                             UserMobile = "09128277075",
-                            UserModifyDate = new DateTime(2020, 4, 16, 13, 47, 55, 69, DateTimeKind.Local).AddTicks(7849),
+                            UserModifyDate = new DateTime(2020, 4, 19, 9, 56, 34, 379, DateTimeKind.Local).AddTicks(3883),
                             UserName = "روزبه",
                             UserRoleId = 1
                         });
@@ -1267,15 +1347,15 @@ namespace Pisheyar.Infrastructure.Migrations
                         .HasColumnName("UP_PermissionID")
                         .HasColumnType("int");
 
-                    b.Property<int>("UpUserId")
-                        .HasColumnName("UP_UserID")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UpUserGuid")
+                        .HasColumnName("UP_UserGuid")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("UpId");
 
                     b.HasIndex("UpPermissionId");
 
-                    b.HasIndex("UpUserId");
+                    b.HasIndex("UpUserGuid");
 
                     b.ToTable("Tbl_UserPermission");
                 });
@@ -1304,13 +1384,13 @@ namespace Pisheyar.Infrastructure.Migrations
                         .HasColumnName("UT_Token")
                         .HasColumnType("int");
 
-                    b.Property<int>("UtUserId")
-                        .HasColumnName("UT_UserID")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UtUserGuid")
+                        .HasColumnName("UT_UserGuid")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("UtId");
 
-                    b.HasIndex("UtUserId");
+                    b.HasIndex("UtUserGuid");
 
                     b.ToTable("Tbl_UserToken");
                 });
@@ -1347,6 +1427,22 @@ namespace Pisheyar.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Pisheyar.Domain.Entities.TblChatMessage", b =>
+                {
+                    b.HasOne("Pisheyar.Domain.Entities.TblChatRoom", "TblChatRoom")
+                        .WithMany("TblChatMessage")
+                        .HasForeignKey("ChatRoomGuid")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Pisheyar.Domain.Entities.TblChatRoom", b =>
+                {
+                    b.HasOne("Pisheyar.Domain.Entities.TblUser", "TblUser")
+                        .WithMany("TblChatRoom")
+                        .HasForeignKey("UserGuid")
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Pisheyar.Domain.Entities.TblCode", b =>
                 {
                     b.HasOne("Pisheyar.Domain.Entities.TblCodeGroup", "TblCodeGroup")
@@ -1360,7 +1456,7 @@ namespace Pisheyar.Infrastructure.Migrations
                 {
                     b.HasOne("Pisheyar.Domain.Entities.TblUser", "CommentUser")
                         .WithMany("TblComment")
-                        .HasForeignKey("CommentUserId")
+                        .HasForeignKey("CommentUserGuid")
                         .HasConstraintName("FK_Tbl_Comment_Tbl_User")
                         .IsRequired();
                 });
@@ -1384,7 +1480,7 @@ namespace Pisheyar.Infrastructure.Migrations
 
                     b.HasOne("Pisheyar.Domain.Entities.TblUser", "PostUser")
                         .WithMany("TblPost")
-                        .HasForeignKey("PostUserId")
+                        .HasForeignKey("PostUserGuid")
                         .HasConstraintName("FK_Tbl_Post_Tbl_User")
                         .IsRequired();
                 });
@@ -1467,7 +1563,7 @@ namespace Pisheyar.Infrastructure.Migrations
 
                     b.HasOne("Pisheyar.Domain.Entities.TblUser", "SmsUser")
                         .WithMany("TblSmsresponse")
-                        .HasForeignKey("SmsUserId")
+                        .HasForeignKey("SmsUserGuid")
                         .HasConstraintName("FK_Tbl_SMSResponse_Tbl_User");
                 });
 
@@ -1508,7 +1604,7 @@ namespace Pisheyar.Infrastructure.Migrations
 
                     b.HasOne("Pisheyar.Domain.Entities.TblUser", "UpUser")
                         .WithMany("TblUserPermission")
-                        .HasForeignKey("UpUserId")
+                        .HasForeignKey("UpUserGuid")
                         .HasConstraintName("FK_Tbl_UserPermission_Tbl_User")
                         .IsRequired();
                 });
@@ -1517,7 +1613,7 @@ namespace Pisheyar.Infrastructure.Migrations
                 {
                     b.HasOne("Pisheyar.Domain.Entities.TblUser", "UtUser")
                         .WithMany("TblUserToken")
-                        .HasForeignKey("UtUserId")
+                        .HasForeignKey("UtUserGuid")
                         .HasConstraintName("FK_Tbl_UserToken_Tbl_User")
                         .IsRequired();
                 });

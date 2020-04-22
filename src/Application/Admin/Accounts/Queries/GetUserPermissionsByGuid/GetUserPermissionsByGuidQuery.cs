@@ -45,7 +45,7 @@ namespace Pisheyar.Application.Accounts.Queries.GetUserPermissionsByGuid
                                                  }).ToListAsync(cancellationToken);
 
                     var customPermissions = await _context.TblUserPermission
-                        .Where(x => x.UpUserId == user.UserId)
+                        .Where(x => x.UpUserGuid == user.UserGuid)
                         .Join(_context.TblPermission, up => up.UpPermissionId, p => p.PermissionId, (up, p) => new { up, p })
                         .Select(x => new CustomPermissionDto
                         {

@@ -40,7 +40,7 @@ namespace Pisheyar.Application.Accounts.Commands.Login
                         var userToken = new TblUserToken
                         {
                             UtGuid = Guid.NewGuid(),
-                            UtUserId = user.UserId,
+                            UtUserGuid = user.UserGuid,
                             UtToken = token,
                             UtExpireDate = DateTime.Now.AddMinutes(5)
                         };

@@ -24,7 +24,7 @@ namespace Pisheyar.Application.Categories.Commands.CreateCategory
 
         //public Guid IconDocumentGuid { get; set; }
 
-        public Guid[] Tags { get; set; }
+        //public Guid[] Tags { get; set; }
 
         public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, int>
         {
@@ -44,16 +44,16 @@ namespace Pisheyar.Application.Categories.Commands.CreateCategory
                     CategoryOrder = request.Order,
                 };
 
-                foreach (var tagGuid in request.Tags)
-                {
-                    var categoryTag = new TblCategoryTag()
-                    {
-                        CtCategoryGu = category,
-                        CtTagGuid = tagGuid
-                    };
+                //foreach (var tagGuid in request.Tags)
+                //{
+                //    var categoryTag = new TblCategoryTag()
+                //    {
+                //        CtCategoryGu = category,
+                //        CtTagGuid = tagGuid
+                //    };
 
-                    _context.TblCategoryTag.Add(categoryTag);
-                }
+                //    _context.TblCategoryTag.Add(categoryTag);
+                //}
 
                 _context.TblCategory.Add(category);
 

@@ -12,11 +12,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Pisheyar.Application.Posts.Commands.DeletePost
 {
-    public class DeletePostCommand : IRequest<int>
+    public class DeletePostCommand : IRequest<DeletePostCommandVm>
     {
         public Guid PostGuid { get; set; }
 
-        public class DeleteCategoryCommandHandler : IRequestHandler<DeletePostCommand, int>
+        public class DeleteCategoryCommandHandler : IRequestHandler<DeletePostCommand, DeletePostCommandVm>
         {
             private readonly IPisheyarMagContext _context;
 
@@ -25,21 +25,29 @@ namespace Pisheyar.Application.Posts.Commands.DeletePost
                 _context = context;
             }
 
-            public async Task<int> Handle(DeletePostCommand request, CancellationToken cancellationToken)
+            public async Task<DeletePostCommandVm> Handle(DeletePostCommand request, CancellationToken cancellationToken)
             {
-                var query = await _context.TblPost.SingleOrDefaultAsync(x => x.PostGuid == request.PostGuid && !x.PostIsDelete);
+                var post = await _context.TblPost
+                    .SingleOrDefaultAsync(x => x.PostGuid == request.PostGuid && !x.PostIsDelete);
 
-                if (query != null)
+                if (post == null)
                 {
-                    query.PostIsDelete = true;
-                    query.PostModifyDate = DateTime.Now;
-
-                    await _context.SaveChangesAsync(cancellationToken);
-
-                    return 1;
+                    return new DeletePostCommandVm
+                    {
+                        Message = "پست مورد نظر یافت نشد",
+                        State = (int)DeletePostState.PostNotFound
+                    };
                 }
 
-                return -1;
+                post.PostIsDelete = true;
+
+                await _context.SaveChangesAsync(cancellationToken);
+
+                return new DeletePostCommandVm
+                {
+                    Message = "عملیات موفق آمیز",
+                    State = (int)DeletePostState.Success
+                };
             }
         }
     }

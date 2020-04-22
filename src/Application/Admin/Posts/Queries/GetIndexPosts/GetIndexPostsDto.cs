@@ -5,18 +5,19 @@ using Pisheyar.Application.Common.UploadHelper.Filepond;
 using Pisheyar.Domain.Entities;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
-namespace Pisheyar.Application.Posts.Queries.GetAllPosts
+namespace Pisheyar.Application.Posts.Queries.GetIndexPosts
 {
-    public class GetAllPostDto : IMapFrom<TblPost>
+    public class GetIndexPostsDto : IMapFrom<TblPost>
     {
         public Guid PostGuid { get; set; }
 
         public FilepondDto Document { get; set; }
 
-        public GetAllPostCategoryNameDto Category { get; set; }
+        public GetIndexPostsCategoryNameDto Category { get; set; }
 
-        public List<GetAllPostTagNameDto> Tags { get; set; }
+        public List<GetIndexPostsTagNameDto> Tags { get; set; }
 
         public string UserFullName { get; set; }
 
@@ -40,7 +41,7 @@ namespace Pisheyar.Application.Posts.Queries.GetAllPosts
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<TblPost, GetAllPostDto>()
+            profile.CreateMap<TblPost, GetIndexPostsDto>()
                 .ForMember(d => d.UserFullName, opt => opt.MapFrom(s => s.PostUser.UserName + " " + s.PostUser.UserFamily))
                 .ForMember(d => d.PostCreateDate, opt => opt.MapFrom(s => PersianDateExtensionMethods.ToPeString(s.PostCreateDate, "yyyy/MM/dd HH:mm")))
                 .ForMember(d => d.PostModifyDate, opt => opt.MapFrom(s => PersianDateExtensionMethods.ToPeString(s.PostModifyDate, "yyyy/MM/dd HH:mm")))
@@ -66,14 +67,14 @@ namespace Pisheyar.Application.Posts.Queries.GetAllPosts
         }
     }
 
-    public class GetAllPostCategoryNameDto
+    public class GetIndexPostsCategoryNameDto
     {
         public Guid Guid { get; set; }
 
         public string Title { get; set; }
     }
 
-    public class GetAllPostTagNameDto
+    public class GetIndexPostsTagNameDto
     {
         public Guid Guid { get; set; }
 

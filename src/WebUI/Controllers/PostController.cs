@@ -14,6 +14,8 @@ using Pisheyar.Application.Posts.Commands.LikePost;
 using Pisheyar.Application.Posts.Commands.UpdatePost;
 using Pisheyar.Application.Posts.Queries.GetAcceptedPostComments;
 using Pisheyar.Application.Posts.Queries.GetAllPosts;
+using Pisheyar.Application.Posts.Queries.GetIndexPosts;
+using Pisheyar.Application.Posts.Queries.GetMostViewedPosts;
 using Pisheyar.Application.Posts.Queries.GetPost;
 using Pisheyar.Application.Posts.Queries.GetPostsByCategory;
 using Pisheyar.Application.Posts.Queries.GetPostsByPagination;
@@ -65,6 +67,39 @@ namespace WebUI.Controllers
         public async Task<ActionResult<GetAllPostVm>> GetAll()
         {
             return await Mediator.Send(new GetAllPostsQuery());
+        }
+
+        /// <summary>
+        /// دریافت تمامی پست ها Anonymous
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("[action]")]
+        [AllowAnonymous]
+        public async Task<ActionResult<GetAllPostVm>> GetAllAnonymous()
+        {
+            return await Mediator.Send(new GetAllPostsQuery());
+        }
+
+        /// <summary>
+        /// دریافت 3 پست شاخص Anonymous
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("[action]")]
+        [AllowAnonymous]
+        public async Task<ActionResult<GetIndexPostsVm>> GetIndexesAnonymous()
+        {
+            return await Mediator.Send(new GetIndexPostsQuery());
+        }
+
+        /// <summary>
+        /// دریافت 15 پست پربازدید Anonymous
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("[action]")]
+        [AllowAnonymous]
+        public async Task<ActionResult<GetMostViewedPostsVm>> GetMostViewedAnonymous()
+        {
+            return await Mediator.Send(new GetMostViewedPostsQuery());
         }
 
         /// <summary>
@@ -172,7 +207,7 @@ namespace WebUI.Controllers
         /// <param name="guid">آیدی پست</param>
         /// <returns></returns>
         [HttpPost("[action]/{guid}")]
-        public async Task<ActionResult<int>> Delete(Guid guid)
+        public async Task<ActionResult<DeletePostCommandVm>> Delete(Guid guid)
         {
             return await Mediator.Send(new DeletePostCommand { PostGuid = guid });
         }

@@ -14,13 +14,13 @@ using Microsoft.AspNetCore.Http;
 
 namespace Pisheyar.Application.Common.UploadHelper.CKEditor
 {
-    public class CKEditorUploader : IRequest<bool>
+    public class CKEditorUploader : IRequest<CKEditorDto>
     {
         public IFormFile File { get; set; }
 
         public string WebRootPath { get; set; }
 
-        public class CKEditorUploaderHandler : IRequestHandler<CKEditorUploader, bool>
+        public class CKEditorUploaderHandler : IRequestHandler<CKEditorUploader, CKEditorDto>
         {
             private readonly IPisheyarMagContext _context;
 
@@ -29,7 +29,7 @@ namespace Pisheyar.Application.Common.UploadHelper.CKEditor
                 _context = context;
             }
 
-            public async Task<bool> Handle(CKEditorUploader request, CancellationToken cancellationToken)
+            public async Task<CKEditorDto> Handle(CKEditorUploader request, CancellationToken cancellationToken)
             {
                 var filename = DateTime.Now.ToString("yyyyMMddHHmmss") + request.File.FileName;
                 var path = Path.Combine(Directory.GetCurrentDirectory(), request.WebRootPath, "Uploads", filename);
@@ -40,7 +40,13 @@ namespace Pisheyar.Application.Common.UploadHelper.CKEditor
                     .Where(x => x.CodeName.Equals(request.File.ContentType) && !x.CodeIsDelete)
                     .SingleOrDefaultAsync(cancellationToken);
 
-                if (typeCode.Result == null) return false;
+                if (typeCode.Result == null)
+                {
+                    return new CKEditorDto
+                    {
+                        Url = null
+                    };
+                }
 
                 var document = new TblDocument
                 {
@@ -54,7 +60,10 @@ namespace Pisheyar.Application.Common.UploadHelper.CKEditor
 
                 await _context.SaveChangesAsync(cancellationToken);
 
-                return true;
+                return new CKEditorDto
+                {
+                    Url = document.DocumentPath
+                };
             }
         }
     }

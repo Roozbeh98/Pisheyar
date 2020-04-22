@@ -48,69 +48,12 @@ namespace WebUI.Controllers
         /// <summary>
         /// بارگذاری سند - CKEditor
         /// </summary>
-        /// <param name="file">اطلاعات سند</param>
+        /// <param name="upload">اطلاعات سند</param>
         /// <returns></returns>
         [HttpPost("[action]")]
-        public async Task<ActionResult<bool>> CKEditor(IFormFile file)
+        public async Task<ActionResult<CKEditorDto>> CKEditor(IFormFile upload)
         {
-            return await Mediator.Send(new CKEditorUploader { File = file, WebRootPath = _hostingEnvironment.WebRootPath });
+            return await Mediator.Send(new CKEditorUploader { File = upload, WebRootPath = _hostingEnvironment.WebRootPath });
         }
-
-
-
-
-
-
-
-        //[HttpPost("[action]")]
-        //public IActionResult UploadImage(IFormFile upload)
-        //{
-        //    var filename = DateTime.Now.ToString("yyyyMMddHHmmss") + upload.FileName;
-        //    var path = Path.Combine(Directory.GetCurrentDirectory(),
-        //        _hostingEnvironment.WebRootPath, "uploads", filename);
-        //    var stream = new FileStream(path, FileMode.Create);
-        //    upload.CopyToAsync(stream);
-        //    return new JsonResult(true);
-        //}
-
-        //[HttpPost("[action]")]
-        //public JsonResult UploadImageTest(IFormFile filepond)
-        //{
-        //    var filename = DateTime.Now.ToString("yyyyMMddHHmmss") + filepond.FileName;
-        //    var path = Path.Combine(Directory.GetCurrentDirectory(),
-        //        _hostingEnvironment.WebRootPath, "uploads", filename);
-        //    var stream = new FileStream(path, FileMode.Create);
-        //    filepond.CopyToAsync(stream);
-
-        //    return new JsonResult(filename);
-        //}
-
-        //[HttpPost("[action]")]
-        //public JsonResult RevertImage()
-        //{
-        //    string res;
-
-        //    MemoryStream memstream = new MemoryStream();
-        //    Request.Body.CopyToAsync(memstream);
-        //    memstream.Position = 0;
-        //    using (StreamReader reader = new StreamReader(memstream))
-        //    {
-        //        res = reader.ReadToEnd();
-        //    }
-
-        //    res = res.Remove(res.Length - 1);
-        //    string filename = res.Substring(1);
-
-        //    var source = Path.Combine(Directory.GetCurrentDirectory(),
-        //        _hostingEnvironment.WebRootPath, "uploads", filename);
-
-        //    if (System.IO.File.Exists(source))
-        //    {
-        //        //System.IO.File.Delete(source);
-        //        return new JsonResult(true);
-        //    }
-
-        //    return new JsonResult(false);
-        //}
     }
 }

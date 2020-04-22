@@ -98,7 +98,7 @@ namespace Pisheyar.Application.Accounts.Commands.Register
 
                     var userToken = new TblUserToken
                     {
-                        UtUserId = user.UserId,
+                        UtUserGuid = user.UserGuid,
                         UtToken = token,
                         UtExpireDate = now.AddMinutes(2)
                     };

@@ -40,7 +40,7 @@ namespace Pisheyar.Infrastructure.Identity
 
             if (user != null)
             {
-                var userToken = await _context.TblUserToken.Where(x => x.UtUserId.Equals(user.UserId)).OrderBy(x => x.UtExpireDate).LastOrDefaultAsync();
+                var userToken = await _context.TblUserToken.Where(x => x.UtUserGuid.Equals(user.UserGuid)).OrderBy(x => x.UtExpireDate).LastOrDefaultAsync();
 
                 if (userToken.UtToken.ToString().Equals(code) && userToken.UtExpireDate > DateTime.Now)
                 {

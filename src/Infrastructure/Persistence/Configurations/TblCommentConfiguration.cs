@@ -15,7 +15,7 @@ namespace Pisheyar.Infrastructure.Persistence.Configurations
 
             entity.ToTable("Tbl_Comment");
 
-            entity.HasIndex(e => e.CommentUserId);
+            entity.HasIndex(e => e.CommentUserGuid);
 
             entity.Property(e => e.CommentDate)
                 .HasColumnName("Comment_Date")
@@ -29,12 +29,12 @@ namespace Pisheyar.Infrastructure.Persistence.Configurations
                 .IsRequired()
                 .HasColumnName("Comment_Text");
 
-            entity.Property(e => e.CommentUserId)
-                .HasColumnName("Comment_UserID");
+            entity.Property(e => e.CommentUserGuid)
+                .HasColumnName("Comment_UserGuid");
 
             entity.HasOne(d => d.CommentUser)
                 .WithMany(p => p.TblComment)
-                .HasForeignKey(d => d.CommentUserId)
+                .HasForeignKey(d => d.CommentUserGuid)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Tbl_Comment_Tbl_User");
         }

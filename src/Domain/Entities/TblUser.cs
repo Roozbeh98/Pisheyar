@@ -9,13 +9,12 @@ namespace Pisheyar.Domain.Entities
         {
             TblComment = new HashSet<TblComment>();
             TblPost = new HashSet<TblPost>();
+            TblChatRoom = new HashSet<TblChatRoom>();
             TblSmsresponse = new HashSet<TblSmsresponse>();
             TblUserPermission = new HashSet<TblUserPermission>();
             TblUserToken = new HashSet<TblUserToken>();
         }
 
-
-        public int UserId { get; set; }
 
         public Guid UserGuid { get; set; }
 
@@ -43,6 +42,8 @@ namespace Pisheyar.Domain.Entities
         public virtual ICollection<TblComment> TblComment { get; set; }
 
         public virtual ICollection<TblPost> TblPost { get; set; }
+
+        public virtual ICollection<TblChatRoom> TblChatRoom { get; set; }
 
         public virtual ICollection<TblSmsresponse> TblSmsresponse { get; set; }
 

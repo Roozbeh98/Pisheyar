@@ -18,6 +18,8 @@ using Microsoft.AspNetCore.Http;
 using Pisheyar.Infrastructure.Persistence;
 using FluentValidation.AspNetCore;
 using WebUI.Common;
+using Pisheyar.Infrastructure.Services;
+using WebUI.SignalRHubs;
 
 namespace WebUI
 {
@@ -39,13 +41,25 @@ namespace WebUI
             services.AddApplication();
             services.AddInfrastructure(Configuration, Environment);
 
+            services.AddSignalR().AddHubOptions<ChatHub>(options =>
+            {
+                options.EnableDetailedErrors = true;
+            });
+
             //services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<ICurrentUserService, CurrentUserService>();
 
             services.AddHealthChecks()
                 .AddDbContextCheck<PisheyarMagContext>();
 
-            services.AddCors();
+            services.AddCors(options => options.AddPolicy("CorsPolicy",
+            builder =>
+            {
+                builder.AllowAnyMethod().AllowAnyHeader()
+                       .WithOrigins("http://127.0.0.1:3000")
+                       .WithOrigins("http://127.0.0.1:5500")
+                       .AllowCredentials();
+            }));
             services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<IPisheyarMagContext>())
                 .AddNewtonsoftJson();
 
@@ -76,17 +90,16 @@ namespace WebUI
 
             app.UseRouting();
 
+            app.UseCors("CorsPolicy");
+
             app.UseAuthentication();
             app.UseAuthorization();
-
-            app.UseCors(x => x
-                .AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader());
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<ChatHub>("/chatHub");
+                endpoints.MapHub<AgentHub>("/agentHub");
             });
         }
     }

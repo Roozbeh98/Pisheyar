@@ -9,7 +9,7 @@ namespace Pisheyar.Domain.Entities
 
         public Guid SmsGuid { get; set; }
 
-        public int? SmsUserId { get; set; }
+        public Guid? SmsUserGuid { get; set; }
 
         public int? SmsStid { get; set; }
 

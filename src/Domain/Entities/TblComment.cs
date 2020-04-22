@@ -13,7 +13,7 @@ namespace Pisheyar.Domain.Entities
 
         public Guid CommentGuid { get; set; }
 
-        public int CommentUserId { get; set; }
+        public Guid CommentUserGuid { get; set; }
 
         public string CommentText { get; set; }
 

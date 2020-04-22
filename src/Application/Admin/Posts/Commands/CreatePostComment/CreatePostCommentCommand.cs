@@ -16,7 +16,7 @@ namespace Pisheyar.Application.Posts.Commands.CreatePostComment
     {
         public Guid PostGuid { get; set; }
 
-        public int UserId { get; set; }
+        public Guid UserGuid { get; set; }
 
         public string Text { get; set; }
 
@@ -35,7 +35,7 @@ namespace Pisheyar.Application.Posts.Commands.CreatePostComment
             {
                 var commentEntity = new TblComment
                 {
-                    CommentUserId = request.UserId,
+                    CommentUserGuid = request.UserGuid,
                     CommentText = request.Text
                 };
 
