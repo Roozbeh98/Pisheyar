@@ -23,10 +23,10 @@ namespace Pisheyar.Application.Accounts.Commands.Register
 
         public class RegisterCommandHandler : IRequestHandler<RegisterCommand, RegisterCommandVm>
         {
-            private readonly IPisheyarMagContext _context;
+            private readonly IPisheyarContext _context;
             private readonly ISmsService _smsService;
 
-            public RegisterCommandHandler(IPisheyarMagContext context, ISmsService smsService)
+            public RegisterCommandHandler(IPisheyarContext context, ISmsService smsService)
             {
                 _context = context;
                 _smsService = smsService;
@@ -34,7 +34,7 @@ namespace Pisheyar.Application.Accounts.Commands.Register
 
             public async Task<RegisterCommandVm> Handle(RegisterCommand request, CancellationToken cancellationToken)
             {
-                var user = await _context.TblUser.SingleOrDefaultAsync(x => x.UserMobile.Equals(request.Mobile) && !x.UserIsDelete);
+                var user = await _context.User.SingleOrDefaultAsync(x => x.PhoneNumber.Equals(request.Mobile) && !x.IsDelete);
 
                 if (user == null)
                 {
@@ -42,28 +42,28 @@ namespace Pisheyar.Application.Accounts.Commands.Register
 
                     int token = new Random().Next(100000, 999999);
 
-                    var newUser = new TblUser
+                    var newUser = new User
                     {
-                        UserRoleId = (int)Role.User,
-                        UserName = request.Name,
-                        UserFamily = request.Family,
-                        UserEmail = request.Email,
-                        UserMobile = request.Mobile
+                        RoleId = (int)Domain.Enums.Role.User,
+                        FirstName = request.Name,
+                        LastName = request.Family,
+                        Email = request.Email,
+                        PhoneNumber = request.Mobile
                     };
 
-                    var userToken = new TblUserToken
+                    var userToken = new Token
                     {
-                        UtUser = newUser,
-                        UtToken = token,
-                        UtExpireDate = DateTime.Now.AddMinutes(2)
+                        User = newUser,
+                        Value = token,
+                        ExpireDate = DateTime.Now.AddMinutes(2)
                     };
 
-                    _context.TblUser.Add(newUser);
-                    _context.TblUserToken.Add(userToken);
+                    _context.User.Add(newUser);
+                    _context.Token.Add(userToken);
 
                     await _context.SaveChangesAsync(cancellationToken);
 
-                    object smsResult = await _smsService.SendServiceable(SmsTemplate.VerifyAccount, request.Mobile, token.ToString());
+                    object smsResult = await _smsService.SendServiceable(Domain.Enums.SmsTemplate.VerifyAccount, request.Mobile, token.ToString());
 
                     if (smsResult.GetType().Name != "SendResult")
                     {
@@ -80,7 +80,7 @@ namespace Pisheyar.Application.Accounts.Commands.Register
                 {
                     // user exists
 
-                    if (user.UserIsActive)
+                    if (user.IsActive)
                     {
                         return new RegisterCommandVm() { Message = "کاربر مورد نظر در سامانه ثبت شده است", State = (int)RegisterState.UserExists };
                     }
@@ -89,25 +89,25 @@ namespace Pisheyar.Application.Accounts.Commands.Register
 
                     DateTime now = DateTime.Now;
 
-                    user.UserName = request.Name;
-                    user.UserFamily = request.Family;
-                    user.UserEmail = request.Email;
-                    user.UserModifyDate = now;
+                    user.FirstName = request.Name;
+                    user.LastName = request.Family;
+                    user.Email = request.Email;
+                    user.ModifiedDate = now;
 
                     int token = new Random().Next(100000, 999999);
 
-                    var userToken = new TblUserToken
+                    var userToken = new Token
                     {
-                        UtUserGuid = user.UserGuid,
-                        UtToken = token,
-                        UtExpireDate = now.AddMinutes(2)
+                        UserId = user.UserId,
+                        Value = token,
+                        ExpireDate = now.AddMinutes(2)
                     };
 
-                    _context.TblUserToken.Add(userToken);
+                    _context.Token.Add(userToken);
 
                     await _context.SaveChangesAsync(cancellationToken);
 
-                    object smsResult = await _smsService.SendServiceable(SmsTemplate.VerifyAccount, request.Mobile, token.ToString());
+                    object smsResult = await _smsService.SendServiceable(Domain.Enums.SmsTemplate.VerifyAccount, request.Mobile, token.ToString());
 
                     if (smsResult.GetType().Name != "SendResult")
                     {

@@ -5,7 +5,7 @@ using System;
 
 namespace Pisheyar.Application.Posts.Queries.GetPostsByCategory
 {
-    public class GetPostsByCategoryDto : IMapFrom<TblPost>
+    public class GetPostsByCategoryDto : IMapFrom<Post>
     {
         public Guid PostGuid { get; set; }
 
@@ -27,13 +27,13 @@ namespace Pisheyar.Application.Posts.Queries.GetPostsByCategory
 
         public DateTime PostModifyDate { get; set; }
 
-        public bool PostIsShow { get; set; }
+        public bool? PostIsShow { get; set; }
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<TblPost, GetPostsByCategoryDto>()
-                .ForMember(d => d.UserFullName, opt => opt.MapFrom(s => s.PostUser.UserName + " " + s.PostUser.UserFamily))
-                .ForMember(d => d.DocumentFileName, opt => opt.MapFrom(s => s.PostDocument.DocumentFileName));
+            profile.CreateMap<Post, GetPostsByCategoryDto>()
+                .ForMember(d => d.UserFullName, opt => opt.MapFrom(s => s.User.FirstName + " " + s.User.LastName))
+                .ForMember(d => d.DocumentFileName, opt => opt.MapFrom(s => s.Document.Name));
         }
     }
 }

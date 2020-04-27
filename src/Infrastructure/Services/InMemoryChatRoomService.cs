@@ -13,10 +13,10 @@ namespace Pisheyar.Infrastructure.Services
     {
         //private readonly Dictionary<Guid, ChatRoom> _roomInfo = new Dictionary<Guid, ChatRoom>();
         //private readonly Dictionary<Guid, List<ChatMessage>> _messages = new Dictionary<Guid, List<ChatMessage>>();
-        private readonly IPisheyarMagContext _context;
+        private readonly IPisheyarContext _context;
         private readonly ICurrentUserService _currentUserService;
 
-        public InMemoryChatRoomService(IPisheyarMagContext context, ICurrentUserService currentUserService)
+        public InMemoryChatRoomService(IPisheyarContext context, ICurrentUserService currentUserService)
         {
             _context = context;
             _currentUserService = currentUserService;
@@ -24,7 +24,7 @@ namespace Pisheyar.Infrastructure.Services
 
         public Task<Guid> CreateRoom(string connectionId)
         {
-            var currentUser = _context.TblUser
+            var currentUser = _context.User
                     .Where(x => x.UserGuid == Guid.Parse(_currentUserService.NameIdentifier))
                     .SingleOrDefault();
 
@@ -33,28 +33,28 @@ namespace Pisheyar.Infrastructure.Services
                 throw new UnauthorizedAccessException();
             }
 
-            var chatRoom = new TblChatRoom()
+            var chatRoom = new ChatRoom()
             {
-                UserGuid = currentUser.UserGuid,
+                //UserGuid = currentUser.UserGuid,
                 OwnerConnectionId = connectionId
             };
 
-            _context.TblChatRoom.Add(chatRoom);
+            _context.ChatRoom.Add(chatRoom);
             _context.SaveChanges();
 
-            return Task.FromResult(chatRoom.Guid);
+            return Task.FromResult(chatRoom.ChatRoomGuid);
         }
 
         public Task<Guid> GetRoom(string connectionId)
         {
-            var foundRoom = _context.TblChatRoom.FirstOrDefault(x => x.OwnerConnectionId == connectionId);
+            var foundRoom = _context.ChatRoom.FirstOrDefault(x => x.OwnerConnectionId == connectionId);
 
-            if (foundRoom.Guid == null)
+            if (foundRoom.ChatRoomGuid == null)
             {
                 throw new ArgumentException("Invalid Connection ID");
             }
 
-            return Task.FromResult(foundRoom.Guid);
+            return Task.FromResult(foundRoom.ChatRoomGuid);
         }
 
         public Task SetRoomName(Guid roomId, string name)
@@ -66,7 +66,7 @@ namespace Pisheyar.Infrastructure.Services
 
             //_roomInfo[roomId].Name = name;
 
-            var chatRoom = _context.TblChatRoom.FirstOrDefault(x => x.Guid == roomId);
+            var chatRoom = _context.ChatRoom.FirstOrDefault(x => x.ChatRoomGuid == roomId);
 
             if (chatRoom == null)
             {
@@ -80,23 +80,23 @@ namespace Pisheyar.Infrastructure.Services
             return Task.CompletedTask;
         }
 
-        public Task AddMessage(Guid roomId, TblChatMessage message)
+        public Task AddMessage(Guid roomId, ChatMessage message)
         {
             //if (!_messages.ContainsKey(roomId))
             //{
             //    _messages[roomId] = new List<ChatMessage>();
             //}
             //_messages[roomId].Add(message);
-            _context.TblChatMessage.Add(message);
+            _context.ChatMessage.Add(message);
             _context.SaveChanges();
 
             return Task.CompletedTask;
         }
 
-        public Task<List<TblChatMessage>> GetAllMessages(Guid roomId)
+        public Task<List<ChatMessage>> GetAllMessages(Guid roomId)
         {
-            var chatMessages = _context.TblChatMessage
-                .Where(x => x.Guid == roomId)
+            var chatMessages = _context.ChatMessage
+                .Where(x => x.ChatMessageGuid == roomId)
                 .OrderBy(x => x.SentDate)
                 .ToList();
 
@@ -114,13 +114,13 @@ namespace Pisheyar.Infrastructure.Services
             return Task.FromResult(chatMessages);
         }
 
-        public Task<IReadOnlyList<TblChatRoom>> GetAllRooms()
+        public Task<IReadOnlyList<ChatRoom>> GetAllRooms()
         {
-            var chatRooms = _context.TblChatRoom
+            var chatRooms = _context.ChatRoom
                 //.OrderBy(x => x.SendAt)
                 .ToList();
 
-            return Task.FromResult(chatRooms as IReadOnlyList<TblChatRoom>);
+            return Task.FromResult(chatRooms as IReadOnlyList<ChatRoom>);
         }
     }
 }

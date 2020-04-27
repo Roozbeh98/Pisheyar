@@ -20,21 +20,21 @@ namespace Pisheyar.Application.Accounts.Commands.ChangeUserActiveness
 
         public class DeleteUserCommandHandler : IRequestHandler<ChangeUserActivenessCommand, ChangeUserActivenessVm>
         {
-            private readonly IPisheyarMagContext _context;
+            private readonly IPisheyarContext _context;
 
-            public DeleteUserCommandHandler(IPisheyarMagContext context)
+            public DeleteUserCommandHandler(IPisheyarContext context)
             {
                 _context = context;
             }
 
             public async Task<ChangeUserActivenessVm> Handle(ChangeUserActivenessCommand request, CancellationToken cancellationToken)
             {
-                var query = await _context.TblUser.SingleOrDefaultAsync(x => x.UserGuid == request.UserGuid && !x.UserIsDelete);
+                var query = await _context.User.SingleOrDefaultAsync(x => x.UserGuid == request.UserGuid && !x.IsDelete);
 
                 if (query != null)
                 {
-                    query.UserIsActive = request.IsActive;
-                    query.UserModifyDate = DateTime.Now;
+                    query.IsActive = request.IsActive;
+                    query.ModifiedDate = DateTime.Now;
 
                     await _context.SaveChangesAsync(cancellationToken);
 

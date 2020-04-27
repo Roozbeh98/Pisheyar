@@ -20,10 +20,10 @@ namespace Pisheyar.Application.Accounts.Queries.GetUserByMobile
 
         public class GetUserByMobileQueryHandler : IRequestHandler<GetUserByMobileQuery, UserByMobileVm>
         {
-            private readonly IPisheyarMagContext _context;
+            private readonly IPisheyarContext _context;
             private readonly IMapper _mapper;
 
-            public GetUserByMobileQueryHandler(IPisheyarMagContext context, IMapper mapper)
+            public GetUserByMobileQueryHandler(IPisheyarContext context, IMapper mapper)
             {
                 _context = context;
                 _mapper = mapper;
@@ -31,8 +31,8 @@ namespace Pisheyar.Application.Accounts.Queries.GetUserByMobile
 
             public async Task<UserByMobileVm> Handle(GetUserByMobileQuery request, CancellationToken cancellationToken)
             {
-                var user = await _context.TblUser
-                    .Where(x => x.UserMobile.Equals(request.Mobile) && !x.UserIsDelete)
+                var user = await _context.User
+                    .Where(x => x.PhoneNumber.Equals(request.Mobile) && !x.IsDelete)
                     .ProjectTo<UserByMobileDto>(_mapper.ConfigurationProvider)
                     .SingleOrDefaultAsync(cancellationToken);
 

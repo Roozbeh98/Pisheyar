@@ -20,10 +20,10 @@ namespace Pisheyar.Application.Posts.Queries.GetPost
 
         public class GetPostQueryHandler : IRequestHandler<GetPostQuery, GetPostVm>
         {
-            private readonly IPisheyarMagContext _context;
+            private readonly IPisheyarContext _context;
             private readonly IMapper _mapper;
 
-            public GetPostQueryHandler(IPisheyarMagContext context, IMapper mapper)
+            public GetPostQueryHandler(IPisheyarContext context, IMapper mapper)
             {
                 _context = context;
                 _mapper = mapper;
@@ -31,8 +31,8 @@ namespace Pisheyar.Application.Posts.Queries.GetPost
 
             public async Task<GetPostVm> Handle(GetPostQuery request, CancellationToken cancellationToken)
             {
-                var post = await _context.TblPost
-                    .Where(x => x.PostGuid == request.Guid && !x.PostIsDelete)
+                var post = await _context.Post
+                    .Where(x => x.PostGuid == request.Guid && !x.IsDelete)
                     .ProjectTo<GetPostDto>(_mapper.ConfigurationProvider)
                     .SingleOrDefaultAsync(cancellationToken);
 
@@ -45,13 +45,26 @@ namespace Pisheyar.Application.Posts.Queries.GetPost
                     };
                 }
 
-                var postCategory = await _context.TblPostCategory
-                    .Where(x => x.PcPostGuid == request.Guid)
-                    .OrderBy(x => x.PcCategoryGu.CategoryDisplay)
+                var p = await _context.Post
+                    .Where(x => x.PostGuid == request.Guid)
+                    .SingleOrDefaultAsync();
+
+                if (p == null)
+                {
+                    return new GetPostVm()
+                    {
+                        Message = "پست مورد نظر یافت نشد",
+                        State = (int)GetPostState.PostNotFound
+                    };
+                }
+
+                var postCategory = await _context.PostCategory
+                    .Where(x => x.PostId == p.PostId)
+                    .OrderBy(x => x.Category.DisplayName)
                     .Select(x => new GetPostCategoryNameDto
                     {
-                        Guid = x.PcCategoryGu.CategoryGuid,
-                        Title = x.PcCategoryGu.CategoryDisplay
+                        Guid = x.Category.CategoryGuid,
+                        Title = x.Category.DisplayName
 
                     }).FirstOrDefaultAsync(cancellationToken);
 
@@ -60,13 +73,13 @@ namespace Pisheyar.Application.Posts.Queries.GetPost
                     post.Category = postCategory;
                 }
 
-                var postTags = await _context.TblPostTag
-                    .Where(x => x.PtPostGuid == request.Guid)
-                    .OrderBy(x => x.PtTag.TagName)
+                var postTags = await _context.PostTag
+                    .Where(x => x.PostId == p.PostId)
+                    .OrderBy(x => x.Tag.Name)
                     .Select(x => new GetPostTagNameDto
                     {
-                        Guid = x.PtTag.TagGuid,
-                        Name = x.PtTag.TagName
+                        Guid = x.Tag.TagGuid,
+                        Name = x.Tag.Name
 
                     }).ToListAsync(cancellationToken);
 

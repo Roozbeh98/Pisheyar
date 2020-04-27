@@ -18,14 +18,14 @@ namespace Pisheyar.Application.Categories.Commands.DeleteCategory
 
         public class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryCommand, DeleteCategoryVm>
         {
-            private readonly IPisheyarMagContext _context;
+            private readonly IPisheyarContext _context;
 
-            public DeleteCategoryCommandHandler(IPisheyarMagContext context)
+            public DeleteCategoryCommandHandler(IPisheyarContext context)
             {
                 _context = context;
             }
 
-            public async Task<DeleteCategoryVm> RemoveCategoryTree(List<TblCategory> categories, Guid guid, CancellationToken cancellationToken)
+            public async Task<DeleteCategoryVm> RemoveCategoryTree(List<Category> categories, Guid guid, CancellationToken cancellationToken)
             {
                 var parent = categories
                     .Where(x => x.CategoryGuid == guid)
@@ -35,18 +35,18 @@ namespace Pisheyar.Application.Categories.Commands.DeleteCategory
                 {
                     int deletedRecordsCount = 1;
 
-                    parent.CategoryIsDelete = true;
-                    parent.CategoryModifyDate = DateTime.Now;
+                    parent.IsDelete = true;
+                    parent.ModifiedDate = DateTime.Now;
 
                     var children = categories
-                    .Where(x => x.CategoryCategoryGuid == guid)
-                    .OrderBy(x => x.CategoryOrder)
+                    .Where(x => x.ParentCategoryId == parent.ParentCategoryId)
+                    .OrderBy(x => x.Sort)
                     .ToList();
 
                     foreach (var child in children)
                     {
-                        child.CategoryIsDelete = true;
-                        child.CategoryModifyDate = DateTime.Now;
+                        child.IsDelete = true;
+                        child.ModifiedDate = DateTime.Now;
 
                         deletedRecordsCount++;
 
@@ -70,17 +70,17 @@ namespace Pisheyar.Application.Categories.Commands.DeleteCategory
                 };
             }
 
-            private async Task<int> RemoveCategoryChildren(List<TblCategory> categories, TblCategory parent, int deletedRecordsCount)
+            private async Task<int> RemoveCategoryChildren(List<Category> categories, Category parent, int deletedRecordsCount)
             {
                 var children = categories
-                    .Where(x => x.CategoryCategoryGuid == parent.CategoryGuid)
-                    .OrderBy(x => x.CategoryOrder)
+                    .Where(x => x.ParentCategoryId == parent.ParentCategoryId)
+                    .OrderBy(x => x.Sort)
                     .ToList();
 
                 foreach (var child in children)
                 {
-                    child.CategoryIsDelete = true;
-                    child.CategoryModifyDate = DateTime.Now;
+                    child.IsDelete = true;
+                    child.ModifiedDate = DateTime.Now;
 
                     deletedRecordsCount++;
 
@@ -92,8 +92,8 @@ namespace Pisheyar.Application.Categories.Commands.DeleteCategory
 
             public async Task<DeleteCategoryVm> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
             {
-                var categories = await _context.TblCategory
-                    .Where(x => !x.CategoryIsDelete)
+                var categories = await _context.Category
+                    .Where(x => !x.IsDelete)
                     .ToListAsync(cancellationToken);
 
                 return await RemoveCategoryTree(categories, request.Guid, cancellationToken);

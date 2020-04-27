@@ -18,10 +18,10 @@ namespace Pisheyar.Application.Posts.Queries.GetAllPosts
     {
         public class GetAllPostsQueryHandler : IRequestHandler<GetAllPostsQuery, GetAllPostVm>
         {
-            private readonly IPisheyarMagContext _context;
+            private readonly IPisheyarContext _context;
             private readonly IMapper _mapper;
 
-            public GetAllPostsQueryHandler(IPisheyarMagContext context, IMapper mapper)
+            public GetAllPostsQueryHandler(IPisheyarContext context, IMapper mapper)
             {
                 _context = context;
                 _mapper = mapper;
@@ -29,9 +29,9 @@ namespace Pisheyar.Application.Posts.Queries.GetAllPosts
 
             public async Task<GetAllPostVm> Handle(GetAllPostsQuery request, CancellationToken cancellationToken)
             {
-                var posts = await _context.TblPost
-                    .Where(x => !x.PostIsDelete)
-                    .OrderByDescending(x => x.PostModifyDate)
+                var posts = await _context.Post
+                    .Where(x => !x.IsDelete)
+                    .OrderByDescending(x => x.ModifiedDate)
                     .ProjectTo<GetAllPostDto>(_mapper.ConfigurationProvider)
                     .ToListAsync(cancellationToken);
 
@@ -46,13 +46,22 @@ namespace Pisheyar.Application.Posts.Queries.GetAllPosts
 
                 foreach (var post in posts)
                 {
-                    var postCategory = await _context.TblPostCategory
-                    .Where(x => x.PcPostGuid == post.PostGuid)
-                    .OrderBy(x => x.PcCategoryGu.CategoryDisplay)
+                    var p = await _context.Post
+                        .Where(x => x.PostGuid == post.PostGuid)
+                        .SingleOrDefaultAsync();
+
+                    if (p == null)
+                    {
+                        continue;
+                    }
+
+                    var postCategory = await _context.PostCategory
+                    .Where(x => x.PostId == p.PostId)
+                    .OrderBy(x => x.Category.DisplayName)
                     .Select(x => new GetAllPostCategoryNameDto
                     {
-                        Guid = x.PcCategoryGu.CategoryGuid,
-                        Title = x.PcCategoryGu.CategoryDisplay
+                        Guid = x.Category.CategoryGuid,
+                        Title = x.Category.DisplayName
 
                     }).FirstOrDefaultAsync(cancellationToken);
 
@@ -61,13 +70,13 @@ namespace Pisheyar.Application.Posts.Queries.GetAllPosts
                         post.Category = postCategory;
                     }
 
-                    var postTags = await _context.TblPostTag
-                        .Where(x => x.PtPostGuid == post.PostGuid)
-                        .OrderBy(x => x.PtTag.TagName)
+                    var postTags = await _context.PostTag
+                        .Where(x => x.PostId == p.PostId)
+                        .OrderBy(x => x.Tag.Name)
                         .Select(x => new GetAllPostTagNameDto
                         {
-                            Guid = x.PtTag.TagGuid,
-                            Name = x.PtTag.TagName
+                            Guid = x.Tag.TagGuid,
+                            Name = x.Tag.Name
 
                         }).ToListAsync(cancellationToken);
 

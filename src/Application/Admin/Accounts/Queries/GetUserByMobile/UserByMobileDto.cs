@@ -4,7 +4,7 @@ using System;
 
 namespace Pisheyar.Application.Accounts.Queries.GetUserByMobile
 {
-    public class UserByMobileDto : IMapFrom<TblUser>
+    public class UserByMobileDto : IMapFrom<User>
     {
         public Guid UserGuid { get; set; }
 

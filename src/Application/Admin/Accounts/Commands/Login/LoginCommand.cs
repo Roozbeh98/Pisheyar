@@ -18,10 +18,10 @@ namespace Pisheyar.Application.Accounts.Commands.Login
 
         public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginCommandVm>
         {
-            private readonly IPisheyarMagContext _context;
+            private readonly IPisheyarContext _context;
             private readonly ISmsService _smsService;
 
-            public LoginCommandHandler(IPisheyarMagContext context, ISmsService smsService)
+            public LoginCommandHandler(IPisheyarContext context, ISmsService smsService)
             {
                 _context = context;
                 _smsService = smsService;
@@ -29,27 +29,27 @@ namespace Pisheyar.Application.Accounts.Commands.Login
 
             public async Task<LoginCommandVm> Handle(LoginCommand request, CancellationToken cancellationToken)
             {
-                var user = await _context.TblUser.SingleOrDefaultAsync(x => x.UserMobile.Equals(request.Mobile) && !x.UserIsDelete);
+                var user = await _context.User.SingleOrDefaultAsync(x => x.PhoneNumber.Equals(request.Mobile) && !x.IsDelete);
 
                 if (user != null)
                 {
-                    if (user.UserIsActive)
+                    if (user.IsActive)
                     {
                         int token = new Random().Next(100000, 999999);
 
-                        var userToken = new TblUserToken
+                        var userToken = new Token
                         {
-                            UtGuid = Guid.NewGuid(),
-                            UtUserGuid = user.UserGuid,
-                            UtToken = token,
-                            UtExpireDate = DateTime.Now.AddMinutes(5)
+                            TokenGuid = Guid.NewGuid(),
+                            UserId = user.UserId,
+                            Value = token,
+                            ExpireDate = DateTime.Now.AddMinutes(5)
                         };
 
-                        _context.TblUserToken.Add(userToken);
+                        _context.Token.Add(userToken);
 
                         await _context.SaveChangesAsync(cancellationToken);
 
-                        object smsResult = await _smsService.SendServiceable(SmsTemplate.VerifyAccount, request.Mobile, token.ToString());
+                        object smsResult = await _smsService.SendServiceable(Domain.Enums.SmsTemplate.VerifyAccount, request.Mobile, token.ToString());
 
                         if (smsResult.GetType().Name != "SendResult")
                         {

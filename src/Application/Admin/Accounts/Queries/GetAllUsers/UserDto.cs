@@ -7,7 +7,7 @@ using System;
 
 namespace Pisheyar.Application.Accounts.Queries.GetAllUsers
 {
-    public class UserDto : IMapFrom<TblUser>
+    public class UserDto : IMapFrom<User>
     {
         public Guid UserGuid { get; set; }
 
@@ -23,8 +23,8 @@ namespace Pisheyar.Application.Accounts.Queries.GetAllUsers
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<TblUser, UserDto>()
-                .ForMember(d => d.UserCreateDate, opt => opt.MapFrom(s => PersianDateExtensionMethods.ToPeString(s.UserCreateDate, "yyyy/MM/dd HH:mm")));
+            profile.CreateMap<User, UserDto>()
+                .ForMember(d => d.UserCreateDate, opt => opt.MapFrom(s => PersianDateExtensionMethods.ToPeString(s.RegisteredDate, "yyyy/MM/dd HH:mm")));
         }
     }
 }

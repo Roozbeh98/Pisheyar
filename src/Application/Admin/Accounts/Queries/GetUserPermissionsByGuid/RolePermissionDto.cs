@@ -6,8 +6,6 @@ namespace Pisheyar.Application.Accounts.Queries.GetUserPermissionsByGuid
     {
         public string PermissionDisplay { get; set; }
 
-        public DateTime RpCreateDate { get; set; }
-
         public DateTime RpModifyDate { get; set; }
     }
 }

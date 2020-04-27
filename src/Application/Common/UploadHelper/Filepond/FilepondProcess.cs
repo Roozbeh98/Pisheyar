@@ -22,9 +22,9 @@ namespace Pisheyar.Application.Common.UploadHelper.Filepond
 
         public class FilepondProcessHandler : IRequestHandler<FilepondProcess, Guid?>
         {
-            private readonly IPisheyarMagContext _context;
+            private readonly IPisheyarContext _context;
 
-            public FilepondProcessHandler(IPisheyarMagContext context)
+            public FilepondProcessHandler(IPisheyarContext context)
             {
                 _context = context;
             }
@@ -36,21 +36,21 @@ namespace Pisheyar.Application.Common.UploadHelper.Filepond
                 var stream = new FileStream(path, FileMode.Create);
                 await request.Filepond.CopyToAsync(stream);
 
-                var typeCode = _context.TblCode
-                    .Where(x => x.CodeName.Equals(request.Filepond.ContentType) && !x.CodeIsDelete)
+                var typeCode = _context.Code
+                    .Where(x => x.Name.Equals(request.Filepond.ContentType) && !x.IsDelete)
                     .SingleOrDefaultAsync(cancellationToken);
                 
                 if (typeCode.Result == null) return null;
                
-                var document = new TblDocument
+                var document = new Document
                 {
-                    DocumentTypeCodeId = typeCode.Result.CodeId,
-                    DocumentPath = Path.Combine("http://185.94.97.164", "Uploads", filename),
-                    DocumentSize = request.Filepond.Length.ToString(),
-                    DocumentFileName = filename
+                    TypeCodeId = typeCode.Result.CodeId,
+                    Path = Path.Combine("http://185.94.97.164", "Uploads", filename),
+                    Size = request.Filepond.Length,
+                    Name = filename
                 };
 
-                _context.TblDocument.Add(document);
+                _context.Document.Add(document);
 
                 await _context.SaveChangesAsync(cancellationToken);
 

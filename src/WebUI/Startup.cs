@@ -50,7 +50,7 @@ namespace WebUI
             services.AddScoped<ICurrentUserService, CurrentUserService>();
 
             services.AddHealthChecks()
-                .AddDbContextCheck<PisheyarMagContext>();
+                .AddDbContextCheck<PisheyarContext>();
 
             services.AddCors(options => options.AddPolicy("CorsPolicy",
             builder =>
@@ -60,7 +60,7 @@ namespace WebUI
                        .WithOrigins("http://127.0.0.1:5500")
                        .AllowCredentials();
             }));
-            services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<IPisheyarMagContext>())
+            services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<IPisheyarContext>())
                 .AddNewtonsoftJson();
 
             // Customise default API behaviour

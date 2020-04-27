@@ -26,7 +26,7 @@ namespace Pisheyar.Application.Accounts.Commands.Authenticate
             private readonly IIdentityService _identityService;
             //private readonly ISmsService _smsService;
 
-            public AuthenticateQueryHandler(IPisheyarMagContext context, IIdentityService identityService, ISmsService smsService)
+            public AuthenticateQueryHandler(IPisheyarContext context, IIdentityService identityService, ISmsService smsService)
             {
                 //_context = context;
                 _identityService = identityService;

@@ -5,7 +5,7 @@ using System;
 
 namespace Pisheyar.Application.Tags.Queries.GetAllTags
 {
-    public class AllTagDto : IMapFrom<TblTag>
+    public class AllTagDto : IMapFrom<Tag>
     {
         public Guid Guid { get; set; }
 
@@ -13,9 +13,9 @@ namespace Pisheyar.Application.Tags.Queries.GetAllTags
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<TblTag, AllTagDto>()
+            profile.CreateMap<Tag, AllTagDto>()
                 .ForMember(d => d.Guid, opt => opt.MapFrom(s => s.TagGuid))
-                .ForMember(d => d.Name, opt => opt.MapFrom(s => s.TagName));
+                .ForMember(d => d.Name, opt => opt.MapFrom(s => s.Name));
         }
     }
 }

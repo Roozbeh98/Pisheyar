@@ -20,10 +20,10 @@ namespace Pisheyar.Application.Categories.Queries.SearchCategories
 
         public class SearchCategoriesQueryHandler : IRequestHandler<SearchCategoriesQuery, SearchCategoriesVm>
         {
-            private readonly IPisheyarMagContext _context;
+            private readonly IPisheyarContext _context;
             private readonly IMapper _mapper;
 
-            public SearchCategoriesQueryHandler(IPisheyarMagContext context, IMapper mapper)
+            public SearchCategoriesQueryHandler(IPisheyarContext context, IMapper mapper)
             {
                 _context = context;
                 _mapper = mapper;
@@ -31,8 +31,8 @@ namespace Pisheyar.Application.Categories.Queries.SearchCategories
 
             public async Task<SearchCategoriesVm> Handle(SearchCategoriesQuery request, CancellationToken cancellationToken)
             {
-                var categories = await _context.TblCategory
-                    .Where(x => x.CategoryDisplay.Contains(request.Input) && !x.CategoryIsDelete)
+                var categories = await _context.Category
+                    .Where(x => x.DisplayName.Contains(request.Input) && !x.IsDelete)
                     .ProjectTo<SearchCategoriesDto>(_mapper.ConfigurationProvider)
                     .ToListAsync(cancellationToken);
 

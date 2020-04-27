@@ -18,21 +18,22 @@ namespace Pisheyar.Application.Posts.Commands.LikePost
 
         public class LikePostCommandHandler : IRequestHandler<LikePostCommand, int>
         {
-            private readonly IPisheyarMagContext _context;
+            private readonly IPisheyarContext _context;
 
-            public LikePostCommandHandler(IPisheyarMagContext context)
+            public LikePostCommandHandler(IPisheyarContext context)
             {
                 _context = context;
             }
 
             public async Task<int> Handle(LikePostCommand request, CancellationToken cancellationToken)
             {
-                var query = await _context.TblPost.SingleOrDefaultAsync(x => x.PostGuid == request.PostGuid && !x.PostIsDelete);
+                var query = await _context.Post
+                    .SingleOrDefaultAsync(x => x.PostGuid == request.PostGuid && !x.IsDelete);
 
                 if (query != null)
                 {
-                    query.PostLikeCount += 1;
-                    query.PostModifyDate = DateTime.Now;
+                    query.LikeCount += 1;
+                    query.ModifiedDate = DateTime.Now;
 
                     await _context.SaveChangesAsync(cancellationToken);
 

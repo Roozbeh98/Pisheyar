@@ -21,10 +21,10 @@ namespace Pisheyar.Application.Posts.Commands.UpdatePost
 
         public class UpdatePostCommandHandler : IRequestHandler<UpdatePostCommand, UpdatePostCommandVm>
         {
-            private readonly IPisheyarMagContext _context;
+            private readonly IPisheyarContext _context;
             private readonly ICurrentUserService _currentUserService;
 
-            public UpdatePostCommandHandler(IPisheyarMagContext context, ICurrentUserService currentUserService)
+            public UpdatePostCommandHandler(IPisheyarContext context, ICurrentUserService currentUserService)
             {
                 _context = context;
                 _currentUserService = currentUserService;
@@ -32,8 +32,8 @@ namespace Pisheyar.Application.Posts.Commands.UpdatePost
 
             public async Task<UpdatePostCommandVm> Handle(UpdatePostCommand request, CancellationToken cancellationToken)
             {
-                var post = await _context.TblPost
-                    .SingleOrDefaultAsync(x => x.PostGuid == request.Command.PostGuid && !x.PostIsDelete);
+                var post = await _context.Post
+                    .SingleOrDefaultAsync(x => x.PostGuid == request.Command.PostGuid && !x.IsDelete);
 
                 if (post == null)
                 {
@@ -44,7 +44,7 @@ namespace Pisheyar.Application.Posts.Commands.UpdatePost
                     };
                 }
 
-                var currentUser = await _context.TblUser
+                var currentUser = await _context.User
                     .Where(x => x.UserGuid == Guid.Parse(_currentUserService.NameIdentifier))
                     .SingleOrDefaultAsync(cancellationToken);
 
@@ -59,10 +59,10 @@ namespace Pisheyar.Application.Posts.Commands.UpdatePost
 
                 if (!string.IsNullOrEmpty(request.Command.DocumentGuid))
                 {
-                    var document = await _context.TblDocument
-                        .AnyAsync(x => x.DocumentGuid == Guid.Parse(request.Command.DocumentGuid), cancellationToken);
+                    var document = await _context.Document
+                        .FirstOrDefaultAsync(x => x.DocumentGuid == Guid.Parse(request.Command.DocumentGuid), cancellationToken);
 
-                    if (!document)
+                    if (document == null)
                     {
                         return new UpdatePostCommandVm()
                         {
@@ -71,62 +71,66 @@ namespace Pisheyar.Application.Posts.Commands.UpdatePost
                         };
                     }
 
-                    var oldDocument = await _context.TblDocument
-                        .FirstOrDefaultAsync(x => x.DocumentGuid == post.PostDocumentGuid, cancellationToken);
+                    var oldDocument = await _context.Document
+                        .FirstOrDefaultAsync(x => x.DocumentId == post.DocumentId, cancellationToken);
 
-                    post.PostDocumentGuid = Guid.Parse(request.Command.DocumentGuid);
+                    post.DocumentId = document.DocumentId;
 
                     if (oldDocument != null)
                     {
-                        var uploadsIndex = oldDocument.DocumentPath.IndexOf("Uploads");
-                        var documentPath = Path.Combine(Directory.GetCurrentDirectory(), request.WebRootPath, oldDocument.DocumentPath.Substring(uploadsIndex));
+                        var uploadsIndex = oldDocument.Path.IndexOf("Uploads");
+                        var documentPath = Path.Combine(Directory.GetCurrentDirectory(), request.WebRootPath, oldDocument.Path.Substring(uploadsIndex));
 
                         if (File.Exists(documentPath))
                         {
                             File.Delete(documentPath);
                         }
 
-                        _context.TblDocument.Remove(oldDocument);
+                        _context.Document.Remove(oldDocument);
                     }
                 }
 
-                post.PostUserGuid = currentUser.UserGuid;
-                post.PostTitle = request.Command.Title;
-                post.PostAbstract = request.Command.Abstract;
-                post.PostDescription = request.Command.Description;
-                post.PostIsShow = request.Command.IsShow;
-                post.PostModifyDate = DateTime.Now;
+                post.UserId = currentUser.UserId;
+                post.Title = request.Command.Title;
+                post.Abstract = request.Command.Abstract;
+                post.Description = request.Command.Description;
+                post.IsShow = request.Command.IsShow;
+                post.ModifiedDate = DateTime.Now;
 
-                var oldCategories = await _context.TblPostCategory
-                    .Where(x => x.PcPostGuid == post.PostGuid)
+                var oldCategories = await _context.PostCategory
+                    .Where(x => x.PostId == post.PostId)
                     .ToListAsync(cancellationToken);
 
                 foreach (var oldCategory in oldCategories)
                 {
-                    _context.TblPostCategory.Remove(oldCategory);
+                    _context.PostCategory.Remove(oldCategory);
                 }
 
                 foreach (var categoryGuid in request.Command.Categories)
                 {
-                    var postCategory = new TblPostCategory()
+                    var category = await _context.Category
+                        .Where(x => x.CategoryGuid == categoryGuid)
+                        .SingleOrDefaultAsync(cancellationToken);
+
+                    var postCategory = new PostCategory()
                     {
-                        PcPost = post,
-                        PcCategoryGuid = categoryGuid
+                        Post = post,
+                        CategoryId = category.CategoryId
                     };
 
-                    _context.TblPostCategory.Add(postCategory);
+                    _context.PostCategory.Add(postCategory);
                 }
 
-                var oldTags = await _context.TblPostTag
-                    .Where(x => x.PtPostGuid == post.PostGuid)
+                var oldTags = await _context.PostTag
+                    .Where(x => x.PostId == post.PostId)
                     .ToListAsync(cancellationToken);
 
                 foreach (var oldTag in oldTags)
                 {
-                    _context.TblPostTag.Remove(oldTag);
+                    _context.PostTag.Remove(oldTag);
                 }
 
-                TblPostTag postTag;
+                PostTag postTag;
 
                 foreach (var tag in request.Command.Tags)
                 {
@@ -134,30 +138,34 @@ namespace Pisheyar.Application.Posts.Commands.UpdatePost
 
                     if (guid == Guid.Empty)
                     {
-                        var newTag = new TblTag()
+                        var newTag = new Tag()
                         {
-                            TagName = tag
+                            Name = tag
                         };
 
-                        _context.TblTag.Add(newTag);
+                        _context.Tag.Add(newTag);
 
-                        postTag = new TblPostTag()
+                        postTag = new PostTag()
                         {
-                            PtPost = post
+                            Post = post
                         };
 
-                        postTag.PtTag = newTag;
+                        postTag.Tag = newTag;
                     }
                     else
                     {
-                        postTag = new TblPostTag()
+                        var t = await _context.Tag
+                            .Where(x => x.TagGuid == Guid.Parse(tag))
+                            .SingleOrDefaultAsync(cancellationToken);
+
+                        postTag = new PostTag()
                         {
-                            PtPost = post,
-                            PtTagGuid = Guid.Parse(tag)
+                            Post = post,
+                            TagId = t.TagId
                         };
                     }
 
-                    _context.TblPostTag.Add(postTag);
+                    _context.PostTag.Add(postTag);
                 }
 
                 await _context.SaveChangesAsync(cancellationToken);

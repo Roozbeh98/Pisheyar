@@ -5,7 +5,7 @@ using System;
 
 namespace Pisheyar.Application.Posts.Queries.GetPostsByPagination
 {
-    public class GetPostsByPaginationDto : IMapFrom<TblPost>
+    public class GetPostsByPaginationDto : IMapFrom<Post>
     {
         public Guid PostGuid { get; set; }
 

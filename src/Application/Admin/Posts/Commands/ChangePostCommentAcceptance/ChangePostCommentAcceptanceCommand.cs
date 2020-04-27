@@ -20,20 +20,20 @@ namespace Pisheyar.Application.Posts.Commands.ChangePostCommentAcceptance
 
         public class ChangePostCommentAcceptanceCommandHandler : IRequestHandler<ChangePostCommentAcceptanceCommand, int>
         {
-            private readonly IPisheyarMagContext _context;
+            private readonly IPisheyarContext _context;
 
-            public ChangePostCommentAcceptanceCommandHandler(IPisheyarMagContext context)
+            public ChangePostCommentAcceptanceCommandHandler(IPisheyarContext context)
             {
                 _context = context;
             }
 
             public async Task<int> Handle(ChangePostCommentAcceptanceCommand request, CancellationToken cancellationToken)
             {
-                var query = await _context.TblPostComment.SingleOrDefaultAsync(x => x.PcGuid == request.PostCommentGuid);
+                var query = await _context.PostComment.SingleOrDefaultAsync(x => x.PostCommentGuid == request.PostCommentGuid);
 
                 if (query != null)
                 {
-                    query.PcIsAccept = request.IsAccept;
+                    query.IsAccept = request.IsAccept;
 
                     await _context.SaveChangesAsync(cancellationToken);
 

@@ -18,21 +18,21 @@ namespace Pisheyar.Application.Accounts.Commands.DeleteUser
 
         public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand, DeleteUserVm>
         {
-            private readonly IPisheyarMagContext _context;
+            private readonly IPisheyarContext _context;
 
-            public DeleteUserCommandHandler(IPisheyarMagContext context)
+            public DeleteUserCommandHandler(IPisheyarContext context)
             {
                 _context = context;
             }
 
             public async Task<DeleteUserVm> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
             {
-                var query = await _context.TblUser.SingleOrDefaultAsync(x => x.UserGuid == request.UserGuid && !x.UserIsDelete);
+                var query = await _context.User.SingleOrDefaultAsync(x => x.UserGuid == request.UserGuid && !x.IsDelete);
 
                 if (query != null)
                 {
-                    query.UserIsDelete = true;
-                    query.UserModifyDate = DateTime.Now;
+                    query.IsDelete = true;
+                    query.ModifiedDate = DateTime.Now;
 
                     await _context.SaveChangesAsync(cancellationToken);
 

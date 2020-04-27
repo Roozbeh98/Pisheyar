@@ -41,17 +41,17 @@ namespace WebUI.SignalRHubs
         {
             var roomId = await _chatRoomService.GetRoom(Context.ConnectionId);
 
-            var message = new TblChatMessage
+            var message = new ChatMessage
             {
-                ChatRoomGuid = roomId,
-                SenderName = name,
+                //ChatRoomGuid = roomId,
+                //SenderName = name,
                 Text = text,
                 //SendAt = DateTimeOffset.Now
             };
 
             await _chatRoomService.AddMessage(roomId, message);
 
-            await Clients.Group(roomId.ToString()).SendAsync("ReceiveMessage", message.SenderName, message.SentDate, message.Text);
+            await Clients.Group(roomId.ToString()).SendAsync("ReceiveMessage", message.UserId, message.SentDate, message.Text);
         }
 
         public async Task SetRoomName(string visitorName)

@@ -18,17 +18,17 @@ namespace Pisheyar.Application.Posts.Commands.DeletePost
 
         public class DeleteCategoryCommandHandler : IRequestHandler<DeletePostCommand, DeletePostCommandVm>
         {
-            private readonly IPisheyarMagContext _context;
+            private readonly IPisheyarContext _context;
 
-            public DeleteCategoryCommandHandler(IPisheyarMagContext context)
+            public DeleteCategoryCommandHandler(IPisheyarContext context)
             {
                 _context = context;
             }
 
             public async Task<DeletePostCommandVm> Handle(DeletePostCommand request, CancellationToken cancellationToken)
             {
-                var post = await _context.TblPost
-                    .SingleOrDefaultAsync(x => x.PostGuid == request.PostGuid && !x.PostIsDelete);
+                var post = await _context.Post
+                    .SingleOrDefaultAsync(x => x.PostGuid == request.PostGuid && !x.IsDelete);
 
                 if (post == null)
                 {
@@ -39,7 +39,7 @@ namespace Pisheyar.Application.Posts.Commands.DeletePost
                     };
                 }
 
-                post.PostIsDelete = true;
+                post.IsDelete = true;
 
                 await _context.SaveChangesAsync(cancellationToken);
 

@@ -20,71 +20,89 @@ namespace Pisheyar.Application.Categories.Queries.GetCategoryByGuid
 
         public class GetCategoryByGuidQueryHandler : IRequestHandler<GetCategoryByGuidQuery, CategoryVm>
         {
-            private readonly IPisheyarMagContext _context;
+            private readonly IPisheyarContext _context;
 
-            public GetCategoryByGuidQueryHandler(IPisheyarMagContext context)
+            public GetCategoryByGuidQueryHandler(IPisheyarContext context)
             {
                 _context = context;
             }
 
-            public async Task<List<CategoryDto>> GetCategoryTree(List<TblCategory> allCategories, Guid parentGuid)
+            public async Task<List<CategoryDto>> GetCategoryTree(List<Category> allCategories, Guid parentGuid)
             {
-                var categories = new List<CategoryDto>();
+                var c = await _context.Category
+                    .Where(x => x.CategoryGuid == parentGuid)
+                    .SingleOrDefaultAsync();
 
-                var children = allCategories
-                    .Where(x => x.CategoryCategoryGuid == parentGuid)
-                    .OrderBy(x => x.CategoryOrder)
-                    .ToList();
-
-                foreach (var child in children)
+                if (c != null)
                 {
-                    CategoryDto category = new CategoryDto
+                    var categories = new List<CategoryDto>();
+
+                    var children = allCategories
+                        .Where(x => x.ParentCategoryId == c.ParentCategoryId)
+                        .OrderBy(x => x.Sort)
+                        .ToList();
+
+                    foreach (var child in children)
                     {
-                        Guid = child.CategoryGuid,
-                        ParentGuid = child.CategoryCategoryGuid,
-                        Title = child.CategoryDisplay,
-                        Order = child.CategoryOrder
-                    };
+                        CategoryDto category = new CategoryDto
+                        {
+                            Guid = child.CategoryGuid,
+                            ParentId = child.ParentCategoryId,
+                            Title = child.DisplayName,
+                            Order = child.Sort
+                        };
 
-                    category.Children = await GetCategoryChildren(allCategories, category);
+                        category.Children = await GetCategoryChildren(allCategories, category);
 
-                    categories.Add(category);
+                        categories.Add(category);
+                    }
+
+                    return categories;
                 }
 
-                return categories;
+                return null;
             }
 
-            private async Task<List<CategoryDto>> GetCategoryChildren(List<TblCategory> allCategories, CategoryDto category)
+            private async Task<List<CategoryDto>> GetCategoryChildren(List<Category> allCategories, CategoryDto category)
             {
-                var subCategories = allCategories
-                    .Where(x => x.CategoryCategoryGuid == category.Guid)
-                    .OrderBy(x => x.CategoryOrder)
+                var c = await _context.Category
+                      .Where(x => x.CategoryGuid == category.Guid)
+                      .SingleOrDefaultAsync();
+
+                if (c != null)
+                {
+                    var subCategories = allCategories
+                    .Where(x => x.ParentCategoryId == c.ParentCategoryId)
+                    .OrderBy(x => x.Sort)
                     .Select(x => new CategoryDto
                     {
                         Guid = x.CategoryGuid,
-                        ParentGuid = x.CategoryCategoryGuid,
-                        Title = x.CategoryDisplay,
-                        Order = x.CategoryOrder
+                        ParentId = x.ParentCategoryId,
+                        Title = x.DisplayName,
+                        Order = x.Sort
 
                     }).ToList();
 
-                if (subCategories != null)
-                {
-                    category.Children = subCategories;
-
-                    foreach (var item in category.Children)
+                    if (subCategories != null)
                     {
-                        item.Children = await GetCategoryChildren(allCategories, item);
+                        category.Children = subCategories;
+
+                        foreach (var item in category.Children)
+                        {
+                            item.Children = await GetCategoryChildren(allCategories, item);
+                        }
                     }
+
+                    return category.Children;
                 }
 
-                return category.Children;
+                return null;
             }
 
             public async Task<CategoryVm> Handle(GetCategoryByGuidQuery request, CancellationToken cancellationToken)
             {
-                var categories = await _context.TblCategory
-                    .Where(x => !x.CategoryIsDelete)
+                var categories = await _context.Category
+                    .Where(x => !x.IsDelete)
                     .ToListAsync(cancellationToken);
 
                 var categoryTree = await GetCategoryTree(categories, request.CategoryGuid);

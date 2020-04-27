@@ -22,9 +22,9 @@ namespace Pisheyar.Application.Common.UploadHelper.CKEditor
 
         public class CKEditorUploaderHandler : IRequestHandler<CKEditorUploader, CKEditorDto>
         {
-            private readonly IPisheyarMagContext _context;
+            private readonly IPisheyarContext _context;
 
-            public CKEditorUploaderHandler(IPisheyarMagContext context)
+            public CKEditorUploaderHandler(IPisheyarContext context)
             {
                 _context = context;
             }
@@ -36,11 +36,11 @@ namespace Pisheyar.Application.Common.UploadHelper.CKEditor
                 var stream = new FileStream(path, FileMode.Create);
                 await request.File.CopyToAsync(stream);
 
-                var typeCode = _context.TblCode
-                    .Where(x => x.CodeName.Equals(request.File.ContentType) && !x.CodeIsDelete)
+                var typeCode = await _context.Code
+                    .Where(x => x.Name.Equals(request.File.ContentType) && !x.IsDelete)
                     .SingleOrDefaultAsync(cancellationToken);
 
-                if (typeCode.Result == null)
+                if (typeCode == null)
                 {
                     return new CKEditorDto
                     {
@@ -48,21 +48,21 @@ namespace Pisheyar.Application.Common.UploadHelper.CKEditor
                     };
                 }
 
-                var document = new TblDocument
+                var document = new Document
                 {
-                    DocumentTypeCodeId = typeCode.Result.CodeId,
-                    DocumentPath = Path.Combine("http://185.94.97.164", "Uploads", filename),
-                    DocumentSize = request.File.Length.ToString(),
-                    DocumentFileName = filename
+                    TypeCodeId = typeCode.CodeId,
+                    Path = Path.Combine("http://185.94.97.164", "Uploads", filename),
+                    Size = request.File.Length,
+                    Name = filename
                 };
 
-                _context.TblDocument.Add(document);
+                _context.Document.Add(document);
 
                 await _context.SaveChangesAsync(cancellationToken);
 
                 return new CKEditorDto
                 {
-                    Url = document.DocumentPath
+                    Url = document.Path
                 };
             }
         }

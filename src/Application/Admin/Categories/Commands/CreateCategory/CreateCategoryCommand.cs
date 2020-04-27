@@ -28,38 +28,47 @@ namespace Pisheyar.Application.Categories.Commands.CreateCategory
 
         public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, int>
         {
-            private readonly IPisheyarMagContext _context;
+            private readonly IPisheyarContext _context;
 
-            public CreateCategoryCommandHandler(IPisheyarMagContext context)
+            public CreateCategoryCommandHandler(IPisheyarContext context)
             {
                 _context = context;
             }
 
             public async Task<int> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
             {
-                var category = new TblCategory
+                var parent = await _context.Category
+                    .Where(x => x.CategoryGuid == request.CategoryGuid)
+                    .SingleOrDefaultAsync(cancellationToken);
+
+                if (parent != null)
                 {
-                    CategoryCategoryGuid = request.CategoryGuid,
-                    CategoryDisplay = request.Name,
-                    CategoryOrder = request.Order,
-                };
+                    var category = new Category
+                    {
+                        ParentCategoryId = parent.ParentCategoryId,
+                        DisplayName = request.Name,
+                        Sort = request.Order,
+                    };
 
-                //foreach (var tagGuid in request.Tags)
-                //{
-                //    var categoryTag = new TblCategoryTag()
-                //    {
-                //        CtCategoryGu = category,
-                //        CtTagGuid = tagGuid
-                //    };
+                    //foreach (var tagGuid in request.Tags)
+                    //{
+                    //    var categoryTag = new TblCategoryTag()
+                    //    {
+                    //        CtCategoryGu = category,
+                    //        CtTagGuid = tagGuid
+                    //    };
 
-                //    _context.TblCategoryTag.Add(categoryTag);
-                //}
+                    //    _context.TblCategoryTag.Add(categoryTag);
+                    //}
 
-                _context.TblCategory.Add(category);
+                    _context.Category.Add(category);
 
-                await _context.SaveChangesAsync(cancellationToken);
+                    await _context.SaveChangesAsync(cancellationToken);
 
-                return 1;
+                    return 1;
+                }
+
+                return -1;
             }
         }
     }

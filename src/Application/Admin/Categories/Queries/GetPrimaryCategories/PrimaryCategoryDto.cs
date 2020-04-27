@@ -5,7 +5,7 @@ using System;
 
 namespace Pisheyar.Application.Categories.Queries.GetPrimaryCategories
 {
-    public class PrimaryCategoryDto : IMapFrom<TblCategory>
+    public class PrimaryCategoryDto : IMapFrom<Category>
     {
         public Guid Guid { get; set; }
 
@@ -17,11 +17,11 @@ namespace Pisheyar.Application.Categories.Queries.GetPrimaryCategories
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<TblCategory, PrimaryCategoryDto>()
+            profile.CreateMap<Category, PrimaryCategoryDto>()
                 .ForMember(d => d.Guid, opt => opt.MapFrom(s => s.CategoryGuid))
-                .ForMember(d => d.ParentGuid, opt => opt.MapFrom(s => s.CategoryCategoryGuid))
-                .ForMember(d => d.Title, opt => opt.MapFrom(s => s.CategoryDisplay))
-                .ForMember(d => d.Order, opt => opt.MapFrom(s => s.CategoryOrder));
+                .ForMember(d => d.ParentGuid, opt => opt.MapFrom(s => s.ParentCategory.CategoryGuid))
+                .ForMember(d => d.Title, opt => opt.MapFrom(s => s.DisplayName))
+                .ForMember(d => d.Order, opt => opt.MapFrom(s => s.Sort));
         }
     }
 }

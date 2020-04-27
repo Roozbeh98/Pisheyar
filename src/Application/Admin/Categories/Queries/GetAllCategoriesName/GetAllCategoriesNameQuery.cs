@@ -18,23 +18,23 @@ namespace Pisheyar.Application.Categories.Queries.GetAllCategoriesName
     {
         public class GetCategoriesQueryHandler : IRequestHandler<GetAllCategoriesNameQuery, AllCategoriesNameVm>
         {
-            private readonly IPisheyarMagContext _context;
+            private readonly IPisheyarContext _context;
             private bool b = false;
 
-            public GetCategoriesQueryHandler(IPisheyarMagContext context)
+            public GetCategoriesQueryHandler(IPisheyarContext context)
             {
                 _context = context;
             }
 
-            public async Task<List<string>> GetCategoryTree(List<TblCategory> allCategories, Guid? parentGuid = null)
+            public async Task<List<string>> GetCategoryTree(List<Category> allCategories, int? parentId = null)
             {
                 var test = new List<string>();
 
                 var categories = new List<AllCategoryNameDto>();
 
                 var children = allCategories
-                    .Where(x => x.CategoryCategoryGuid == parentGuid)
-                    .OrderBy(x => x.CategoryOrder)
+                    .Where(x => x.ParentCategoryId == parentId)
+                    .OrderBy(x => x.Sort)
                     .ToList();
 
                 foreach (var child in children)
@@ -42,9 +42,9 @@ namespace Pisheyar.Application.Categories.Queries.GetAllCategoriesName
                     AllCategoryNameDto category = new AllCategoryNameDto
                     {
                         Guid = child.CategoryGuid,
-                        ParentGuid = child.CategoryCategoryGuid,
-                        Title = child.CategoryDisplay,
-                        Order = child.CategoryOrder
+                        ParentId = child.ParentCategoryId,
+                        Title = child.DisplayName,
+                        Order = child.Sort
                     };
 
                     b = false;
@@ -58,17 +58,21 @@ namespace Pisheyar.Application.Categories.Queries.GetAllCategoriesName
                 return test/*.OrderBy(x => x).ToList()*/;
             }
 
-            private async Task<List<AllCategoryNameDto>> GetCategoryChildren(List<TblCategory> allCategories, AllCategoryNameDto category, List<string> test)
+            private async Task<List<AllCategoryNameDto>> GetCategoryChildren(List<Category> allCategories, AllCategoryNameDto category, List<string> test)
             {
+                var c = await _context.Category
+                    .Where(x => x.CategoryGuid == category.Guid)
+                    .SingleOrDefaultAsync();
+
                 var subCategories = allCategories
-                    .Where(x => x.CategoryCategoryGuid == category.Guid)
-                    .OrderBy(x => x.CategoryOrder)
+                    .Where(x => x.ParentCategoryId == c.ParentCategoryId)
+                    .OrderBy(x => x.Sort)
                     .Select(x => new AllCategoryNameDto
                     {
                         Guid = x.CategoryGuid,
-                        ParentGuid = x.CategoryCategoryGuid,
-                        Title = x.CategoryDisplay,
-                        Order = x.CategoryOrder
+                        ParentId = x.ParentCategoryId,
+                        Title = x.DisplayName,
+                        Order = x.Sort
 
                     }).ToList();
 
@@ -134,13 +138,13 @@ namespace Pisheyar.Application.Categories.Queries.GetAllCategoriesName
                 //    };
                 //}
 
-                var categories = await _context.TblCategory
-                    .Where(x => !x.CategoryIsDelete)
-                    .OrderBy(x => x.CategoryOrder)
+                var categories = await _context.Category
+                    .Where(x => !x.IsDelete)
+                    .OrderBy(x => x.Sort)
                     .Select(x => new AllCategoryNameDto
                     {
                         Guid = x.CategoryGuid,
-                        Title = x.CategoryDisplay
+                        Title = x.DisplayName
 
                     }).ToListAsync(cancellationToken);
 

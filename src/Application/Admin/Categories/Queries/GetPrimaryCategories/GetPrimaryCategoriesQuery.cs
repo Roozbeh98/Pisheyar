@@ -18,10 +18,10 @@ namespace Pisheyar.Application.Categories.Queries.GetPrimaryCategories
     {
         public class GetPrimaryCategoriesQueryHandler : IRequestHandler<GetPrimaryCategoriesQuery, PrimaryCategoriesVm>
         {
-            private readonly IPisheyarMagContext _context;
+            private readonly IPisheyarContext _context;
             private readonly IMapper _mapper;
 
-            public GetPrimaryCategoriesQueryHandler(IPisheyarMagContext context, IMapper mapper)
+            public GetPrimaryCategoriesQueryHandler(IPisheyarContext context, IMapper mapper)
             {
                 _context = context;
                 _mapper = mapper;
@@ -29,9 +29,9 @@ namespace Pisheyar.Application.Categories.Queries.GetPrimaryCategories
 
             public async Task<PrimaryCategoriesVm> Handle(GetPrimaryCategoriesQuery request, CancellationToken cancellationToken)
             {
-                var primaryCategories = await _context.TblCategory
-                    .Where(x => x.CategoryCategoryGuid == null && !x.CategoryIsDelete)
-                    .OrderBy(x => x.CategoryOrder)
+                var primaryCategories = await _context.Category
+                    .Where(x => x.ParentCategoryId == null && !x.IsDelete)
+                    .OrderBy(x => x.Sort)
                     .ProjectTo<PrimaryCategoryDto>(_mapper.ConfigurationProvider)
                     .ToListAsync(cancellationToken);
 

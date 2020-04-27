@@ -20,38 +20,36 @@ namespace Pisheyar.Application.Accounts.Queries.GetUserPermissionsByGuid
 
         public class GetUserPermissionsByGuidQueryHandler : IRequestHandler<GetUserPermissionsByGuidQuery, UserPermissionsVm>
         {
-            private readonly IPisheyarMagContext _context;
+            private readonly IPisheyarContext _context;
 
-            public GetUserPermissionsByGuidQueryHandler(IPisheyarMagContext context)
+            public GetUserPermissionsByGuidQueryHandler(IPisheyarContext context)
             {
                 _context = context;
             }
 
             public async Task<UserPermissionsVm> Handle(GetUserPermissionsByGuidQuery request, CancellationToken cancellationToken)
             {
-                var user = await _context.TblUser
-                    .SingleOrDefaultAsync(x => x.UserGuid.Equals(request.UserGuid) && !x.UserIsDelete, cancellationToken);
+                var user = await _context.User
+                    .SingleOrDefaultAsync(x => x.UserGuid.Equals(request.UserGuid) && !x.IsDelete, cancellationToken);
 
                 if (user != null)
                 {
-                    var rolePermissions = await (from rp in _context.TblRolePermission
-                                                 where rp.RpRoleId == user.UserRoleId
-                                                 join p in _context.TblPermission on rp.RpPermissionId equals p.PermissionId
+                    var rolePermissions = await (from rp in _context.RolePermission
+                                                 where rp.RoleId == user.RoleId
+                                                 join p in _context.Permission on rp.PermissionId equals p.PermissionId
                                                  select new RolePermissionDto
                                                  {
-                                                     PermissionDisplay = p.PermissionDisplay,
-                                                     RpCreateDate = rp.RpCreateDate,
-                                                     RpModifyDate = rp.RpModifyDate
+                                                     PermissionDisplay = p.DisplayName,
+                                                     RpModifyDate = rp.ModifiedDate
                                                  }).ToListAsync(cancellationToken);
 
-                    var customPermissions = await _context.TblUserPermission
-                        .Where(x => x.UpUserGuid == user.UserGuid)
-                        .Join(_context.TblPermission, up => up.UpPermissionId, p => p.PermissionId, (up, p) => new { up, p })
+                    var customPermissions = await _context.UserPermission
+                        .Where(x => x.UserId == user.UserId)
+                        .Join(_context.Permission, up => up.PermissionId, p => p.PermissionId, (up, p) => new { up, p })
                         .Select(x => new CustomPermissionDto
                         {
-                            PermissionDisplay = x.p.PermissionDisplay,
-                            UpCreateDate = x.up.UpCreateDate,
-                            UpModifyDate = x.up.UpModifyDate
+                            PermissionDisplay = x.p.DisplayName,
+                            UpModifyDate = x.up.ModifiedDate
                         }).ToListAsync(cancellationToken);
 
                     return new UserPermissionsVm()

@@ -20,21 +20,22 @@ namespace Pisheyar.Application.Posts.Commands.ChangePostShow
 
         public class ChangePostActivenessCommandHandler : IRequestHandler<ChangePostShowCommand, int>
         {
-            private readonly IPisheyarMagContext _context;
+            private readonly IPisheyarContext _context;
 
-            public ChangePostActivenessCommandHandler(IPisheyarMagContext context)
+            public ChangePostActivenessCommandHandler(IPisheyarContext context)
             {
                 _context = context;
             }
 
             public async Task<int> Handle(ChangePostShowCommand request, CancellationToken cancellationToken)
             {
-                var query = await _context.TblPost.SingleOrDefaultAsync(x => x.PostGuid == request.PostGuid && !x.PostIsDelete);
+                var query = await _context.Post
+                    .SingleOrDefaultAsync(x => x.PostGuid == request.PostGuid && !x.IsDelete);
 
                 if (query != null)
                 {
-                    query.PostIsShow = request.IsShow;
-                    query.PostModifyDate = DateTime.Now;
+                    query.IsShow = request.IsShow;
+                    query.ModifiedDate = DateTime.Now;
 
                     await _context.SaveChangesAsync(cancellationToken);
 

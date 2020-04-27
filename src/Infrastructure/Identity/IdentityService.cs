@@ -21,12 +21,12 @@ namespace Pisheyar.Infrastructure.Identity
 {
     public class IdentityService : IIdentityService
     {
-        private readonly IPisheyarMagContext _context;
+        private readonly IPisheyarContext _context;
         private readonly ISmsService _smsService;
         private readonly IMapper _mapper;
         private readonly JwtSettings _jwtSettings;
 
-        public IdentityService(IPisheyarMagContext context, ISmsService smsService, IMapper mapper, IOptions<JwtSettings> jwtSettings)
+        public IdentityService(IPisheyarContext context, ISmsService smsService, IMapper mapper, IOptions<JwtSettings> jwtSettings)
         {
             _context = context;
             _smsService = smsService;
@@ -36,17 +36,17 @@ namespace Pisheyar.Infrastructure.Identity
 
         public async Task<AuthenticateVm> Authenticate(string mobile, string code, bool rememberMe)
         {
-            var user = await _context.TblUser.SingleOrDefaultAsync(x => x.UserMobile.Equals(mobile) && !x.UserIsDelete);
+            var user = await _context.User.SingleOrDefaultAsync(x => x.PhoneNumber.Equals(mobile) && !x.IsDelete);
 
             if (user != null)
             {
-                var userToken = await _context.TblUserToken.Where(x => x.UtUserGuid.Equals(user.UserGuid)).OrderBy(x => x.UtExpireDate).LastOrDefaultAsync();
+                var userToken = await _context.Token.Where(x => x.UserId == user.UserId).OrderBy(x => x.ExpireDate).LastOrDefaultAsync();
 
-                if (userToken.UtToken.ToString().Equals(code) && userToken.UtExpireDate > DateTime.Now)
+                if (userToken.Value.ToString().Equals(code) && userToken.ExpireDate > DateTime.Now)
                 {
-                    if (user.UserIsActive == false)
+                    if (user.IsActive == false)
                     {
-                        user.UserIsActive = true;
+                        user.IsActive = true;
                         await _context.SaveChangesAsync(CancellationToken.None);
                     }
 
@@ -62,12 +62,12 @@ namespace Pisheyar.Infrastructure.Identity
             //return user.WithoutPassword();
         }
 
-        private string GenerateJSONWebToken(TblUser user, DateTime expireDate)
+        private string GenerateJSONWebToken(User user, DateTime expireDate)
         {
-            var roleName = _context.TblRole
-                .Where(x => x.RoleId == user.UserRoleId)
+            var roleName = _context.Role
+                .Where(x => x.RoleId == user.RoleId)
                 .SingleOrDefault()
-                .RoleName;
+                .Name;
 
             var key = Encoding.ASCII.GetBytes(_jwtSettings.Key);
             var securityKey = new SymmetricSecurityKey(key);
@@ -75,10 +75,10 @@ namespace Pisheyar.Infrastructure.Identity
             var claims = new[] {
                 new Claim(ClaimTypes.NameIdentifier, user.UserGuid.ToString()),
                 //new Claim(ClaimTypes.Sid, user.UserId.ToString()),
-                new Claim(ClaimTypes.MobilePhone, user.UserMobile),
+                new Claim(ClaimTypes.MobilePhone, user.PhoneNumber),
                 new Claim(ClaimTypes.Role, roleName),
                 //new Claim(JwtRegisteredClaimNames.Sub, userInfo.Username),
-                new Claim(JwtRegisteredClaimNames.Email, user.UserEmail),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim(JwtRegisteredClaimNames.Jti, user.UserGuid.ToString()),
             };
             var token = new JwtSecurityToken(_jwtSettings.Issuer,
@@ -92,7 +92,7 @@ namespace Pisheyar.Infrastructure.Identity
 
         public Task<string> GetUserFullNameAsync(Guid userGuid)
         {
-            return _context.TblUser.Where(x => x.UserGuid == userGuid).Select(x => x.UserName + " " + x.UserFamily).SingleOrDefaultAsync(CancellationToken.None);
+            return _context.User.Where(x => x.UserGuid == userGuid).Select(x => x.FirstName + " " + x.LastName).SingleOrDefaultAsync(CancellationToken.None);
         }
 
         //public async Task<IEnumerable<TblUser>> GetAll()

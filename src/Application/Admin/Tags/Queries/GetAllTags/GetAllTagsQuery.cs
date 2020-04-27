@@ -18,10 +18,10 @@ namespace Pisheyar.Application.Tags.Queries.GetAllTags
     {
         public class GetCategoriesQueryHandler : IRequestHandler<GetAllTagsQuery, AllTagsVm>
         {
-            private readonly IPisheyarMagContext _context;
+            private readonly IPisheyarContext _context;
             private readonly IMapper _mapper;
 
-            public GetCategoriesQueryHandler(IPisheyarMagContext context, IMapper mapper)
+            public GetCategoriesQueryHandler(IPisheyarContext context, IMapper mapper)
             {
                 _context = context;
                 _mapper = mapper;
@@ -29,8 +29,8 @@ namespace Pisheyar.Application.Tags.Queries.GetAllTags
 
             public async Task<AllTagsVm> Handle(GetAllTagsQuery request, CancellationToken cancellationToken)
             {
-                var tags = await _context.TblTag
-                    .OrderByDescending(x => x.TagUsage)
+                var tags = await _context.Tag
+                    .OrderByDescending(x => x.Usage)
                     .ProjectTo<AllTagDto>(_mapper.ConfigurationProvider)
                     .Take(100)
                     .ToListAsync();

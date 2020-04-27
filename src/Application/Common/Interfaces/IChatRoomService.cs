@@ -14,10 +14,10 @@ namespace Pisheyar.Application.Common.Interfaces
 
         Task SetRoomName(Guid roomId, string name);
 
-        Task AddMessage(Guid roomId, TblChatMessage message);
+        Task AddMessage(Guid roomId, ChatMessage message);
 
-        Task<List<TblChatMessage>> GetAllMessages(Guid roomId);
+        Task<List<ChatMessage>> GetAllMessages(Guid roomId);
 
-        Task<IReadOnlyList<TblChatRoom>> GetAllRooms();
+        Task<IReadOnlyList<ChatRoom>> GetAllRooms();
     }
 }

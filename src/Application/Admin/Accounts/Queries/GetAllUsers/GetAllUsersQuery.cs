@@ -18,10 +18,10 @@ namespace Pisheyar.Application.Accounts.Queries.GetAllUsers
     {
         public class GetUsersQueryHandler : IRequestHandler<GetAllUsersQuery, AllUsersVm>
         {
-            private readonly IPisheyarMagContext _context;
+            private readonly IPisheyarContext _context;
             private readonly IMapper _mapper;
 
-            public GetUsersQueryHandler(IPisheyarMagContext context, IMapper mapper)
+            public GetUsersQueryHandler(IPisheyarContext context, IMapper mapper)
             {
                 _context = context;
                 _mapper = mapper;
@@ -29,8 +29,8 @@ namespace Pisheyar.Application.Accounts.Queries.GetAllUsers
 
             public async Task<AllUsersVm> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
             {
-                var users = await _context.TblUser
-                    .Where(x => !x.UserIsDelete)
+                var users = await _context.User
+                    .Where(x => !x.IsDelete)
                     .ProjectTo<UserDto>(_mapper.ConfigurationProvider)
                     .ToListAsync(cancellationToken);
 

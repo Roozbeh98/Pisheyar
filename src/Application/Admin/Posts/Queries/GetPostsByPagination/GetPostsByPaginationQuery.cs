@@ -20,10 +20,10 @@ namespace Pisheyar.Application.Posts.Queries.GetPostsByPagination
 
         public class GetAllPostsQueryHandler : IRequestHandler<GetPostsByPaginationQuery, GetPostsByPaginationVm>
         {
-            private readonly IPisheyarMagContext _context;
+            private readonly IPisheyarContext _context;
             private readonly IMapper _mapper;
 
-            public GetAllPostsQueryHandler(IPisheyarMagContext context, IMapper mapper)
+            public GetAllPostsQueryHandler(IPisheyarContext context, IMapper mapper)
             {
                 _context = context;
                 _mapper = mapper;
@@ -31,9 +31,9 @@ namespace Pisheyar.Application.Posts.Queries.GetPostsByPagination
 
             public async Task<GetPostsByPaginationVm> Handle(GetPostsByPaginationQuery request, CancellationToken cancellationToken)
             {
-                var posts = await _context.TblPost
-                    .Where(x => !x.PostIsDelete)
-                    .OrderByDescending(x => x.PostModifyDate)
+                var posts = await _context.Post
+                    .Where(x => !x.IsDelete)
+                    .OrderByDescending(x => x.ModifiedDate)
                     .Skip(12 * (request.Page - 1))
                     .Take(12)
                     .ProjectTo<GetPostsByPaginationDto>(_mapper.ConfigurationProvider)

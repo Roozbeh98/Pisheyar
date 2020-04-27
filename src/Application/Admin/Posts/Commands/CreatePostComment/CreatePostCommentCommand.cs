@@ -24,34 +24,52 @@ namespace Pisheyar.Application.Posts.Commands.CreatePostComment
 
         public class CreatePostCommentCommandHandler : IRequestHandler<CreatePostCommentCommand, int>
         {
-            private readonly IPisheyarMagContext _context;
+            private readonly IPisheyarContext _context;
 
-            public CreatePostCommentCommandHandler(IPisheyarMagContext context)
+            public CreatePostCommentCommandHandler(IPisheyarContext context)
             {
                 _context = context;
             }
 
             public async Task<int> Handle(CreatePostCommentCommand request, CancellationToken cancellationToken)
             {
-                var commentEntity = new TblComment
+                var user = await _context.User
+                    .Where(x => x.UserGuid == request.UserGuid)
+                    .SingleOrDefaultAsync(cancellationToken);
+
+                if (user != null)
                 {
-                    CommentUserGuid = request.UserGuid,
-                    CommentText = request.Text
-                };
+                    var commentEntity = new Comment
+                    {
+                        UserId = user.UserId,
+                        Message = request.Text
+                    };
 
-                var postCommentEntity = new TblPostComment
-                {
-                    PcPostGuid = request.PostGuid,
-                    PcComment = commentEntity,
-                    PcIsAccept = request.IsAccept
-                };
+                    var post = await _context.Post
+                        .Where(x => x.PostGuid == request.PostGuid)
+                        .SingleOrDefaultAsync(cancellationToken);
 
-                _context.TblComment.Add(commentEntity);
-                _context.TblPostComment.Add(postCommentEntity);
+                    if (post != null)
+                    {
+                        var postCommentEntity = new PostComment
+                        {
+                            PostId = post.PostId,
+                            Comment = commentEntity,
+                            IsAccept = request.IsAccept
+                        };
 
-                await _context.SaveChangesAsync(cancellationToken);
+                        _context.Comment.Add(commentEntity);
+                        _context.PostComment.Add(postCommentEntity);
 
-                return 1;
+                        await _context.SaveChangesAsync(cancellationToken);
+
+                        return 1;
+                    }
+
+                    return -2;
+                }
+
+                return -1;
             }
         }
     }

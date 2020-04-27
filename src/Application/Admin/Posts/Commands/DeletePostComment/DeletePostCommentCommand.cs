@@ -18,27 +18,27 @@ namespace Pisheyar.Application.Posts.Commands.DeletePostComment
 
         public class DeletePostCommentCommandHandler : IRequestHandler<DeletePostCommentCommand, int>
         {
-            private readonly IPisheyarMagContext _context;
+            private readonly IPisheyarContext _context;
 
-            public DeletePostCommentCommandHandler(IPisheyarMagContext context)
+            public DeletePostCommentCommandHandler(IPisheyarContext context)
             {
                 _context = context;
             }
 
             public async Task<int> Handle(DeletePostCommentCommand request, CancellationToken cancellationToken)
             {
-                var postComment = await _context.TblPostComment
-                    .SingleOrDefaultAsync(x => x.PcGuid == request.PostCommentGuid, cancellationToken);
+                var postComment = await _context.PostComment
+                    .SingleOrDefaultAsync(x => x.PostCommentGuid == request.PostCommentGuid, cancellationToken);
 
                 if (postComment != null)
                 {
-                    var comment = await _context.TblComment
-                        .SingleOrDefaultAsync(x => x.CommentGuid == postComment.PcCommentGuid, cancellationToken);
+                    var comment = await _context.Comment
+                        .SingleOrDefaultAsync(x => x.CommentGuid == postComment.PostCommentGuid, cancellationToken);
 
                     if (comment != null)
                     {
-                        _context.TblPostComment.Remove(postComment);
-                        _context.TblComment.Remove(comment);
+                        _context.PostComment.Remove(postComment);
+                        _context.Comment.Remove(comment);
 
                         await _context.SaveChangesAsync(cancellationToken);
 

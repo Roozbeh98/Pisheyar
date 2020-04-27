@@ -20,10 +20,10 @@ namespace Pisheyar.Application.Accounts.Queries.GetUserByGuid
 
         public class GetUserByGuidQueryHandler : IRequestHandler<GetUserByGuidQuery, UserByGuidVm>
         {
-            private readonly IPisheyarMagContext _context;
+            private readonly IPisheyarContext _context;
             private readonly IMapper _mapper;
 
-            public GetUserByGuidQueryHandler(IPisheyarMagContext context, IMapper mapper)
+            public GetUserByGuidQueryHandler(IPisheyarContext context, IMapper mapper)
             {
                 _context = context;
                 _mapper = mapper;
@@ -31,8 +31,8 @@ namespace Pisheyar.Application.Accounts.Queries.GetUserByGuid
 
             public async Task<UserByGuidVm> Handle(GetUserByGuidQuery request, CancellationToken cancellationToken)
             {
-                var user = await _context.TblUser
-                    .Where(x => x.UserGuid == request.UserGuid && !x.UserIsDelete)
+                var user = await _context.User
+                    .Where(x => x.UserGuid == request.UserGuid && !x.IsDelete)
                     .ProjectTo<UserByGuidDto>(_mapper.ConfigurationProvider)
                     .SingleOrDefaultAsync(cancellationToken);
 

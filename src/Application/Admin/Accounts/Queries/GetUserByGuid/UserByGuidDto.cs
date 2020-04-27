@@ -4,7 +4,7 @@ using System;
 
 namespace Pisheyar.Application.Accounts.Queries.GetUserByGuid
 {
-    public class UserByGuidDto : IMapFrom<TblUser>
+    public class UserByGuidDto : IMapFrom<User>
     {
         public Guid UserGuid { get; set; }
 

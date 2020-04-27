@@ -20,10 +20,10 @@ namespace Pisheyar.Application.Posts.Queries.GetAcceptedPostComments
 
         public class GetAcceptedPostCommentsQueryHandler : IRequestHandler<GetAcceptedPostCommentsQuery, AcceptedPostCommentsVm>
         {
-            private readonly IPisheyarMagContext _context;
+            private readonly IPisheyarContext _context;
             private readonly IMapper _mapper;
 
-            public GetAcceptedPostCommentsQueryHandler(IPisheyarMagContext context, IMapper mapper)
+            public GetAcceptedPostCommentsQueryHandler(IPisheyarContext context, IMapper mapper)
             {
                 _context = context;
                 _mapper = mapper;
@@ -31,8 +31,21 @@ namespace Pisheyar.Application.Posts.Queries.GetAcceptedPostComments
 
             public async Task<AcceptedPostCommentsVm> Handle(GetAcceptedPostCommentsQuery request, CancellationToken cancellationToken)
             {
-                var comments = await _context.TblPostComment
-                    .Where(x => x.PcPostGuid == request.PostGuid && x.PcIsAccept)
+                var post = await _context.Post
+                    .Where(x => x.PostGuid == request.PostGuid)
+                    .SingleOrDefaultAsync(cancellationToken);
+
+                if (post == null)
+                {
+                    return new AcceptedPostCommentsVm()
+                    {
+                        Message = "پست مورد نظر یافت نشد",
+                        Result = false
+                    };
+                }
+
+                var comments = await _context.PostComment
+                    .Where(x => x.PostId == post.PostId && x.IsAccept)
                     .ProjectTo<AcceptedPostCommentDto>(_mapper.ConfigurationProvider)
                     .ToListAsync(cancellationToken);
 

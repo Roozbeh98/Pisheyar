@@ -5,7 +5,7 @@ using System;
 
 namespace Pisheyar.Application.Posts.Queries.GetAcceptedPostComments
 {
-    public class AcceptedPostCommentDto : IMapFrom<TblPostComment>
+    public class AcceptedPostCommentDto : IMapFrom<PostComment>
     {
         public Guid PcGuid { get; set; }
 
@@ -17,10 +17,10 @@ namespace Pisheyar.Application.Posts.Queries.GetAcceptedPostComments
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<TblPostComment, AcceptedPostCommentDto>()
-                .ForMember(d => d.UserFullName, opt => opt.MapFrom(s => s.PcComment.CommentUser.UserName + " " + s.PcComment.CommentUser.UserFamily))
-                .ForMember(d => d.CommentText, opt => opt.MapFrom(s => s.PcComment.CommentText))
-                .ForMember(d => d.CommentDate, opt => opt.MapFrom(s => s.PcComment.CommentDate));
+            profile.CreateMap<PostComment, AcceptedPostCommentDto>()
+                .ForMember(d => d.UserFullName, opt => opt.MapFrom(s => s.Comment.User.FirstName + " " + s.Comment.User.LastName))
+                .ForMember(d => d.CommentText, opt => opt.MapFrom(s => s.Comment.Message))
+                .ForMember(d => d.CommentDate, opt => opt.MapFrom(s => s.Comment.ModifiedDate));
         }
     }
 }

@@ -18,20 +18,20 @@ namespace Pisheyar.Application.Categories.Queries.GetAllCategories
     {
         public class GetCategoriesQueryHandler : IRequestHandler<GetAllCategoriesQuery, AllCategoriesVm>
         {
-            private readonly IPisheyarMagContext _context;
+            private readonly IPisheyarContext _context;
 
-            public GetCategoriesQueryHandler(IPisheyarMagContext context)
+            public GetCategoriesQueryHandler(IPisheyarContext context)
             {
                 _context = context;
             }
 
-            public async Task<List<AllCategoryDto>> GetCategoryTree(List<TblCategory> allCategories, Guid? parentGuid = null)
+            public async Task<List<AllCategoryDto>> GetCategoryTree(List<Category> allCategories, int? parentId = null)
             {
                 var categories = new List<AllCategoryDto>();
 
                 var children = allCategories
-                    .Where(x => x.CategoryCategoryGuid == parentGuid)
-                    .OrderBy(x => x.CategoryOrder)
+                    .Where(x => x.ParentCategoryId == parentId)
+                    .OrderBy(x => x.Sort)
                     .ToList();
 
                 foreach (var child in children)
@@ -39,9 +39,9 @@ namespace Pisheyar.Application.Categories.Queries.GetAllCategories
                     AllCategoryDto category = new AllCategoryDto
                     {
                         Guid = child.CategoryGuid,
-                        ParentGuid = child.CategoryCategoryGuid,
-                        Title = child.CategoryDisplay,
-                        Order = child.CategoryOrder
+                        ParentId = child.ParentCategoryId,
+                        Title = child.DisplayName,
+                        Order = child.Sort
                     };
 
                     category.Children = await GetCategoryChildren(allCategories, category);
@@ -52,37 +52,46 @@ namespace Pisheyar.Application.Categories.Queries.GetAllCategories
                 return categories;
             }
 
-            private async Task<List<AllCategoryDto>> GetCategoryChildren(List<TblCategory> allCategories, AllCategoryDto category)
+            private async Task<List<AllCategoryDto>> GetCategoryChildren(List<Category> allCategories, AllCategoryDto category)
             {
-                var subCategories = allCategories
-                    .Where(x => x.CategoryCategoryGuid == category.Guid)
-                    .OrderBy(x => x.CategoryOrder)
+                var c = await _context.Category
+                      .Where(x => x.CategoryGuid == category.Guid)
+                      .SingleOrDefaultAsync();
+
+                if (c != null)
+                {
+                    var subCategories = allCategories
+                    .Where(x => x.ParentCategoryId == c.ParentCategoryId)
+                    .OrderBy(x => x.Sort)
                     .Select(x => new AllCategoryDto
                     {
                         Guid = x.CategoryGuid,
-                        ParentGuid = x.CategoryCategoryGuid,
-                        Title = x.CategoryDisplay,
-                        Order = x.CategoryOrder
+                        ParentId = x.ParentCategoryId,
+                        Title = x.DisplayName,
+                        Order = x.Sort
 
                     }).ToList();
 
-                if (subCategories != null)
-                {
-                    category.Children = subCategories;
-
-                    foreach (var item in category.Children)
+                    if (subCategories != null)
                     {
-                        item.Children = await GetCategoryChildren(allCategories, item);
+                        category.Children = subCategories;
+
+                        foreach (var item in category.Children)
+                        {
+                            item.Children = await GetCategoryChildren(allCategories, item);
+                        }
                     }
+
+                    return category.Children;
                 }
 
-                return category.Children;
+                return null;
             }
 
             public async Task<AllCategoriesVm> Handle(GetAllCategoriesQuery request, CancellationToken cancellationToken)
             {
-                var categories = await _context.TblCategory
-                    .Where(x => !x.CategoryIsDelete)
+                var categories = await _context.Category
+                    .Where(x => !x.IsDelete)
                     .ToListAsync(cancellationToken);
 
                 var categoryTree = await GetCategoryTree(categories);

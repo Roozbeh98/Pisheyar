@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace Pisheyar.Application.Posts.Queries.GetAllPosts
 {
-    public class GetAllPostDto : IMapFrom<TblPost>
+    public class GetAllPostDto : IMapFrom<Post>
     {
         public Guid PostGuid { get; set; }
 
@@ -30,8 +30,6 @@ namespace Pisheyar.Application.Posts.Queries.GetAllPosts
 
         public string PostDescription { get; set; }
 
-        public string PostCreateDate { get; set; }
-
         public string PostModifyDate { get; set; }
 
         public bool PostIsShow { get; set; }
@@ -40,26 +38,25 @@ namespace Pisheyar.Application.Posts.Queries.GetAllPosts
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<TblPost, GetAllPostDto>()
-                .ForMember(d => d.UserFullName, opt => opt.MapFrom(s => s.PostUser.UserName + " " + s.PostUser.UserFamily))
-                .ForMember(d => d.PostCreateDate, opt => opt.MapFrom(s => PersianDateExtensionMethods.ToPeString(s.PostCreateDate, "yyyy/MM/dd HH:mm")))
-                .ForMember(d => d.PostModifyDate, opt => opt.MapFrom(s => PersianDateExtensionMethods.ToPeString(s.PostModifyDate, "yyyy/MM/dd HH:mm")))
-                .ForMember(d => d.Slug, opt => opt.MapFrom(s => s.PostTitle.Trim().ToLowerInvariant().Replace(" ", "-")))
+            profile.CreateMap<Post, GetAllPostDto>()
+                .ForMember(d => d.UserFullName, opt => opt.MapFrom(s => s.User.FirstName + " " + s.User.LastName))
+                .ForMember(d => d.PostModifyDate, opt => opt.MapFrom(s => PersianDateExtensionMethods.ToPeString(s.ModifiedDate, "yyyy/MM/dd HH:mm")))
+                .ForMember(d => d.Slug, opt => opt.MapFrom(s => s.Title.Trim().ToLowerInvariant().Replace(" ", "-")))
                 .ForMember(d => d.Document, opt => opt.MapFrom(s => new FilepondDto
                 {
-                    Source = s.PostDocument.DocumentPath,
+                    Source = s.Document.Path,
                     Options = new FilepondOptions
                     {
                         Type = "local",
                         Files = new FilepondFile
                         {
-                            Name = s.PostDocument.DocumentFileName,
-                            Size = s.PostDocument.DocumentSize,
-                            Type = s.PostDocument.DocumentTypeCode.CodeName
+                            Name = s.Document.Name,
+                            Size = s.Document.Size.ToString(),
+                            Type = s.Document.TypeCode.Name
                         },
                         Metadata = new FilepondMetadata
                         {
-                            Poster = s.PostDocument.DocumentPath
+                            Poster = s.Document.Path
                         }
                     }
                 }));

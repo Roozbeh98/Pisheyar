@@ -18,10 +18,10 @@ namespace Pisheyar.Application.Posts.Queries.GetIndexPosts
     {
         public class GetIndexPostsQueryHandler : IRequestHandler<GetIndexPostsQuery, GetIndexPostsVm>
         {
-            private readonly IPisheyarMagContext _context;
+            private readonly IPisheyarContext _context;
             private readonly IMapper _mapper;
 
-            public GetIndexPostsQueryHandler(IPisheyarMagContext context, IMapper mapper)
+            public GetIndexPostsQueryHandler(IPisheyarContext context, IMapper mapper)
             {
                 _context = context;
                 _mapper = mapper;
@@ -29,9 +29,9 @@ namespace Pisheyar.Application.Posts.Queries.GetIndexPosts
 
             public async Task<GetIndexPostsVm> Handle(GetIndexPostsQuery request, CancellationToken cancellationToken)
             {
-                var posts = await _context.TblPost
-                    .Where(x => !x.PostIsDelete)
-                    .OrderByDescending(x => x.PostViewCount)
+                var posts = await _context.Post
+                    .Where(x => !x.IsDelete)
+                    .OrderByDescending(x => x.ViewCount)
                     .ProjectTo<GetIndexPostsDto>(_mapper.ConfigurationProvider)
                     .Take(3)
                     .ToListAsync(cancellationToken);
@@ -47,28 +47,37 @@ namespace Pisheyar.Application.Posts.Queries.GetIndexPosts
 
                 foreach (var post in posts)
                 {
-                    var postCategory = await _context.TblPostCategory
-                    .Where(x => x.PcPostGuid == post.PostGuid)
-                    .OrderBy(x => x.PcCategoryGu.CategoryDisplay)
-                    .Select(x => new GetIndexPostsCategoryNameDto
-                    {
-                        Guid = x.PcCategoryGu.CategoryGuid,
-                        Title = x.PcCategoryGu.CategoryDisplay
+                    var p = await _context.Post
+                        .Where(x => x.PostGuid == post.PostGuid)
+                        .SingleOrDefaultAsync();
 
-                    }).FirstOrDefaultAsync(cancellationToken);
+                    if (p == null)
+                    {
+                        continue;
+                    }
+
+                    var postCategory = await _context.PostCategory
+                        .Where(x => x.PostId == p.PostId)
+                        .OrderBy(x => x.Category.DisplayName)
+                        .Select(x => new GetIndexPostsCategoryNameDto
+                        {
+                            Guid = x.Category.CategoryGuid,
+                            Title = x.Category.DisplayName
+
+                        }).FirstOrDefaultAsync(cancellationToken);
 
                     if (postCategory != null)
                     {
                         post.Category = postCategory;
                     }
 
-                    var postTags = await _context.TblPostTag
-                        .Where(x => x.PtPostGuid == post.PostGuid)
-                        .OrderBy(x => x.PtTag.TagName)
+                    var postTags = await _context.PostTag
+                        .Where(x => x.PostId == p.PostId)
+                        .OrderBy(x => x.Tag.Name)
                         .Select(x => new GetIndexPostsTagNameDto
                         {
-                            Guid = x.PtTag.TagGuid,
-                            Name = x.PtTag.TagName
+                            Guid = x.Tag.TagGuid,
+                            Name = x.Tag.Name
 
                         }).ToListAsync(cancellationToken);
 

@@ -28,12 +28,12 @@ namespace Pisheyar.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration, IWebHostEnvironment environment)
         {
-            services.AddDbContext<PisheyarMagContext>(options =>
+            services.AddDbContext<PisheyarContext>(options =>
                 options.UseSqlServer(
                     configuration.GetConnectionString("DefaultConnection"),
-                    b => b.MigrationsAssembly(typeof(PisheyarMagContext).Assembly.FullName)));
+                    b => b.MigrationsAssembly(typeof(PisheyarContext).Assembly.FullName)));
 
-            services.AddScoped<IPisheyarMagContext>(provider => provider.GetService<PisheyarMagContext>());
+            services.AddScoped<IPisheyarContext>(provider => provider.GetService<PisheyarContext>());
 
             // configure strongly typed settings objects
             var jwtSection = configuration.GetSection("Jwt");

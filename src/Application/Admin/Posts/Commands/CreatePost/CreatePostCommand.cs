@@ -30,10 +30,10 @@ namespace Pisheyar.Application.Posts.Commands.CreatePost
 
         public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, CreatePostCommandVm>
         {
-            private readonly IPisheyarMagContext _context;
+            private readonly IPisheyarContext _context;
             private readonly ICurrentUserService _currentUserService;
 
-            public CreatePostCommandHandler(IPisheyarMagContext context, ICurrentUserService currentUserService)
+            public CreatePostCommandHandler(IPisheyarContext context, ICurrentUserService currentUserService)
             {
                 _context = context;
                 _currentUserService = currentUserService;
@@ -41,7 +41,7 @@ namespace Pisheyar.Application.Posts.Commands.CreatePost
 
             public async Task<CreatePostCommandVm> Handle(CreatePostCommand request, CancellationToken cancellationToken)
             {
-                var currentUser = await _context.TblUser
+                var currentUser = await _context.User
                     .Where(x => x.UserGuid == Guid.Parse(_currentUserService.NameIdentifier))
                     .SingleOrDefaultAsync(cancellationToken);
 
@@ -54,10 +54,10 @@ namespace Pisheyar.Application.Posts.Commands.CreatePost
                     };
                 }
 
-                var document = await _context.TblDocument
-                    .AnyAsync(x => x.DocumentGuid == Guid.Parse(request.DocumentGuid), cancellationToken);
+                var document = await _context.Document
+                    .SingleOrDefaultAsync(x => x.DocumentGuid == Guid.Parse(request.DocumentGuid), cancellationToken);
 
-                if (!document)
+                if (document == null)
                 {
                     return new CreatePostCommandVm()
                     {
@@ -66,28 +66,32 @@ namespace Pisheyar.Application.Posts.Commands.CreatePost
                     };
                 }
 
-                var post = new TblPost
+                var post = new Post
                 {
-                    PostUserGuid = currentUser.UserGuid,
-                    PostTitle = request.Title,
-                    PostAbstract = request.Abstract,
-                    PostDescription = request.Description,
-                    PostIsShow = request.IsShow,
-                    PostDocumentGuid = Guid.Parse(request.DocumentGuid)
+                    UserId = currentUser.UserId,
+                    Title = request.Title,
+                    Abstract = request.Abstract,
+                    Description = request.Description,
+                    IsShow = request.IsShow,
+                    DocumentId = document.DocumentId
                 };
 
                 foreach (var categoryGuid in request.Categories)
                 {
-                    var postCategory = new TblPostCategory()
+                    var category = await _context.Category
+                        .Where(x => x.CategoryGuid == categoryGuid)
+                        .SingleOrDefaultAsync(cancellationToken);
+
+                    var postCategory = new PostCategory()
                     {
-                        PcPost = post,
-                        PcCategoryGuid = categoryGuid
+                        Post = post,
+                        CategoryId = category.CategoryId
                     };
 
-                    _context.TblPostCategory.Add(postCategory);
+                    _context.PostCategory.Add(postCategory);
                 }
 
-                TblPostTag postTag;
+                PostTag postTag;
 
                 foreach (var tag in request.Tags)
                 {
@@ -95,33 +99,37 @@ namespace Pisheyar.Application.Posts.Commands.CreatePost
 
                     if (guid == Guid.Empty)
                     {
-                        var newTag = new TblTag()
+                        var newTag = new Tag()
                         {
-                            TagName = tag
+                            Name = tag
                         };
 
-                        _context.TblTag.Add(newTag);
+                        _context.Tag.Add(newTag);
 
-                        postTag = new TblPostTag()
+                        postTag = new PostTag()
                         {
-                            PtPost = post
+                            Post = post
                         };
 
-                        postTag.PtTag = newTag;
+                        postTag.Tag = newTag;
                     }
                     else
                     {
-                        postTag = new TblPostTag()
+                        var t = await _context.Tag
+                            .Where(x => x.TagGuid == Guid.Parse(tag))
+                            .SingleOrDefaultAsync(cancellationToken);
+
+                        postTag = new PostTag()
                         {
-                            PtPost = post,
-                            PtTagGuid = Guid.Parse(tag)
+                            Post = post,
+                            TagId = t.TagId
                         };
                     }
                     
-                    _context.TblPostTag.Add(postTag);
+                    _context.PostTag.Add(postTag);
                 }
 
-                _context.TblPost.Add(post);
+                _context.Post.Add(post);
 
                 await _context.SaveChangesAsync(cancellationToken);
 

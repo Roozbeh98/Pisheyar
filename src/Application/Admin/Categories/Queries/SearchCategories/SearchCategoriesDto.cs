@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Pisheyar.Application.Categories.Queries.SearchCategories
 {
-    public class SearchCategoriesDto : IMapFrom<TblCategory>
+    public class SearchCategoriesDto : IMapFrom<Category>
     {
         public Guid CategoryGuid { get; set; }
 
