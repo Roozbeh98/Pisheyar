@@ -30,6 +30,8 @@ namespace Pisheyar.Infrastructure.Persistence.Configurations
                 .HasForeignKey(d => d.RoleId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_User_Role");
+
+            //entity.HasQueryFilter(e => !e.IsDelete);
         }
     }
 }

@@ -13,6 +13,7 @@ namespace Pisheyar.Application.Common.Interfaces
         DbSet<CategoryTag> CategoryTag { get; set; }
         DbSet<ChatMessage> ChatMessage { get; set; }
         DbSet<ChatRoom> ChatRoom { get; set; }
+        DbSet<City> City { get; set; }
         DbSet<Client> Client { get; set; }
         DbSet<Code> Code { get; set; }
         DbSet<CodeGroup> CodeGroup { get; set; }
@@ -27,6 +28,7 @@ namespace Pisheyar.Application.Common.Interfaces
         DbSet<PostCategory> PostCategory { get; set; }
         DbSet<PostComment> PostComment { get; set; }
         DbSet<PostTag> PostTag { get; set; }
+        DbSet<Province> Province { get; set; }
         DbSet<Role> Role { get; set; }
         DbSet<RolePermission> RolePermission { get; set; }
         DbSet<SmsProviderConfiguration> SmsProviderConfiguration { get; set; }

@@ -34,6 +34,7 @@ namespace Pisheyar.Infrastructure.Persistence
         public virtual DbSet<CategoryTag> CategoryTag { get; set; }
         public virtual DbSet<ChatMessage> ChatMessage { get; set; }
         public virtual DbSet<ChatRoom> ChatRoom { get; set; }
+        public virtual DbSet<City> City { get; set; }
         public virtual DbSet<Client> Client { get; set; }
         public virtual DbSet<Code> Code { get; set; }
         public virtual DbSet<CodeGroup> CodeGroup { get; set; }
@@ -48,6 +49,7 @@ namespace Pisheyar.Infrastructure.Persistence
         public virtual DbSet<PostCategory> PostCategory { get; set; }
         public virtual DbSet<PostComment> PostComment { get; set; }
         public virtual DbSet<PostTag> PostTag { get; set; }
+        public virtual DbSet<Province> Province { get; set; }
         public virtual DbSet<Role> Role { get; set; }
         public virtual DbSet<RolePermission> RolePermission { get; set; }
         public virtual DbSet<SmsProviderConfiguration> SmsProviderConfiguration { get; set; }
