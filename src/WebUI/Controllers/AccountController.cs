@@ -11,6 +11,8 @@ using Pisheyar.Application.Accounts.Queries.GetAllUsers;
 using Microsoft.AspNetCore.Authorization;
 using Pisheyar.Application.Accounts.Commands.ChangeUserActiveness;
 using Pisheyar.Application.Accounts.Commands.DeleteUser;
+using Pisheyar.Application.Accounts.Queries.GetAllProvinces;
+using Pisheyar.Application.Accounts.Queries.GetAllProvinceCities;
 
 namespace WebUI.Controllers
 {
@@ -60,6 +62,29 @@ namespace WebUI.Controllers
         public async Task<ActionResult<UserPermissionsVm>> GetPermissions(Guid guid)
         {
             return await Mediator.Send(new GetUserPermissionsByGuidQuery { UserGuid = guid });
+        }
+
+        /// <summary>
+        /// دریافت تمامی استان ها
+        /// </summary>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpGet("Provinces")]
+        public async Task<ActionResult<GetAllProvincesVm>> GetAllProvinces()
+        {
+            return await Mediator.Send(new GetAllProvincesQuery());
+        }
+
+        /// <summary>
+        /// دریافت تمامی شهرهای واقع یک استان
+        /// </summary>
+        /// <param name="guid">آیدی استان</param>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpGet("Provinces/{guid}/Cities")]
+        public async Task<ActionResult<GetAllProvinceCitiesVm>> GetAllProvinceCities(Guid guid)
+        {
+            return await Mediator.Send(new GetAllProvinceCitiesQuery { ProvinceGuid = guid });
         }
 
         /// <summary>

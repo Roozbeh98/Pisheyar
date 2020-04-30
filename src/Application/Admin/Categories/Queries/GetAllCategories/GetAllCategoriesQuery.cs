@@ -61,7 +61,7 @@ namespace Pisheyar.Application.Categories.Queries.GetAllCategories
                 if (c != null)
                 {
                     var subCategories = allCategories
-                    .Where(x => x.ParentCategoryId == c.ParentCategoryId)
+                    .Where(x => x.ParentCategoryId == c.CategoryId)
                     .OrderBy(x => x.Sort)
                     .Select(x => new AllCategoryDto
                     {

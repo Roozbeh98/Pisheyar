@@ -35,4 +35,17 @@ namespace Pisheyar.Domain.Enums
         Success = 1,
         UserNotFound = 2
     }
+
+    public enum GetAllProvinceCitiesState
+    {
+        Success = 1,
+        ProvinceNotFound = 2,
+        ProvinceCitiesNotFound = 3
+    }
+
+    public enum GetAllProvincesState
+    {
+        Success = 1,
+        ProvinceNotFound = 2
+    }
 }
