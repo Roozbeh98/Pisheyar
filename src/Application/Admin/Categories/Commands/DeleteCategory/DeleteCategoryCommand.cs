@@ -39,9 +39,9 @@ namespace Pisheyar.Application.Categories.Commands.DeleteCategory
                     parent.ModifiedDate = DateTime.Now;
 
                     var children = categories
-                    .Where(x => x.ParentCategoryId == parent.ParentCategoryId)
-                    .OrderBy(x => x.Sort)
-                    .ToList();
+                        .Where(x => x.ParentCategoryId == parent.CategoryId)
+                        .OrderBy(x => x.Sort)
+                        .ToList();
 
                     foreach (var child in children)
                     {

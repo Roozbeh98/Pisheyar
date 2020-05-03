@@ -38,7 +38,7 @@ namespace Pisheyar.Application.Categories.Queries.GetCategoryByGuid
                     var categories = new List<CategoryDto>();
 
                     var children = allCategories
-                        .Where(x => x.ParentCategoryId == c.ParentCategoryId)
+                        .Where(x => x.ParentCategoryId == c.CategoryId)
                         .OrderBy(x => x.Sort)
                         .ToList();
 
@@ -72,7 +72,7 @@ namespace Pisheyar.Application.Categories.Queries.GetCategoryByGuid
                 if (c != null)
                 {
                     var subCategories = allCategories
-                    .Where(x => x.ParentCategoryId == c.ParentCategoryId)
+                    .Where(x => x.ParentCategoryId == c.CategoryId)
                     .OrderBy(x => x.Sort)
                     .Select(x => new CategoryDto
                     {

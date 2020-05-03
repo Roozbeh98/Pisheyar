@@ -44,6 +44,7 @@ namespace WebUI.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("[action]")]
+        [AllowAnonymous]
         public async Task<ActionResult<AllCategoriesVm>> GetAll()
         {
             return await Mediator.Send(new GetAllCategoriesQuery());
@@ -54,6 +55,7 @@ namespace WebUI.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("[action]")]
+        [AllowAnonymous]
         public async Task<ActionResult<AllCategoriesNameVm>> GetAllNames()
         {
             return await Mediator.Send(new GetAllCategoriesNameQuery());

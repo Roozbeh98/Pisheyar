@@ -61,16 +61,16 @@ namespace Pisheyar.Application.Categories.Queries.GetAllCategories
                 if (c != null)
                 {
                     var subCategories = allCategories
-                    .Where(x => x.ParentCategoryId == c.CategoryId)
-                    .OrderBy(x => x.Sort)
-                    .Select(x => new AllCategoryDto
-                    {
-                        Guid = x.CategoryGuid,
-                        ParentId = x.ParentCategoryId,
-                        Title = x.DisplayName,
-                        Order = x.Sort
+                        .Where(x => x.ParentCategoryId == c.CategoryId)
+                        .OrderBy(x => x.Sort)
+                        .Select(x => new AllCategoryDto
+                        {
+                            Guid = x.CategoryGuid,
+                            ParentId = x.ParentCategoryId,
+                            Title = x.DisplayName,
+                            Order = x.Sort
 
-                    }).ToList();
+                        }).ToList();
 
                     if (subCategories != null)
                     {

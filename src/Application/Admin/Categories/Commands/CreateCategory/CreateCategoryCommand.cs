@@ -45,7 +45,7 @@ namespace Pisheyar.Application.Categories.Commands.CreateCategory
                 {
                     var category = new Category
                     {
-                        ParentCategoryId = parent.ParentCategoryId,
+                        ParentCategoryId = parent.CategoryId,
                         DisplayName = request.Name,
                         Sort = request.Order,
                     };
