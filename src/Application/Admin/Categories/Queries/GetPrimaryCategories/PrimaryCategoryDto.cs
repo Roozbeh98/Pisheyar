@@ -9,8 +9,6 @@ namespace Pisheyar.Application.Categories.Queries.GetPrimaryCategories
     {
         public Guid Guid { get; set; }
 
-        public Guid? ParentGuid { get; set; }
-
         public string Title { get; set; }
 
         public int Order { get; set; }
@@ -19,7 +17,6 @@ namespace Pisheyar.Application.Categories.Queries.GetPrimaryCategories
         {
             profile.CreateMap<Category, PrimaryCategoryDto>()
                 .ForMember(d => d.Guid, opt => opt.MapFrom(s => s.CategoryGuid))
-                .ForMember(d => d.ParentGuid, opt => opt.MapFrom(s => s.ParentCategory.CategoryGuid))
                 .ForMember(d => d.Title, opt => opt.MapFrom(s => s.DisplayName))
                 .ForMember(d => d.Order, opt => opt.MapFrom(s => s.Sort));
         }

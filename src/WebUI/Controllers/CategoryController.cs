@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,7 @@ using Pisheyar.Application.Categories.Queries.GetAllCategoriesName;
 using Pisheyar.Application.Categories.Queries.GetCategoryByGuid;
 using Pisheyar.Application.Categories.Queries.GetPrimaryCategories;
 using Pisheyar.Application.Categories.Queries.SearchCategories;
+using Pisheyar.Application.Categories.Queries.SearchCategoriesByCity;
 
 namespace WebUI.Controllers
 {
@@ -32,11 +34,13 @@ namespace WebUI.Controllers
         /// <summary>
         /// دریافت دسته بندی های اصلی
         /// </summary>
+        /// <param name="guid">آیدی دسته بندی</param>
         /// <returns></returns>
         [HttpGet("[action]")]
-        public async Task<ActionResult<PrimaryCategoriesVm>> GetPrimaries()
+        [AllowAnonymous]
+        public async Task<ActionResult<PrimaryCategoriesVm>> GetPrimaries(Guid? guid)
         {
-            return await Mediator.Send(new GetPrimaryCategoriesQuery());
+            return await Mediator.Send(new GetPrimaryCategoriesQuery() { CategoryGuid = guid});
         }
 
         /// <summary>
@@ -62,10 +66,23 @@ namespace WebUI.Controllers
         }
 
         /// <summary>
+        /// جستجو دسته بندی ها بر اساس شهر
+        /// </summary>
+        /// <param name="guid">آیدی شهر</param>
+        /// <returns></returns>
+        [HttpGet("[action]/{guid}")]
+        [AllowAnonymous]
+        public async Task<ActionResult<List<string>>> SearchByCity(Guid guid)
+        {
+            return await Mediator.Send(new SearchCategoriesByCityQuery() { CityGuid = guid });
+        }
+
+        /// <summary>
         /// جستجو دسته بندی ها
         /// </summary>
         /// <returns></returns>
         [HttpGet("[action]")]
+        [AllowAnonymous]
         public async Task<ActionResult<SearchCategoriesVm>> Search(string input)
         {
             return await Mediator.Send(new SearchCategoriesQuery() { Input = input });

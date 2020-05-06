@@ -12,33 +12,33 @@ using Microsoft.EntityFrameworkCore;
 using AutoMapper.QueryableExtensions;
 using AutoMapper;
 
-namespace Pisheyar.Application.Posts.Queries.GetIndexPosts
+namespace Pisheyar.Application.Posts.Queries.GetWeeklyMostViewedPosts
 {
-    public class GetIndexPostsQuery : IRequest<GetIndexPostsVm>
+    public class GetWeeklyMostViewedPostsQuery : IRequest<GetWeeklyMostViewedPostsVm>
     {
-        public class GetIndexPostsQueryHandler : IRequestHandler<GetIndexPostsQuery, GetIndexPostsVm>
+        public class GetWeeklyMostViewedPostsQueryHandler : IRequestHandler<GetWeeklyMostViewedPostsQuery, GetWeeklyMostViewedPostsVm>
         {
             private readonly IPisheyarContext _context;
             private readonly IMapper _mapper;
 
-            public GetIndexPostsQueryHandler(IPisheyarContext context, IMapper mapper)
+            public GetWeeklyMostViewedPostsQueryHandler(IPisheyarContext context, IMapper mapper)
             {
                 _context = context;
                 _mapper = mapper;
             }
 
-            public async Task<GetIndexPostsVm> Handle(GetIndexPostsQuery request, CancellationToken cancellationToken)
+            public async Task<GetWeeklyMostViewedPostsVm> Handle(GetWeeklyMostViewedPostsQuery request, CancellationToken cancellationToken)
             {
                 var posts = await _context.Post
                     .Where(x => !x.IsDelete)
                     .OrderByDescending(x => x.ViewCount)
-                    .ProjectTo<GetIndexPostsDto>(_mapper.ConfigurationProvider)
-                    .Take(3)
+                    .ProjectTo<GetWeeklyMostViewedPostsDto>(_mapper.ConfigurationProvider)
+                    .Take(5)
                     .ToListAsync(cancellationToken);
 
                 if (posts.Count == 0)
                 {
-                    return new GetIndexPostsVm()
+                    return new GetWeeklyMostViewedPostsVm()
                     {
                         Message = "پستی یافت نشد",
                         State = (int)GetIndexPostsState.NoPosts
@@ -59,7 +59,7 @@ namespace Pisheyar.Application.Posts.Queries.GetIndexPosts
                     var postCategory = await _context.PostCategory
                         .Where(x => x.PostId == p.PostId)
                         .OrderBy(x => x.Category.DisplayName)
-                        .Select(x => new GetIndexPostsCategoryNameDto
+                        .Select(x => new GetWeeklyMostViewedPostsCategoryNameDto
                         {
                             Guid = x.Category.CategoryGuid,
                             Title = x.Category.DisplayName
@@ -74,7 +74,7 @@ namespace Pisheyar.Application.Posts.Queries.GetIndexPosts
                     var postTags = await _context.PostTag
                         .Where(x => x.PostId == p.PostId)
                         .OrderBy(x => x.Tag.Name)
-                        .Select(x => new GetIndexPostsTagNameDto
+                        .Select(x => new GetWeeklyMostViewedPostsTagNameDto
                         {
                             Guid = x.Tag.TagGuid,
                             Name = x.Tag.Name
@@ -87,7 +87,7 @@ namespace Pisheyar.Application.Posts.Queries.GetIndexPosts
                     }
                 }
 
-                return new GetIndexPostsVm()
+                return new GetWeeklyMostViewedPostsVm()
                 {
                     Message = "عملیات موفق آمیز",
                     State = (int)GetIndexPostsState.Success,

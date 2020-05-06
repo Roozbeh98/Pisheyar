@@ -31,7 +31,7 @@ namespace Pisheyar.Application.Categories.Queries.SearchCategories
 
             public async Task<SearchCategoriesVm> Handle(SearchCategoriesQuery request, CancellationToken cancellationToken)
             {
-                var categories = await _context.Category
+                List<SearchCategoriesDto> categories = await _context.Category
                     .Where(x => x.DisplayName.Contains(request.Input) && !x.IsDelete)
                     .ProjectTo<SearchCategoriesDto>(_mapper.ConfigurationProvider)
                     .ToListAsync(cancellationToken);

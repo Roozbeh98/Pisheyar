@@ -18,7 +18,9 @@ namespace Pisheyar.Application.Common.Interfaces
         DbSet<Code> Code { get; set; }
         DbSet<CodeGroup> CodeGroup { get; set; }
         DbSet<Comment> Comment { get; set; }
+        DbSet<ContactUs> ContactUs { get; set; }
         DbSet<Contractor> Contractor { get; set; }
+        DbSet<ContractorCategory> ContractorCategory { get; set; }
         DbSet<Document> Document { get; set; }
         DbSet<Order> Order { get; set; }
         DbSet<OrderRequest> OrderRequest { get; set; }

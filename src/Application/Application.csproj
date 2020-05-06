@@ -51,6 +51,7 @@
     <Folder Include="Admin\Advertisements\Commands\UpdateAdvertisement\" />
     <Folder Include="Admin\Advertisements\Queries\GetAdvertisement\" />
     <Folder Include="Admin\Advertisements\Queries\GetAllAdvertisements\" />
+    <Folder Include="Admin\Contact\Queries\" />
     <Folder Include="Admin\Tags\Commands\" />
     <Folder Include="Common\Mappings\" />
     <Folder Include="User\" />

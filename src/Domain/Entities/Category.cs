@@ -10,6 +10,8 @@ namespace Pisheyar.Domain.Entities
         public Category()
         {
             CategoryTag = new HashSet<CategoryTag>();
+            ContactUs = new HashSet<ContactUs>();
+            ContractorCategory = new HashSet<ContractorCategory>();
             InverseParentCategory = new HashSet<Category>();
             Order = new HashSet<Order>();
             PostCategory = new HashSet<PostCategory>();
@@ -34,6 +36,10 @@ namespace Pisheyar.Domain.Entities
         public virtual Category ParentCategory { get; set; }
         [InverseProperty("Category")]
         public virtual ICollection<CategoryTag> CategoryTag { get; set; }
+        [InverseProperty("Category")]
+        public virtual ICollection<ContactUs> ContactUs { get; set; }
+        [InverseProperty("Category")]
+        public virtual ICollection<ContractorCategory> ContractorCategory { get; set; }
         [InverseProperty(nameof(Category.ParentCategory))]
         public virtual ICollection<Category> InverseParentCategory { get; set; }
         [InverseProperty("Category")]

@@ -39,7 +39,9 @@ namespace Pisheyar.Infrastructure.Persistence
         public virtual DbSet<Code> Code { get; set; }
         public virtual DbSet<CodeGroup> CodeGroup { get; set; }
         public virtual DbSet<Comment> Comment { get; set; }
+        public virtual DbSet<ContactUs> ContactUs { get; set; }
         public virtual DbSet<Contractor> Contractor { get; set; }
+        public virtual DbSet<ContractorCategory> ContractorCategory { get; set; }
         public virtual DbSet<Document> Document { get; set; }
         public virtual DbSet<Order> Order { get; set; }
         public virtual DbSet<OrderRequest> OrderRequest { get; set; }

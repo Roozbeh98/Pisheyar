@@ -11,6 +11,8 @@ namespace Pisheyar.Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Post> entity)
         {
+            entity.Property(e => e.CreationDate).HasDefaultValueSql("(getdate())");
+
             entity.Property(e => e.IsDelete).HasDefaultValueSql("((0))");
 
             entity.Property(e => e.IsShow).HasDefaultValueSql("((1))");

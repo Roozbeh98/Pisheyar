@@ -10,6 +10,6 @@ namespace Pisheyar.Application.Categories.Queries.SearchCategories
     {
         public Guid CategoryGuid { get; set; }
 
-        public string CategoryDisplay { get; set; }
+        public string DisplayName { get; set; }
     }
 }

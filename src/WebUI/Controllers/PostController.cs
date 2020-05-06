@@ -15,11 +15,13 @@ using Pisheyar.Application.Posts.Commands.UpdatePost;
 using Pisheyar.Application.Posts.Queries.GetAcceptedPostComments;
 using Pisheyar.Application.Posts.Queries.GetAllPosts;
 using Pisheyar.Application.Posts.Queries.GetIndexPosts;
+using Pisheyar.Application.Posts.Queries.GetMonthlyMostViewedPosts;
 using Pisheyar.Application.Posts.Queries.GetMostViewedPosts;
 using Pisheyar.Application.Posts.Queries.GetPost;
 using Pisheyar.Application.Posts.Queries.GetPostsByCategory;
 using Pisheyar.Application.Posts.Queries.GetPostsByPagination;
 using Pisheyar.Application.Posts.Queries.GetRejectedPostCommentsQuery;
+using Pisheyar.Application.Posts.Queries.GetWeeklyMostViewedPosts;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace WebUI.Controllers
@@ -89,6 +91,28 @@ namespace WebUI.Controllers
         public async Task<ActionResult<GetIndexPostsVm>> GetIndexesAnonymous()
         {
             return await Mediator.Send(new GetIndexPostsQuery());
+        }
+
+        /// <summary>
+        /// دریافت 5 پست منتخب هفته Anonymous
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("[action]")]
+        [AllowAnonymous]
+        public async Task<ActionResult<GetWeeklyMostViewedPostsVm>> GetWeeklyMostViewed()
+        {
+            return await Mediator.Send(new GetWeeklyMostViewedPostsQuery());
+        }
+
+        /// <summary>
+        /// دریافت 5 پست منتخب ماه Anonymous
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("[action]")]
+        [AllowAnonymous]
+        public async Task<ActionResult<GetMonthlyMostViewedPostsVm>> GetMonthlyMostViewed()
+        {
+            return await Mediator.Send(new GetMonthlyMostViewedPostsQuery());
         }
 
         /// <summary>

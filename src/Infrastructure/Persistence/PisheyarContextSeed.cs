@@ -9036,13 +9036,93 @@ namespace Pisheyar.Infrastructure.Persistence
 						ModifiedDate = DateTime.Now,
 						IsDelete = false
 					},
+                    new Category
+                    {
+                        CategoryId = 2,
+                        CategoryGuid = Guid.NewGuid(),
+                        ParentCategoryId = 1,
+                        DisplayName = "ابزار و لوازم صنعتی",
+                        Sort = 1,
+                        ModifiedDate = DateTime.Now,
+                        IsDelete = false
+                    },
+                    new Category
+                    {
+                        CategoryId = 3,
+                        CategoryGuid = Guid.NewGuid(),
+                        ParentCategoryId = 1,
+                        DisplayName = "مصنوعات صنعتی",
+                        Sort = 2,
+                        ModifiedDate = DateTime.Now,
+                        IsDelete = false
+                    },
+                    new Category
+                    {
+                        CategoryId = 4,
+                        CategoryGuid = Guid.NewGuid(),
+                        ParentCategoryId = 1,
+                        DisplayName = "کالا و خدمات صنعتی",
+                        Sort = 3,
+                        ModifiedDate = DateTime.Now,
+                        IsDelete = false
+                    },
+                    new Category
+                    {
+                        CategoryId = 5,
+                        CategoryGuid = Guid.NewGuid(),
+                        ParentCategoryId = 1,
+                        DisplayName = "مواد شیمیایی",
+                        Sort = 4,
+                        ModifiedDate = DateTime.Now,
+                        IsDelete = false
+                    },
+                    new Category
+                    {
+                        CategoryId = 6,
+                        CategoryGuid = Guid.NewGuid(),
+                        ParentCategoryId = 1,
+                        DisplayName = "دستگاه و ماشین آلات",
+                        Sort = 5,
+                        ModifiedDate = DateTime.Now,
+                        IsDelete = false
+                    },
+                    new Category
+                    {
+                        CategoryId = 7,
+                        CategoryGuid = Guid.NewGuid(),
+                        ParentCategoryId = 2,
+                        DisplayName = "جوشکار صنعتی",
+                        Sort = 1,
+                        ModifiedDate = DateTime.Now,
+                        IsDelete = false
+                    },
+                    new Category
+                    {
+                        CategoryId = 8,
+                        CategoryGuid = Guid.NewGuid(),
+                        ParentCategoryId = 2,
+                        DisplayName = "اره و نجار",
+                        Sort = 2,
+                        ModifiedDate = DateTime.Now,
+                        IsDelete = false
+                    },
+                    new Category
+                    {
+                        CategoryId = 9,
+                        CategoryGuid = Guid.NewGuid(),
+                        ParentCategoryId = 2,
+                        DisplayName = "ساختمان",
+                        Sort = 3,
+                        ModifiedDate = DateTime.Now,
+                        IsDelete = false
+                    },
 					new Category
 					{
-						CategoryId = 2,
+						CategoryId = 10,
 						CategoryGuid = Guid.NewGuid(),
 						ParentCategoryId = null,
 						DisplayName = "وبلاگ",
-						Sort = 1,
+						Sort = 2,
 						ModifiedDate = DateTime.Now,
 						IsDelete = false
 					}

@@ -25,7 +25,8 @@ namespace Pisheyar.Domain.Enums
     public enum GetPrimaryCategoriesState
     {
         Success = 1,
-        NotFound = 2
+        NotFound = 2,
+        CategoryNotFound = 3
     }
 
     public enum DeleteCategoryState

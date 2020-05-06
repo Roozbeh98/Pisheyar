@@ -34,6 +34,7 @@ namespace Pisheyar.Domain.Entities
         [Required]
         public bool IsShow { get; set; }
         public bool IsDelete { get; set; }
+        public DateTime CreationDate { get; set; }
         public DateTime ModifiedDate { get; set; }
 
         [ForeignKey(nameof(DocumentId))]
