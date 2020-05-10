@@ -22,12 +22,23 @@ namespace Pisheyar.Domain.Entities
         public Guid ContractorGuid { get; set; }
         [Column("UserID")]
         public int UserId { get; set; }
+        [Column("BusinessTypeCodeID")]
+        public int BusinessTypeCodeId { get; set; }
         [Column("CityID")]
         public int CityId { get; set; }
+        [Required]
+        [StringLength(128)]
+        public string Latitude { get; set; }
+        [Required]
+        [StringLength(128)]
+        public string Longitude { get; set; }
         public long Credit { get; set; }
         public bool IsDelete { get; set; }
         public DateTime ModifiedDate { get; set; }
 
+        [ForeignKey(nameof(BusinessTypeCodeId))]
+        [InverseProperty(nameof(Code.Contractor))]
+        public virtual Code BusinessTypeCode { get; set; }
         [ForeignKey(nameof(CityId))]
         [InverseProperty("Contractor")]
         public virtual City City { get; set; }

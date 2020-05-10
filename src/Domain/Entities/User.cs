@@ -26,13 +26,14 @@ namespace Pisheyar.Domain.Entities
         public Guid UserGuid { get; set; }
         [Column("RoleID")]
         public int RoleId { get; set; }
+        [Column("GenderCodeID")]
+        public int GenderCodeId { get; set; }
         [Required]
         [StringLength(128)]
         public string FirstName { get; set; }
         [Required]
         [StringLength(128)]
         public string LastName { get; set; }
-        [Required]
         [StringLength(128)]
         public string Email { get; set; }
         [Required]
@@ -45,6 +46,9 @@ namespace Pisheyar.Domain.Entities
         public DateTime RegisteredDate { get; set; }
         public DateTime ModifiedDate { get; set; }
 
+        [ForeignKey(nameof(GenderCodeId))]
+        [InverseProperty(nameof(Code.User))]
+        public virtual Code GenderCode { get; set; }
         [ForeignKey(nameof(RoleId))]
         [InverseProperty("User")]
         public virtual Role Role { get; set; }

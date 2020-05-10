@@ -19,6 +19,12 @@ namespace Pisheyar.Infrastructure.Persistence.Configurations
 
             entity.Property(e => e.ModifiedDate).HasDefaultValueSql("(getdate())");
 
+            entity.HasOne(d => d.BusinessTypeCode)
+                .WithMany(p => p.Contractor)
+                .HasForeignKey(d => d.BusinessTypeCodeId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Contractor_Code");
+
             entity.HasOne(d => d.City)
                 .WithMany(p => p.Contractor)
                 .HasForeignKey(d => d.CityId)

@@ -17,6 +17,16 @@ namespace Pisheyar.Domain.Enums
         UserExists = 2
     }
 
+    public enum RegisterContractorState
+    {
+        Success = 1,
+        UserExists = 2,
+        GenderNotFound = 3,
+        BusinessTypeNotFound = 4,
+        CityNotFound = 5,
+        ContractorNotFound = 6
+    }
+
     public enum LoginState
     {
         Success = 1,

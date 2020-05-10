@@ -112,6 +112,8 @@ namespace Pisheyar.Application.Posts.Commands.UpdatePost
                         .Where(x => x.CategoryGuid == categoryGuid)
                         .SingleOrDefaultAsync(cancellationToken);
 
+                    if (category == null) continue;
+
                     var postCategory = new PostCategory()
                     {
                         Post = post,
@@ -157,6 +159,8 @@ namespace Pisheyar.Application.Posts.Commands.UpdatePost
                         var t = await _context.Tag
                             .Where(x => x.TagGuid == Guid.Parse(tag))
                             .SingleOrDefaultAsync(cancellationToken);
+
+                        if (t == null) continue;
 
                         postTag = new PostTag()
                         {

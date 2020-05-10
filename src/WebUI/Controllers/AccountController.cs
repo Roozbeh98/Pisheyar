@@ -11,6 +11,7 @@ using Pisheyar.Application.Accounts.Queries.GetAllUsers;
 using Microsoft.AspNetCore.Authorization;
 using Pisheyar.Application.Accounts.Commands.ChangeUserActiveness;
 using Pisheyar.Application.Accounts.Commands.DeleteUser;
+using Pisheyar.Application.Accounts.Commands.RegisterContractor;
 using Pisheyar.Application.Accounts.Queries.GetAllProvinces;
 using Pisheyar.Application.Accounts.Queries.GetAllProvinceCities;
 
@@ -88,13 +89,25 @@ namespace WebUI.Controllers
         }
 
         /// <summary>
-        /// افزودن کاربر جدید
+        /// افزودن ادمین جدید
         /// </summary>
-        /// <param name="command">اطلاعات کاربر</param>
+        /// <param name="command">اطلاعات ادمین</param>
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost("[action]")]
         public async Task<ActionResult<RegisterCommandVm>> Register(RegisterCommand command)
+        {
+            return await Mediator.Send(command);
+        }
+
+        /// <summary>
+        /// افزودن سرویس دهنده جدید
+        /// </summary>
+        /// <param name="command">اطلاعات سرویس دهنده</param>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpPost("[action]")]
+        public async Task<ActionResult<RegisterContractorVm>> RegisterContractor(RegisterContractorCommand command)
         {
             return await Mediator.Send(command);
         }

@@ -47,6 +47,7 @@ namespace Pisheyar.Infrastructure.Identity
                     if (user.IsActive == false)
                     {
                         user.IsActive = true;
+                        user.IsRegister = true;
                         await _context.SaveChangesAsync(CancellationToken.None);
                     }
 

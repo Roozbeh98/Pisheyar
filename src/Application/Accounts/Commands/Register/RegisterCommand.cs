@@ -44,7 +44,7 @@ namespace Pisheyar.Application.Accounts.Commands.Register
 
                     var newUser = new User
                     {
-                        RoleId = (int)Domain.Enums.Role.User,
+                        RoleId = (int)Domain.Enums.Role.Admin,
                         FirstName = request.Name,
                         LastName = request.Family,
                         Email = request.Email,
@@ -80,7 +80,7 @@ namespace Pisheyar.Application.Accounts.Commands.Register
                 {
                     // user exists
 
-                    if (user.IsActive)
+                    if (user.IsRegister)
                     {
                         return new RegisterCommandVm() { Message = "کاربر مورد نظر در سامانه ثبت شده است", State = (int)RegisterState.UserExists };
                     }

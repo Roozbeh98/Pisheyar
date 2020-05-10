@@ -8897,6 +8897,113 @@ namespace Pisheyar.Infrastructure.Persistence
 
 			#endregion
 
+			#region CodeGroup
+
+			modelBuilder.Entity<CodeGroup>().HasData(
+					new CodeGroup
+					{
+						CodeGroupId = 1,
+						CodeGroupGuid = Guid.NewGuid(),
+						Name = "FilepondType",
+						DisplayName = "نوع فایل"
+					},
+					new CodeGroup
+					{
+						CodeGroupId = 2,
+						CodeGroupGuid = Guid.Parse("2d9c9e83-39eb-42d7-b71f-ef26002c8470"),
+						Name = "BusinessType",
+						DisplayName = "نوع کسب و کار"
+					},
+					new CodeGroup
+					{
+						CodeGroupId = 3,
+						CodeGroupGuid = Guid.Parse("a76da3ba-d12a-42c4-b7e1-732d0990af70"),
+						Name = "Gender",
+						DisplayName = "جنسیت"
+					}
+				);
+
+			#endregion
+
+			#region Code
+
+			modelBuilder.Entity<Code>().HasData(
+					new Code
+					{
+						CodeId = 1,
+						CodeGuid = Guid.NewGuid(),
+						CodeGroupId = 1,
+						Name = "image/png",
+						DisplayName = "png",
+						IsDelete = false
+					},
+					new Code
+					{
+						CodeId = 2,
+						CodeGuid = Guid.NewGuid(),
+						CodeGroupId = 1,
+						Name = "image/jpg",
+						DisplayName = "jpg",
+						IsDelete = false
+					},
+					new Code
+					{
+						CodeId = 3,
+						CodeGuid = Guid.NewGuid(),
+						CodeGroupId = 1,
+						Name = "image/jpeg",
+						DisplayName = "jpeg",
+						IsDelete = false
+					},
+					new Code
+					{
+						CodeId = 4,
+						CodeGuid = Guid.NewGuid(),
+						CodeGroupId = 2,
+						Name = "Test 1",
+						DisplayName = "تست 1",
+						IsDelete = false
+					},
+					new Code
+					{
+						CodeId = 5,
+						CodeGuid = Guid.NewGuid(),
+						CodeGroupId = 2,
+						Name = "Test 2",
+						DisplayName = "تست 2",
+						IsDelete = false
+					},
+					new Code
+					{
+						CodeId = 6,
+						CodeGuid = Guid.NewGuid(),
+						CodeGroupId = 2,
+						Name = "Test 3",
+						DisplayName = "تست 3",
+						IsDelete = false
+					},
+					new Code
+					{
+						CodeId = 7,
+						CodeGuid = Guid.Parse("2b451e4c-c9b8-415a-bcb4-05da15447b89"),
+						CodeGroupId = 3,
+						Name = "Female",
+						DisplayName = "زن",
+						IsDelete = false
+					},
+					new Code
+					{
+						CodeId = 8,
+						CodeGuid = Guid.Parse("6e48b657-2c83-4481-a9c5-009ffe10158b"),
+						CodeGroupId = 3,
+						Name = "Male",
+						DisplayName = "مرد",
+						IsDelete = false
+					}
+				);
+
+			#endregion
+
 			#region SmsProviderConfiguration
 
 			modelBuilder.Entity<SmsProviderConfiguration>().HasData(
@@ -8953,8 +9060,8 @@ namespace Pisheyar.Infrastructure.Persistence
 					{
 						RoleId = 1,
 						RoleGuid = Guid.NewGuid(),
-						Name = "User",
-						DisplayName = "کاربر عادی",
+						Name = "Admin",
+						DisplayName = "ادمین",
 						ModifiedDate = DateTime.Now,
 						IsDelete = false
 					},
@@ -8962,11 +9069,20 @@ namespace Pisheyar.Infrastructure.Persistence
 					{
 						RoleId = 2,
 						RoleGuid = Guid.NewGuid(),
-						Name = "Admin",
-						DisplayName = "ادمین",
+						Name = "Contractor",
+						DisplayName = "سرویس دهنده",
 						ModifiedDate = DateTime.Now,
 						IsDelete = false
-					}
+					},
+                    new Role
+                    {
+                        RoleId = 3,
+                        RoleGuid = Guid.NewGuid(),
+                        Name = "Client",
+                        DisplayName = "سرویس گیرنده",
+                        ModifiedDate = DateTime.Now,
+                        IsDelete = false
+                    }
 				);
 
 			#endregion
@@ -8979,6 +9095,7 @@ namespace Pisheyar.Infrastructure.Persistence
 						UserId = 1,
 						UserGuid = Guid.NewGuid(),
 						RoleId = 1,
+						GenderCodeId = 8,
 						FirstName = "سید مهدی",
 						LastName = "رودکی",
 						Email = "mahdiroudaki@hotmail.com",
@@ -8994,6 +9111,7 @@ namespace Pisheyar.Infrastructure.Persistence
 						UserId = 2,
 						UserGuid = Guid.NewGuid(),
 						RoleId = 1,
+                        GenderCodeId = 8,
 						FirstName = "مهدی",
 						LastName = "حکمی زاده",
 						Email = "mahdiih@ymail.com",
@@ -9009,6 +9127,7 @@ namespace Pisheyar.Infrastructure.Persistence
 						UserId = 3,
 						UserGuid = Guid.NewGuid(),
 						RoleId = 1,
+                        GenderCodeId = 8,
 						FirstName = "روزبه",
 						LastName = "شامخی",
 						Email = "roozbehshamekhi@hotmail.com",
@@ -9129,54 +9248,6 @@ namespace Pisheyar.Infrastructure.Persistence
 				);
 
 			#endregion
-
-			#region CodeGroup
-
-			modelBuilder.Entity<CodeGroup>().HasData(
-					new CodeGroup
-					{
-						CodeGroupId = 1,
-						CodeGroupGuid = Guid.NewGuid(),
-						Name = "FilepondType",
-						DisplayName = "نوع فایل"
-					}
-				);
-
-			#endregion
-
-			#region Code
-
-			modelBuilder.Entity<Code>().HasData(
-					new Code
-					{
-						CodeId = 1,
-						CodeGuid = Guid.NewGuid(),
-						CodeGroupId = 1,
-						Name = "image/png",
-						DisplayName = "png",
-						IsDelete = false
-					},
-					new Code
-					{
-						CodeId = 2,
-						CodeGuid = Guid.NewGuid(),
-						CodeGroupId = 1,
-						Name = "image/jpg",
-						DisplayName = "jpg",
-						IsDelete = false
-					},
-					new Code
-					{
-						CodeId = 3,
-						CodeGuid = Guid.NewGuid(),
-						CodeGroupId = 1,
-						Name = "image/jpeg",
-						DisplayName = "jpeg",
-						IsDelete = false
-					}
-				);
-
-			#endregion
-		}
+        }
     }
 }

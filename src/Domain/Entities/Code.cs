@@ -9,9 +9,11 @@ namespace Pisheyar.Domain.Entities
     {
         public Code()
         {
+            Contractor = new HashSet<Contractor>();
             Document = new HashSet<Document>();
             Order = new HashSet<Order>();
             Transaction = new HashSet<Transaction>();
+            User = new HashSet<User>();
         }
 
         [Key]
@@ -33,11 +35,15 @@ namespace Pisheyar.Domain.Entities
         [ForeignKey(nameof(CodeGroupId))]
         [InverseProperty("Code")]
         public virtual CodeGroup CodeGroup { get; set; }
+        [InverseProperty("BusinessTypeCode")]
+        public virtual ICollection<Contractor> Contractor { get; set; }
         [InverseProperty("TypeCode")]
         public virtual ICollection<Document> Document { get; set; }
         [InverseProperty("StateCode")]
         public virtual ICollection<Order> Order { get; set; }
         [InverseProperty("TypeCode")]
         public virtual ICollection<Transaction> Transaction { get; set; }
+        [InverseProperty("GenderCode")]
+        public virtual ICollection<User> User { get; set; }
     }
 }

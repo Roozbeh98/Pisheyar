@@ -11,7 +11,7 @@ namespace Pisheyar.Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<User> entity)
         {
-            entity.Property(e => e.IsActive).HasDefaultValueSql("((1))");
+            entity.Property(e => e.IsActive).HasDefaultValueSql("((0))");
 
             entity.Property(e => e.IsDelete).HasDefaultValueSql("((0))");
 
@@ -24,6 +24,12 @@ namespace Pisheyar.Infrastructure.Persistence.Configurations
             entity.Property(e => e.UserGuid)
                 .HasColumnType("UNIQUEIDENTIFIER ROWGUIDCOL")
                 .HasDefaultValueSql("(newid())");
+
+            entity.HasOne(d => d.GenderCode)
+                .WithMany(p => p.User)
+                .HasForeignKey(d => d.GenderCodeId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_User_Code");
 
             entity.HasOne(d => d.Role)
                 .WithMany(p => p.User)
