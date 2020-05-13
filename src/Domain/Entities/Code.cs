@@ -23,10 +23,8 @@ namespace Pisheyar.Domain.Entities
         public Guid CodeGuid { get; set; }
         [Column("CodeGroupID")]
         public int CodeGroupId { get; set; }
-        [Required]
         [StringLength(128)]
         public string Name { get; set; }
-        [Required]
         [StringLength(128)]
         public string DisplayName { get; set; }
         public bool IsDelete { get; set; }

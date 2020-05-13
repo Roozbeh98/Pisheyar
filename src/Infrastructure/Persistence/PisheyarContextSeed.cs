@@ -8903,7 +8903,7 @@ namespace Pisheyar.Infrastructure.Persistence
 					new CodeGroup
 					{
 						CodeGroupId = 1,
-						CodeGroupGuid = Guid.NewGuid(),
+						CodeGroupGuid = Guid.Parse("5b739a57-164e-4b39-8b1c-1129bc9d8991"),
 						Name = "FilepondType",
 						DisplayName = "نوع فایل"
 					},
@@ -8920,7 +8920,14 @@ namespace Pisheyar.Infrastructure.Persistence
 						CodeGroupGuid = Guid.Parse("a76da3ba-d12a-42c4-b7e1-732d0990af70"),
 						Name = "Gender",
 						DisplayName = "جنسیت"
-					}
+					},
+                    new CodeGroup
+                    {
+                        CodeGroupId = 4,
+                        CodeGroupGuid = Guid.Parse("39c56245-8e42-4cef-8ddd-5e4c17782e8b"),
+                        Name = "OrderState",
+                        DisplayName = "وضعیت سفارش"
+                    }
 				);
 
 			#endregion
@@ -8931,7 +8938,7 @@ namespace Pisheyar.Infrastructure.Persistence
 					new Code
 					{
 						CodeId = 1,
-						CodeGuid = Guid.NewGuid(),
+						CodeGuid = Guid.Parse("fc20e91f-1eb1-4912-87be-1708f2706367"),
 						CodeGroupId = 1,
 						Name = "image/png",
 						DisplayName = "png",
@@ -8940,7 +8947,7 @@ namespace Pisheyar.Infrastructure.Persistence
 					new Code
 					{
 						CodeId = 2,
-						CodeGuid = Guid.NewGuid(),
+						CodeGuid = Guid.Parse("3f009296-db7a-4fde-a659-4ca1541a2504"),
 						CodeGroupId = 1,
 						Name = "image/jpg",
 						DisplayName = "jpg",
@@ -8949,7 +8956,7 @@ namespace Pisheyar.Infrastructure.Persistence
 					new Code
 					{
 						CodeId = 3,
-						CodeGuid = Guid.NewGuid(),
+						CodeGuid = Guid.Parse("3209341a-07d4-437b-9301-2d0f909ad713"),
 						CodeGroupId = 1,
 						Name = "image/jpeg",
 						DisplayName = "jpeg",
@@ -8958,28 +8965,28 @@ namespace Pisheyar.Infrastructure.Persistence
 					new Code
 					{
 						CodeId = 4,
-						CodeGuid = Guid.NewGuid(),
+						CodeGuid = Guid.Parse("09cb21ac-d99e-42ba-904d-337bdd561e6e"),
 						CodeGroupId = 2,
-						Name = "Test 1",
-						DisplayName = "تست 1",
+						Name = "به صورت شخصی فعالیت میکنم",
+						DisplayName = "به صورت شخصی فعالیت میکنم",
 						IsDelete = false
 					},
 					new Code
 					{
 						CodeId = 5,
-						CodeGuid = Guid.NewGuid(),
+						CodeGuid = Guid.Parse("2383b70e-f41f-4b67-b0c9-c48706a70a46"),
 						CodeGroupId = 2,
-						Name = "Test 2",
-						DisplayName = "تست 2",
+						Name = "نماینده یک شرکت هستم",
+						DisplayName = "نماینده یک شرکت هستم",
 						IsDelete = false
 					},
 					new Code
 					{
 						CodeId = 6,
-						CodeGuid = Guid.NewGuid(),
+						CodeGuid = Guid.Parse("cf5a1929-db68-43d6-8fc7-e3b7ccc51678"),
 						CodeGroupId = 2,
-						Name = "Test 3",
-						DisplayName = "تست 3",
+						Name = "نماینده یک واحد، آموزشگاه یا دیگر مجوز ها هستم",
+						DisplayName = "نماینده یک واحد، آموزشگاه یا دیگر مجوز ها هستم",
 						IsDelete = false
 					},
 					new Code
@@ -8999,7 +9006,41 @@ namespace Pisheyar.Infrastructure.Persistence
 						Name = "Male",
 						DisplayName = "مرد",
 						IsDelete = false
-					}
+					},
+                    new Code
+                    {
+                        CodeId = 9,
+                        CodeGuid = Guid.Parse("b5d74bda-849b-427c-a6e0-463c1e5f615b"),
+                        CodeGroupId = 4,
+                        Name = "Waiting",
+                        DisplayName = "در انتظار تایید",
+                        IsDelete = false
+                    },
+                    new Code
+                    {
+                        CodeId = 10,
+                        CodeGuid = Guid.Parse("10afdac9-a075-40e1-9207-1813befcf4d6"),
+						CodeGroupId = 4,
+                        Name = "Doing",
+                        DisplayName = "در حال انجام",
+                        IsDelete = false
+                    }, new Code
+                    {
+                        CodeId = 11,
+                        CodeGuid = Guid.Parse("2b9d07c8-5535-495e-8557-da32acb58600"),
+						CodeGroupId = 4,
+                        Name = "Done",
+                        DisplayName = "انجام شده",
+                        IsDelete = false
+                    }, new Code
+                    {
+                        CodeId = 12,
+                        CodeGuid = Guid.Parse("61960336-e912-4658-9ab3-59f4c58e0b23"),
+						CodeGroupId = 4,
+                        Name = "Canceled",
+                        DisplayName = "لغو",
+                        IsDelete = false
+                    }
 				);
 
 			#endregion

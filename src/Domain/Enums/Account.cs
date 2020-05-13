@@ -11,10 +11,12 @@ namespace Pisheyar.Domain.Enums
         UserNotFound = 3
     }
 
-    public enum RegisterState
+    public enum RegisterClientState
     {
         Success = 1,
-        UserExists = 2
+        UserExists = 2,
+        ClientNotFound = 3,
+        CityNotFound = 4
     }
 
     public enum RegisterContractorState

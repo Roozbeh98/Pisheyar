@@ -8,7 +8,6 @@ using Pisheyar.Application.Codes.Queries.GetCodesByCodeGroupGuid;
 
 namespace WebUI.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CodeController : ApiController

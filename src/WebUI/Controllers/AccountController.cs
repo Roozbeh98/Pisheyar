@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Pisheyar.Application.Accounts.Commands.Login;
-using Pisheyar.Application.Accounts.Commands.Register;
 using Pisheyar.Application.Accounts.Commands.Authenticate;
 using Pisheyar.Application.Accounts.Queries.GetUserByMobile;
 using Pisheyar.Application.Accounts.Queries.GetUserByGuid;
@@ -11,6 +10,7 @@ using Pisheyar.Application.Accounts.Queries.GetAllUsers;
 using Microsoft.AspNetCore.Authorization;
 using Pisheyar.Application.Accounts.Commands.ChangeUserActiveness;
 using Pisheyar.Application.Accounts.Commands.DeleteUser;
+using Pisheyar.Application.Accounts.Commands.RegisterClient;
 using Pisheyar.Application.Accounts.Commands.RegisterContractor;
 using Pisheyar.Application.Accounts.Queries.GetAllProvinces;
 using Pisheyar.Application.Accounts.Queries.GetAllProvinceCities;
@@ -89,13 +89,13 @@ namespace WebUI.Controllers
         }
 
         /// <summary>
-        /// افزودن ادمین جدید
+        /// افزودن سرویس گیرنده جدید
         /// </summary>
         /// <param name="command">اطلاعات ادمین</param>
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost("[action]")]
-        public async Task<ActionResult<RegisterCommandVm>> Register(RegisterCommand command)
+        public async Task<ActionResult<RegisterClientCommandVm>> RegisterClient(RegisterClientCommand command)
         {
             return await Mediator.Send(command);
         }

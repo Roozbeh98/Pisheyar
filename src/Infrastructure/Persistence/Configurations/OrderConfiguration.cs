@@ -11,8 +11,6 @@ namespace Pisheyar.Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Order> entity)
         {
-            entity.Property(e => e.DeadlineDate).HasDefaultValueSql("(getdate())");
-
             entity.Property(e => e.IsDelete).HasDefaultValueSql("((0))");
 
             entity.Property(e => e.ModifiedDate).HasDefaultValueSql("(getdate())");

@@ -21,7 +21,7 @@ namespace Pisheyar.Domain.Entities
         [Column("ClientID")]
         public int ClientId { get; set; }
         [Column("ContractorID")]
-        public int ContractorId { get; set; }
+        public int? ContractorId { get; set; }
         [Column("CategoryID")]
         public int CategoryId { get; set; }
         [Column("StateCodeID")]
@@ -31,7 +31,7 @@ namespace Pisheyar.Domain.Entities
         [Required]
         public string Description { get; set; }
         public bool IsDelete { get; set; }
-        public DateTime DeadlineDate { get; set; }
+        public DateTime? DeadlineDate { get; set; }
         public DateTime ModifiedDate { get; set; }
 
         [ForeignKey(nameof(CategoryId))]

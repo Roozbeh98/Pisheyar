@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Pisheyar.Application.Accounts.Commands.Register
+namespace Pisheyar.Application.Accounts.Commands.RegisterClient
 {
-    public class RegisterCommandVm
+    public class RegisterClientCommandVm
     {
         public string Message { get; set; }
 

@@ -40,4 +40,10 @@ namespace Pisheyar.Domain.Enums
         Success = 1,
         NotFound = 2
     }
+
+    public enum SearchCategoriesByCityState
+    {
+        Success = 1,
+        NotFound = 2
+    }
 }

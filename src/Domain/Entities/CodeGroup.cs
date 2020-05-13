@@ -17,10 +17,8 @@ namespace Pisheyar.Domain.Entities
         public int CodeGroupId { get; set; }
         [Column("CodeGroupGUID")]
         public Guid CodeGroupGuid { get; set; }
-        [Required]
         [StringLength(128)]
         public string Name { get; set; }
-        [Required]
         [StringLength(128)]
         public string DisplayName { get; set; }
         public bool IsDelete { get; set; }

@@ -9,7 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Pisheyar.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
-using Pisheyar.Application.Accounts.Commands.Register;
+using Pisheyar.Application.Accounts.Commands.RegisterClient;
 
 namespace Pisheyar.Application.Accounts.Commands.RegisterContractor
 {
@@ -194,6 +194,7 @@ namespace Pisheyar.Application.Accounts.Commands.RegisterContractor
                     contractor.CityId = city.CityId;
                     contractor.Latitude = request.Latitude;
                     contractor.Longitude = request.Longitude;
+                    contractor.ModifiedDate = now;
 
                     List<ContractorCategory> oldCategories = await _context.ContractorCategory
                         .Where(x => x.ContractorId == contractor.ContractorId)

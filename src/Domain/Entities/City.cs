@@ -9,6 +9,7 @@ namespace Pisheyar.Domain.Entities
     {
         public City()
         {
+            Client = new HashSet<Client>();
             Contractor = new HashSet<Contractor>();
         }
 
@@ -26,6 +27,8 @@ namespace Pisheyar.Domain.Entities
         [ForeignKey(nameof(ProvinceId))]
         [InverseProperty("City")]
         public virtual Province Province { get; set; }
+        [InverseProperty("City")]
+        public virtual ICollection<Client> Client { get; set; }
         [InverseProperty("City")]
         public virtual ICollection<Contractor> Contractor { get; set; }
     }

@@ -39,6 +39,7 @@
     <Folder Include="Advertisements\Commands\UpdateAdvertisement\" />
     <Folder Include="Advertisements\Queries\GetAdvertisement\" />
     <Folder Include="Advertisements\Queries\GetAllAdvertisements\" />
+    <Folder Include="Clients\Queries\" />
     <Folder Include="Codes\Commands\" />
     <Folder Include="Contact\Queries\" />
     <Folder Include="Tags\Commands\" />

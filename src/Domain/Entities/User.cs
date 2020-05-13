@@ -27,7 +27,7 @@ namespace Pisheyar.Domain.Entities
         [Column("RoleID")]
         public int RoleId { get; set; }
         [Column("GenderCodeID")]
-        public int GenderCodeId { get; set; }
+        public int? GenderCodeId { get; set; }
         [Required]
         [StringLength(128)]
         public string FirstName { get; set; }
@@ -39,7 +39,6 @@ namespace Pisheyar.Domain.Entities
         [Required]
         [StringLength(128)]
         public string PhoneNumber { get; set; }
-        [Required]
         public bool IsActive { get; set; }
         public bool IsRegister { get; set; }
         public bool IsDelete { get; set; }

@@ -68,13 +68,14 @@ namespace WebUI.Controllers
         /// <summary>
         /// جستجو دسته بندی ها بر اساس شهر
         /// </summary>
-        /// <param name="guid">آیدی شهر</param>
+        /// <param name="cityGuid">آیدی شهر</param>
+        /// <param name="searchInput">دسته بندی</param>
         /// <returns></returns>
-        [HttpGet("[action]/{guid}")]
+        [HttpGet("[action]")]
         [AllowAnonymous]
-        public async Task<ActionResult<List<string>>> SearchByCity(Guid guid)
+        public async Task<ActionResult<SearchCategoriesByCityVm>> SearchByCity(Guid cityGuid, string searchInput)
         {
-            return await Mediator.Send(new SearchCategoriesByCityQuery() { CityGuid = guid });
+            return await Mediator.Send(new SearchCategoriesByCityQuery() { CityGuid = cityGuid, SearchInput = searchInput });
         }
 
         /// <summary>

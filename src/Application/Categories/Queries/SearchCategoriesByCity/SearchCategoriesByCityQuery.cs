@@ -14,11 +14,13 @@ using AutoMapper;
 
 namespace Pisheyar.Application.Categories.Queries.SearchCategoriesByCity
 {
-    public class SearchCategoriesByCityQuery : IRequest<List<string>>
+    public class SearchCategoriesByCityQuery : IRequest<SearchCategoriesByCityVm>
     {
         public Guid CityGuid { get; set; }
 
-        public class SearchCategoriesByCityQueryHandler : IRequestHandler<SearchCategoriesByCityQuery, List<string>>
+        public string SearchInput { get; set; }
+
+        public class SearchCategoriesByCityQueryHandler : IRequestHandler<SearchCategoriesByCityQuery, SearchCategoriesByCityVm>
         {
             private readonly IPisheyarContext _context;
             private readonly IMapper _mapper;
@@ -29,15 +31,29 @@ namespace Pisheyar.Application.Categories.Queries.SearchCategoriesByCity
                 _mapper = mapper;
             }
 
-            public async Task<List<string>> Handle(SearchCategoriesByCityQuery request, CancellationToken cancellationToken)
+            public async Task<SearchCategoriesByCityVm> Handle(SearchCategoriesByCityQuery request, CancellationToken cancellationToken)
             {
-                List<string> categories = await _context.ContractorCategory
-                    .Where(x => x.Contractor.City.CityGuid == request.CityGuid)
-                    .Join(_context.Category, cc => cc.CategoryId, c => c.CategoryId, (cc, c) => new { cc, c })
-                    .Select(x => x.c.DisplayName)
-                    .ToListAsync(cancellationToken);
+                List<string> categories = await (from cc in _context.ContractorCategory
+                                                 where cc.Contractor.City.CityGuid == request.CityGuid
+                                                 join c in _context.Category on cc.CategoryId equals c.CategoryId
+                                                 join ct in _context.CategoryTag on cc.CategoryId equals ct.CategoryId
+                                                 where cc.Category.DisplayName.Contains(request.SearchInput) || ct.Tag.Name.Contains(request.SearchInput)
+                                                 select c.DisplayName).ToListAsync(cancellationToken);
 
-                return categories.Count > 0 ? categories : new List<string>();
+                if (categories.Count <= 0)
+                    return new SearchCategoriesByCityVm
+                    {
+                        Message = "نتیجه ای یافت نشد",
+                        State = (int)SearchCategoriesByCityState.NotFound,
+                    };
+
+                return new SearchCategoriesByCityVm
+                {
+                    Message = "عملیات موفق آمیز",
+                    State = (int)SearchCategoriesByCityState.Success,
+                    Count = categories.Count,
+                    Categories = categories
+                };
             }
         }
     }
