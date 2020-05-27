@@ -19,7 +19,7 @@ using Pisheyar.Infrastructure.Persistence;
 using FluentValidation.AspNetCore;
 using WebUI.Common;
 using Pisheyar.Infrastructure.Services;
-using WebUI.SignalRHubs;
+using WebUI.Hubs;
 
 namespace WebUI
 {
@@ -55,10 +55,13 @@ namespace WebUI
             services.AddCors(options => options.AddPolicy("CorsPolicy",
             builder =>
             {
-                builder.AllowAnyMethod().AllowAnyHeader()
-                       .WithOrigins("http://127.0.0.1:3000")
-                       .WithOrigins("http://127.0.0.1:5500")
-                       .AllowCredentials();
+                builder.AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .WithOrigins("http://localhost:3000")
+                    .WithOrigins("http://127.0.0.1:3000")
+                    .WithOrigins("http://localhost:5500")
+                    .WithOrigins("http://127.0.0.1:5500")
+                    .AllowCredentials();
             }));
             services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<IPisheyarContext>())
                 .AddNewtonsoftJson();
@@ -98,8 +101,7 @@ namespace WebUI
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapHub<ChatHub>("/chatHub");
-                endpoints.MapHub<AgentHub>("/agentHub");
+                endpoints.MapHub<ChatHub>("/ChatHub");
             });
         }
     }

@@ -8,11 +8,11 @@ namespace Pisheyar.Application.Categories.Queries.GetCategoryByGuid
     {
         public Guid Guid { get; set; }
 
-        public int? ParentId { get; set; }
+        //public int? ParentId { get; set; }
 
         public string Title { get; set; }
 
-        public int Order { get; set; }
+        //public int Order { get; set; }
 
         public List<CategoryDto> Children { get; set; } = new List<CategoryDto>();
     }

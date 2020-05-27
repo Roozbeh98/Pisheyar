@@ -39,9 +39,10 @@
     <Folder Include="Advertisements\Commands\UpdateAdvertisement\" />
     <Folder Include="Advertisements\Queries\GetAdvertisement\" />
     <Folder Include="Advertisements\Queries\GetAllAdvertisements\" />
-    <Folder Include="Clients\Queries\" />
     <Folder Include="Codes\Commands\" />
     <Folder Include="Contact\Queries\" />
+    <Folder Include="Contractors\Commands\" />
+    <Folder Include="Payments\Queries\GetPayment\" />
     <Folder Include="Tags\Commands\" />
     <Folder Include="Common\Mappings\" />
   </ItemGroup>

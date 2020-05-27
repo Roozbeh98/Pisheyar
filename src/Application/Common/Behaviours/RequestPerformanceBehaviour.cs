@@ -12,7 +12,7 @@ namespace Pisheyar.Application.Common.Behaviours
     {
         private readonly Stopwatch _timer;
         private readonly ILogger<TRequest> _logger;
-        private readonly ICurrentUserService _currentUserService;
+        private readonly ICurrentUserService _currentUser;
         private readonly IIdentityService _identityService;
 
         public RequestPerformanceBehaviour(
@@ -23,7 +23,7 @@ namespace Pisheyar.Application.Common.Behaviours
             _timer = new Stopwatch();
 
             _logger = logger;
-            _currentUserService = currentUserService;
+            _currentUser = currentUserService;
             _identityService = identityService;
         }
 
@@ -40,7 +40,7 @@ namespace Pisheyar.Application.Common.Behaviours
             if (elapsedMilliseconds > 500)
             {
                 var requestName = typeof(TRequest).Name;
-                var userNameIdentifier = _currentUserService.NameIdentifier;
+                var userNameIdentifier = _currentUser.NameIdentifier;
                 string userFullName = string.Empty;
 
                 if (!string.IsNullOrEmpty(userNameIdentifier))

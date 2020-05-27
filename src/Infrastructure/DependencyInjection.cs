@@ -66,7 +66,7 @@ namespace Pisheyar.Infrastructure
                             // If the request is for our hub...
                             var path = context.HttpContext.Request.Path;
                             if (!string.IsNullOrEmpty(accessToken) &&
-                                path.StartsWithSegments("/chatHub"))
+                                path.StartsWithSegments("/ChatHub"))
                             {
                                 // Read the token out of the query string
                                 context.Token = accessToken;
@@ -79,7 +79,8 @@ namespace Pisheyar.Infrastructure
             services.AddTransient<IDateTime, DateTimeService>();
             services.AddTransient<IIdentityService, IdentityService>();
             services.AddTransient<ISmsService, SmsService>();
-            services.AddTransient<IChatRoomService, InMemoryChatRoomService>();
+            services.AddTransient<IChatRoomService, ChatRoomService>();
+            services.AddTransient<IZarinPalService, ZarinPalService>();
 
             return services;
         }

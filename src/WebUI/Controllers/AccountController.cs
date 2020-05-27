@@ -14,6 +14,9 @@ using Pisheyar.Application.Accounts.Commands.RegisterClient;
 using Pisheyar.Application.Accounts.Commands.RegisterContractor;
 using Pisheyar.Application.Accounts.Queries.GetAllProvinces;
 using Pisheyar.Application.Accounts.Queries.GetAllProvinceCities;
+using Pisheyar.Application.Accounts.Queries.GetCurrentAdminUser;
+using Pisheyar.Application.Accounts.Queries.GetCurrentClientUser;
+using Pisheyar.Application.Accounts.Queries.GetCurrentContractorUser;
 
 namespace WebUI.Controllers
 {
@@ -41,7 +44,37 @@ namespace WebUI.Controllers
         [HttpGet("[action]/{guid}")]
         public async Task<ActionResult<UserByGuidVm>> GetByGuid(Guid guid)
         {
-            return await Mediator.Send(new GetUserByGuidQuery { UserGuid = guid });
+            return await Mediator.Send(new GetUserByGuidQuery() { UserGuid = guid });
+        }
+
+        /// <summary>
+        /// دریافت اطلاعات کاربر ادمین لاگین شده
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("[action]")]
+        public async Task<ActionResult<GetCurrentAdminUserVm>> GetCurrentAdminUser()
+        {
+            return await Mediator.Send(new GetCurrentAdminUserQuery());
+        }
+
+        /// <summary>
+        /// دریافت اطلاعات کاربر سرویس دهنده لاگین شده
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("[action]")]
+        public async Task<ActionResult<GetCurrentContractorUserVm>> GetCurrentContractorUser()
+        {
+            return await Mediator.Send(new GetCurrentContractorUserQuery());
+        }
+
+        /// <summary>
+        /// دریافت اطلاعات کاربر سرویس گیرنده لاگین شده
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("[action]")]
+        public async Task<ActionResult<GetCurrentClientUserVm>> GetCurrentClientUser()
+        {
+            return await Mediator.Send(new GetCurrentClientUserQuery());
         }
 
         /// <summary>
@@ -156,6 +189,13 @@ namespace WebUI.Controllers
         public async Task<ActionResult<DeleteUserVm>> Delete(DeleteUserCommand command)
         {
             return await Mediator.Send(command);
+        }
+
+        [HttpGet("[action]")]
+        [AllowAnonymous]
+        public ActionResult Test()
+        {
+            return Redirect("https://tavanito.com/services/?categories[]=77");
         }
     }
 }

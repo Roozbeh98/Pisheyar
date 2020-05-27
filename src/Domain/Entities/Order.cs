@@ -9,7 +9,6 @@ namespace Pisheyar.Domain.Entities
     {
         public Order()
         {
-            ChatRoom = new HashSet<ChatRoom>();
             OrderRequest = new HashSet<OrderRequest>();
         }
 
@@ -46,8 +45,6 @@ namespace Pisheyar.Domain.Entities
         [ForeignKey(nameof(StateCodeId))]
         [InverseProperty(nameof(Code.Order))]
         public virtual Code StateCode { get; set; }
-        [InverseProperty("Order")]
-        public virtual ICollection<ChatRoom> ChatRoom { get; set; }
         [InverseProperty("Order")]
         public virtual ICollection<OrderRequest> OrderRequest { get; set; }
     }

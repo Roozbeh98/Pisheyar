@@ -10,6 +10,7 @@ namespace Pisheyar.Domain.Entities
         public User()
         {
             Admin = new HashSet<Admin>();
+            ChatMessage = new HashSet<ChatMessage>();
             Client = new HashSet<Client>();
             Comment = new HashSet<Comment>();
             Contractor = new HashSet<Contractor>();
@@ -53,6 +54,8 @@ namespace Pisheyar.Domain.Entities
         public virtual Role Role { get; set; }
         [InverseProperty("User")]
         public virtual ICollection<Admin> Admin { get; set; }
+        [InverseProperty("User")]
+        public virtual ICollection<ChatMessage> ChatMessage { get; set; }
         [InverseProperty("User")]
         public virtual ICollection<Client> Client { get; set; }
         [InverseProperty("User")]

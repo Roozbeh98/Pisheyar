@@ -23,13 +23,19 @@ namespace Pisheyar.Infrastructure.Persistence.Configurations
 
             entity.Property(e => e.ModifiedDate).HasDefaultValueSql("(getdate())");
 
-            entity.Property(e => e.SentDate).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.SentAt).HasDefaultValueSql("(getdate())");
 
-            entity.HasOne(d => d.ChatRoom)
+            entity.HasOne(d => d.OrderRequest)
                 .WithMany(p => p.ChatMessage)
-                .HasForeignKey(d => d.ChatRoomId)
+                .HasForeignKey(d => d.OrderRequestId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ChatMessage_ChatRoom");
+                .HasConstraintName("FK_ChatMessage_OrderRequest");
+
+            entity.HasOne(d => d.User)
+                    .WithMany(p => p.ChatMessage)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_ChatMessage_User");
         }
     }
 }

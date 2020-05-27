@@ -31,18 +31,18 @@ namespace Pisheyar.Application.Posts.Commands.CreatePost
         public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, CreatePostCommandVm>
         {
             private readonly IPisheyarContext _context;
-            private readonly ICurrentUserService _currentUserService;
+            private readonly ICurrentUserService _currentUser;
 
             public CreatePostCommandHandler(IPisheyarContext context, ICurrentUserService currentUserService)
             {
                 _context = context;
-                _currentUserService = currentUserService;
+                _currentUser = currentUserService;
             }
 
             public async Task<CreatePostCommandVm> Handle(CreatePostCommand request, CancellationToken cancellationToken)
             {
                 var currentUser = await _context.User
-                    .Where(x => x.UserGuid == Guid.Parse(_currentUserService.NameIdentifier))
+                    .Where(x => x.UserGuid == Guid.Parse(_currentUser.NameIdentifier))
                     .SingleOrDefaultAsync(cancellationToken);
 
                 if (currentUser == null)

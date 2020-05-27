@@ -12,7 +12,7 @@ namespace Pisheyar.Infrastructure.Persistence
 {
     public partial class PisheyarContext : DbContext, IPisheyarContext
     {
-        //private readonly ICurrentUserService _currentUserService;
+        //private readonly ICurrentUserService _currentUser;
         private readonly IDateTime _dateTime;
 
         public PisheyarContext()
@@ -24,7 +24,7 @@ namespace Pisheyar.Infrastructure.Persistence
             //ICurrentUserService currentUserService,
             IDateTime dateTime) : base(options)
         {
-            //_currentUserService = currentUserService;
+            //_currentUser = currentUserService;
             _dateTime = dateTime;
         }
 
@@ -33,7 +33,6 @@ namespace Pisheyar.Infrastructure.Persistence
         public virtual DbSet<Category> Category { get; set; }
         public virtual DbSet<CategoryTag> CategoryTag { get; set; }
         public virtual DbSet<ChatMessage> ChatMessage { get; set; }
-        public virtual DbSet<ChatRoom> ChatRoom { get; set; }
         public virtual DbSet<City> City { get; set; }
         public virtual DbSet<Client> Client { get; set; }
         public virtual DbSet<Code> Code { get; set; }
@@ -45,6 +44,7 @@ namespace Pisheyar.Infrastructure.Persistence
         public virtual DbSet<Document> Document { get; set; }
         public virtual DbSet<Order> Order { get; set; }
         public virtual DbSet<OrderRequest> OrderRequest { get; set; }
+        public virtual DbSet<Payment> Payment { get; set; }
         public virtual DbSet<Permission> Permission { get; set; }
         public virtual DbSet<PermissionGroup> PermissionGroup { get; set; }
         public virtual DbSet<Post> Post { get; set; }
@@ -77,11 +77,11 @@ namespace Pisheyar.Infrastructure.Persistence
                 switch (entry.State)
                 {
                     case EntityState.Added:
-                        //entry.Entity.CreatedBy = _currentUserService.UserId;
+                        //entry.Entity.CreatedBy = _currentUser.UserId;
                         entry.Entity.Created = _dateTime.Now;
                         break;
                     case EntityState.Modified:
-                        //entry.Entity.LastModifiedBy = _currentUserService.UserId;
+                        //entry.Entity.LastModifiedBy = _currentUser.UserId;
                         entry.Entity.LastModified = _dateTime.Now;
                         break;
                 }

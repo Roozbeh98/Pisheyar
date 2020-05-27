@@ -12,6 +12,6 @@ namespace Pisheyar.Application.Categories.Queries.SearchCategoriesByCity
 
         public int Count { get; set; }
 
-        public List<string> Categories { get; set; }
+        public List<SearchCategoriesByCityDto> Categories { get; set; }
     }
 }

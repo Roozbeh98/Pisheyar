@@ -8,7 +8,8 @@ namespace Pisheyar.Domain.Enums
     {
         Success = 1,
         WrongCode = 2,
-        UserNotFound = 3
+        UserNotFound = 3,
+        CodeNotFound = 4
     }
 
     public enum RegisterClientState
@@ -59,5 +60,11 @@ namespace Pisheyar.Domain.Enums
     {
         Success = 1,
         ProvinceNotFound = 2
+    }
+
+    public enum GetCurrentUserState
+    {
+        Success = 1,
+        UserNotFound = 2
     }
 }

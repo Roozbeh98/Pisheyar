@@ -21,6 +21,12 @@ namespace Pisheyar.Infrastructure.Persistence.Configurations
                 .HasColumnType("UNIQUEIDENTIFIER ROWGUIDCOL")
                 .HasDefaultValueSql("(newid())");
 
+            entity.HasOne(d => d.RoleCode)
+                .WithMany(p => p.Token)
+                .HasForeignKey(d => d.RoleCodeId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Token_Code");
+
             entity.HasOne(d => d.User)
                 .WithMany(p => p.Token)
                 .HasForeignKey(d => d.UserId)

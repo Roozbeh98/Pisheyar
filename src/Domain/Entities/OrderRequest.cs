@@ -7,6 +7,11 @@ namespace Pisheyar.Domain.Entities
 {
     public partial class OrderRequest
     {
+        public OrderRequest()
+        {
+            ChatMessage = new HashSet<ChatMessage>();
+        }
+
         [Key]
         [Column("OrderRequestID")]
         public int OrderRequestId { get; set; }
@@ -18,6 +23,7 @@ namespace Pisheyar.Domain.Entities
         public int OrderId { get; set; }
         [Required]
         public string Message { get; set; }
+        public long OfferedPrice { get; set; }
         public bool IsAccept { get; set; }
         public bool IsDelete { get; set; }
         public DateTime ModifiedDate { get; set; }
@@ -28,5 +34,7 @@ namespace Pisheyar.Domain.Entities
         [ForeignKey(nameof(OrderId))]
         [InverseProperty("OrderRequest")]
         public virtual Order Order { get; set; }
+        [InverseProperty("OrderRequest")]
+        public virtual ICollection<ChatMessage> ChatMessage { get; set; }
     }
 }

@@ -34,7 +34,7 @@ namespace Pisheyar.Domain.Entities
         public string Token2 { get; set; }
         [Required]
         public string Message { get; set; }
-        public int Cost { get; set; }
+        public long Cost { get; set; }
         public bool IsDelete { get; set; }
         public DateTime SentDate { get; set; }
         public DateTime ModifiedDate { get; set; }

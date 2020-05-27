@@ -9,10 +9,10 @@ namespace Pisheyar.Domain.Entities
     {
         public Contractor()
         {
-            ChatRoom = new HashSet<ChatRoom>();
             ContractorCategory = new HashSet<ContractorCategory>();
             Order = new HashSet<Order>();
             OrderRequest = new HashSet<OrderRequest>();
+            Payment = new HashSet<Payment>();
         }
 
         [Key]
@@ -46,12 +46,12 @@ namespace Pisheyar.Domain.Entities
         [InverseProperty("Contractor")]
         public virtual User User { get; set; }
         [InverseProperty("Contractor")]
-        public virtual ICollection<ChatRoom> ChatRoom { get; set; }
-        [InverseProperty("Contractor")]
         public virtual ICollection<ContractorCategory> ContractorCategory { get; set; }
         [InverseProperty("Contractor")]
         public virtual ICollection<Order> Order { get; set; }
         [InverseProperty("Contractor")]
         public virtual ICollection<OrderRequest> OrderRequest { get; set; }
+        [InverseProperty("Contractor")]
+        public virtual ICollection<Payment> Payment { get; set; }
     }
 }

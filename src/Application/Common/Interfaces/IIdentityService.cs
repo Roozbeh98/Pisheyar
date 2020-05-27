@@ -11,7 +11,7 @@ namespace Pisheyar.Application.Common.Interfaces
     {
         Task<string> GetUserFullNameAsync(Guid userGuid);
 
-        Task<AuthenticateVm> Authenticate(string mobile, string code, bool rememberMe);
+        Task<AuthenticateVm> Authenticate(string mobile, string code, Guid roleGuid, bool rememberMe, bool isApplication);
 
         //Task<IEnumerable<TblUser>> GetAll();
     }

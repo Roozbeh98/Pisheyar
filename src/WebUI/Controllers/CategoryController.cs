@@ -25,7 +25,8 @@ namespace WebUI.Controllers
         /// </summary>
         /// <param name="guid">آیدی دسته بندی</param>
         /// <returns></returns>
-        [HttpGet("[action]/{guid}")]
+        [HttpGet("{guid}")]
+        [AllowAnonymous]
         public async Task<ActionResult<CategoryVm>> GetByGuid(Guid guid)
         {
             return await Mediator.Send(new GetCategoryByGuidQuery() { CategoryGuid = guid });

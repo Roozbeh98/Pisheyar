@@ -47,9 +47,9 @@ namespace Pisheyar.Application.Categories.Queries.GetCategoryByGuid
                         CategoryDto category = new CategoryDto
                         {
                             Guid = child.CategoryGuid,
-                            ParentId = child.ParentCategoryId,
+                            //ParentId = child.ParentCategoryId,
                             Title = child.DisplayName,
-                            Order = child.Sort
+                            //Order = child.Sort
                         };
 
                         category.Children = await GetCategoryChildren(allCategories, category);
@@ -77,9 +77,9 @@ namespace Pisheyar.Application.Categories.Queries.GetCategoryByGuid
                     .Select(x => new CategoryDto
                     {
                         Guid = x.CategoryGuid,
-                        ParentId = x.ParentCategoryId,
+                        //ParentId = x.ParentCategoryId,
                         Title = x.DisplayName,
-                        Order = x.Sort
+                        //Order = x.Sort
 
                     }).ToList();
 

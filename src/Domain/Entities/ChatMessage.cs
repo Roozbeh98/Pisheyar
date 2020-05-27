@@ -12,8 +12,8 @@ namespace Pisheyar.Domain.Entities
         public int ChatMessageId { get; set; }
         [Column("ChatMessageGUID")]
         public Guid ChatMessageGuid { get; set; }
-        [Column("ChatRoomID")]
-        public int ChatRoomId { get; set; }
+        [Column("OrderRequestID")]
+        public int OrderRequestId { get; set; }
         [Column("UserID")]
         public int UserId { get; set; }
         [Required]
@@ -21,11 +21,14 @@ namespace Pisheyar.Domain.Entities
         public bool IsSeen { get; set; }
         public bool IsModified { get; set; }
         public bool IsDelete { get; set; }
-        public DateTime SentDate { get; set; }
+        public DateTime SentAt { get; set; }
         public DateTime ModifiedDate { get; set; }
 
-        [ForeignKey(nameof(ChatRoomId))]
+        [ForeignKey(nameof(OrderRequestId))]
         [InverseProperty("ChatMessage")]
-        public virtual ChatRoom ChatRoom { get; set; }
+        public virtual OrderRequest OrderRequest { get; set; }
+        [ForeignKey(nameof(UserId))]
+        [InverseProperty("ChatMessage")]
+        public virtual User User { get; set; }
     }
 }

@@ -12,7 +12,6 @@ namespace Pisheyar.Application.Common.Interfaces
         DbSet<Category> Category { get; set; }
         DbSet<CategoryTag> CategoryTag { get; set; }
         DbSet<ChatMessage> ChatMessage { get; set; }
-        DbSet<ChatRoom> ChatRoom { get; set; }
         DbSet<City> City { get; set; }
         DbSet<Client> Client { get; set; }
         DbSet<Code> Code { get; set; }
@@ -24,6 +23,7 @@ namespace Pisheyar.Application.Common.Interfaces
         DbSet<Document> Document { get; set; }
         DbSet<Order> Order { get; set; }
         DbSet<OrderRequest> OrderRequest { get; set; }
+        DbSet<Payment> Payment { get; set; }
         DbSet<Permission> Permission { get; set; }
         DbSet<PermissionGroup> PermissionGroup { get; set; }
         DbSet<Post> Post { get; set; }
