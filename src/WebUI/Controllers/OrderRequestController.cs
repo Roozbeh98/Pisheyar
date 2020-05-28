@@ -6,10 +6,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Pisheyar.Application.OrderRequests.Commands.AcceptOrderRequest;
+using Pisheyar.Application.OrderRequests.Commands.AllowContractorToChatByClient;
 using Pisheyar.Application.OrderRequests.Commands.CreateOrderRequest;
 using Pisheyar.Application.OrderRequests.Queries.GetChatMessages;
 using Pisheyar.Application.OrderRequests.Queries.GetChatRooms;
 using Pisheyar.Application.OrderRequests.Queries.GetContractorOrderRequests;
+using Pisheyar.Application.OrderRequests.Queries.GetOrderRequestAcceptanceStatus;
+using Pisheyar.Application.OrderRequests.Queries.GetOrderRequestAllowingStatus;
 using Pisheyar.Application.OrderRequests.Queries.GetOrderRequestsForClient;
 
 namespace WebUI.Controllers
@@ -36,6 +39,17 @@ namespace WebUI.Controllers
         /// <param name="command">اطلاعات درخواست سفارش</param>
         /// <returns></returns>
         [HttpPost("[action]")]
+        public async Task<ActionResult<AllowContractorToChatByClientVm>> AllowContractorToChatByClient(AllowContractorToChatByClientCommand command)
+        {
+            return await Mediator.Send(command);
+        }
+
+        /// <summary>
+        /// تایید درخواست سفارش
+        /// </summary>
+        /// <param name="command">اطلاعات درخواست سفارش</param>
+        /// <returns></returns>
+        [HttpPost("[action]")]
         public async Task<ActionResult<AcceptOrderRequestVm>> Accept(AcceptOrderRequestCommand command)
         {
             return await Mediator.Send(command);
@@ -45,12 +59,12 @@ namespace WebUI.Controllers
         /// دریافت درخواست سفارش های ثبت شده سرویس دهنده
         /// </summary>
         /// <param name="stateGuid">آیدی وضعیت درخواست</param>
-        /// <param name="acceptedOnly">درخواست های پذیرفته شده</param>
+        /// <param name="allowedOnly">درخواست های پذیرفته شده</param>
         /// <returns></returns>
         [HttpGet("[action]")]
-        public async Task<ActionResult<GetContractorOrderRequestsVm>> GetContractorOrderRequests(Guid? stateGuid, bool acceptedOnly)
+        public async Task<ActionResult<GetContractorOrderRequestsVm>> GetContractorOrderRequests(Guid? stateGuid, bool allowedOnly)
         {
-            return await Mediator.Send(new GetContractorOrderRequestsQuery() { StateGuid = stateGuid, AcceptedOnly = acceptedOnly });
+            return await Mediator.Send(new GetContractorOrderRequestsQuery() { StateGuid = stateGuid, AllowedOnly = allowedOnly });
         }
 
         /// <summary>
@@ -59,9 +73,31 @@ namespace WebUI.Controllers
         /// <param name="orderGuid">آیدی سفارش</param>
         /// <returns></returns>
         [HttpGet("[action]")]
-        public async Task<ActionResult<GetOrderRequestsForClientVm>> GetOrderRequestsForClient(Guid orderGuid)
+        public async Task<ActionResult<GetOrderRequestsForClientVm>> GetOrderRequestsForClient(Guid? orderGuid)
         {
             return await Mediator.Send(new GetOrderRequestsForClientQuery() { OrderGuid = orderGuid });
+        }
+
+        /// <summary>
+        /// دریافت وضعیت پذیرفته شدن درخواست سفارش
+        /// </summary>
+        /// <param name="orderRequestGuid">آیدی درخواست سفارش</param>
+        /// <returns></returns>
+        [HttpGet("[action]")]
+        public async Task<ActionResult<GetOrderRequestAllowingStatusVm>> GetAllowingStatus(Guid orderRequestGuid)
+        {
+            return await Mediator.Send(new GetOrderRequestAllowingStatusQuery() { OrderRequestGuid = orderRequestGuid });
+        }
+
+        /// <summary>
+        /// دریافت وضعیت پذیرفته شدن درخواست سفارش
+        /// </summary>
+        /// <param name="orderRequestGuid">آیدی درخواست سفارش</param>
+        /// <returns></returns>
+        [HttpGet("[action]")]
+        public async Task<ActionResult<GetOrderRequestAcceptanceStatusVm>> GetAcceptanceStatus(Guid orderRequestGuid)
+        {
+            return await Mediator.Send(new GetOrderRequestAcceptanceStatusQuery() { OrderRequestGuid = orderRequestGuid });
         }
 
         /// <summary>

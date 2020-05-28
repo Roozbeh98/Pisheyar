@@ -29,6 +29,8 @@ namespace Pisheyar.Domain.Entities
         public int RoleId { get; set; }
         [Column("GenderCodeID")]
         public int? GenderCodeId { get; set; }
+        [Column("ProfileDocumentID")]
+        public int? ProfileDocumentId { get; set; }
         [Required]
         [StringLength(128)]
         public string FirstName { get; set; }
@@ -49,6 +51,9 @@ namespace Pisheyar.Domain.Entities
         [ForeignKey(nameof(GenderCodeId))]
         [InverseProperty(nameof(Code.User))]
         public virtual Code GenderCode { get; set; }
+        [ForeignKey(nameof(ProfileDocumentId))]
+        [InverseProperty(nameof(Document.User))]
+        public virtual Document ProfileDocument { get; set; }
         [ForeignKey(nameof(RoleId))]
         [InverseProperty("User")]
         public virtual Role Role { get; set; }

@@ -24,16 +24,38 @@ namespace Pisheyar.Domain.Entities
         public Guid CategoryGuid { get; set; }
         [Column("ParentCategoryID")]
         public int? ParentCategoryId { get; set; }
+        [Column("CoverDocumentID")]
+        public int? CoverDocumentId { get; set; }
+        [Column("ActiveIconDocumentID")]
+        public int? ActiveIconDocumentId { get; set; }
+        [Column("InactiveIconDocumentID")]
+        public int? InactiveIconDocumentId { get; set; }
+        [Column("QuadMenuDocumentID")]
+        public int? QuadMenuDocumentId { get; set; }
         [Required]
         [StringLength(128)]
         public string DisplayName { get; set; }
+        public string Description { get; set; }
         public int Sort { get; set; }
+        public bool IsActive { get; set; }
         public bool IsDelete { get; set; }
         public DateTime ModifiedDate { get; set; }
 
+        [ForeignKey(nameof(ActiveIconDocumentId))]
+        [InverseProperty(nameof(Document.CategoryActiveIconDocument))]
+        public virtual Document ActiveIconDocument { get; set; }
+        [ForeignKey(nameof(CoverDocumentId))]
+        [InverseProperty(nameof(Document.CategoryCoverDocument))]
+        public virtual Document CoverDocument { get; set; }
+        [ForeignKey(nameof(InactiveIconDocumentId))]
+        [InverseProperty(nameof(Document.CategoryInactiveIconDocument))]
+        public virtual Document InactiveIconDocument { get; set; }
         [ForeignKey(nameof(ParentCategoryId))]
         [InverseProperty(nameof(Category.InverseParentCategory))]
         public virtual Category ParentCategory { get; set; }
+        [ForeignKey(nameof(QuadMenuDocumentId))]
+        [InverseProperty(nameof(Document.CategoryQuadMenuDocument))]
+        public virtual Document QuadMenuDocument { get; set; }
         [InverseProperty("Category")]
         public virtual ICollection<CategoryTag> CategoryTag { get; set; }
         [InverseProperty("Category")]

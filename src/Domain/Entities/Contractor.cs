@@ -32,7 +32,8 @@ namespace Pisheyar.Domain.Entities
         [Required]
         [StringLength(128)]
         public string Longitude { get; set; }
-        public long Credit { get; set; }
+        public int Credit { get; set; }
+        public double? AverageRate { get; set; }
         public bool IsDelete { get; set; }
         public DateTime ModifiedDate { get; set; }
 

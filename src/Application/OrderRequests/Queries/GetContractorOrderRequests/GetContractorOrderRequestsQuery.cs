@@ -18,7 +18,7 @@ namespace Pisheyar.Application.OrderRequests.Queries.GetContractorOrderRequests
     {
         public Guid? StateGuid { get; set; }
 
-        public bool AcceptedOnly { get; set; }
+        public bool AllowedOnly { get; set; }
 
         public class OrdersListQueryHandler : IRequestHandler<GetContractorOrderRequestsQuery, GetContractorOrderRequestsVm>
         {
@@ -64,9 +64,9 @@ namespace Pisheyar.Application.OrderRequests.Queries.GetContractorOrderRequests
                    .Where(x => x.ContractorId == contractor.ContractorId)
                    .AsQueryable();
 
-                if (request.AcceptedOnly)
+                if (request.AllowedOnly)
                 {
-                    orderRequests = orderRequests.Where(x => x.IsAccept == request.AcceptedOnly);
+                    orderRequests = orderRequests.Where(x => x.IsAllow == request.AllowedOnly);
                 }
 
                 if (request.StateGuid != null)

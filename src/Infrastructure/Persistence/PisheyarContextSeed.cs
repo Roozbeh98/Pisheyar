@@ -9173,6 +9173,7 @@ namespace Pisheyar.Infrastructure.Persistence
 						UserGuid = Guid.NewGuid(),
 						RoleId = 1,
 						GenderCodeId = 8,
+						ProfileDocumentId = null,
 						FirstName = "سید مهدی",
 						LastName = "رودکی",
 						Email = "mahdiroudaki@hotmail.com",
@@ -9189,6 +9190,7 @@ namespace Pisheyar.Infrastructure.Persistence
 						UserGuid = Guid.NewGuid(),
 						RoleId = 3,
 						GenderCodeId = 8,
+						ProfileDocumentId = null,
 						FirstName = "روزبه",
 						LastName = "شامخی",
 						Email = "roozbehshamekhi@hotmail.com",
@@ -9205,6 +9207,7 @@ namespace Pisheyar.Infrastructure.Persistence
 						UserGuid = Guid.NewGuid(),
 						RoleId = 2,
 						GenderCodeId = 8,
+						ProfileDocumentId = null,
 						FirstName = "حامد",
 						LastName = "حقیقیان",
 						Email = "dead.hh98@gmail.com",
@@ -9221,6 +9224,7 @@ namespace Pisheyar.Infrastructure.Persistence
 						UserGuid = Guid.NewGuid(),
 						RoleId = 2,
 						GenderCodeId = 8,
+						ProfileDocumentId = null,
 						FirstName = "محمد",
 						LastName = "میرزایی",
 						Email = "white.luciferrr@gmail.com",
@@ -9279,6 +9283,7 @@ namespace Pisheyar.Infrastructure.Persistence
 					Latitude = "1",
 					Longitude = "2",
 					Credit = 0,
+					AverageRate = 0f,
 					IsDelete = false,
 					ModifiedDate = DateTime.Now
 				},
@@ -9292,6 +9297,7 @@ namespace Pisheyar.Infrastructure.Persistence
 					Latitude = "1",
 					Longitude = "2",
 					Credit = 10000,
+					AverageRate = 0f,
 					IsDelete = false,
 					ModifiedDate = DateTime.Now
 				}
@@ -9311,6 +9317,8 @@ namespace Pisheyar.Infrastructure.Persistence
 					StateCodeId = 9,
 					Title = "تیتر",
 					Description = "توضیح",
+					Comment = "",
+					Rate = 0f,
 					IsDelete = false,
 					ModifiedDate = DateTime.Now
 				}
@@ -9329,7 +9337,8 @@ namespace Pisheyar.Infrastructure.Persistence
 					OrderId = 1,
 					Message = "پیام",
 					OfferedPrice = 250000,
-					IsAccept = true,
+					IsAllow = true,
+					IsAccept = false,
 					IsDelete = false,
 					ModifiedDate = DateTime.Now
 				}
@@ -9345,9 +9354,15 @@ namespace Pisheyar.Infrastructure.Persistence
 						CategoryId = 1,
 						CategoryGuid = Guid.Parse("c265fd02-0194-4d38-83e8-a93bc3698fcc"),
 						ParentCategoryId = null,
+						CoverDocumentId = null,
+						ActiveIconDocumentId = null,
+						InactiveIconDocumentId = null,
+						QuadMenuDocumentId = null,
 						DisplayName = "سایت اصلی",
+						Description = null,
 						Sort = 1,
 						ModifiedDate = DateTime.Now,
+						IsActive = true,
 						IsDelete = false
 					},
                     new Category
@@ -9355,9 +9370,15 @@ namespace Pisheyar.Infrastructure.Persistence
 						CategoryId = 2,
 						CategoryGuid = Guid.Parse("dec37f17-0ab2-4208-8ba7-11cc1120369b"),
 						ParentCategoryId = null,
+						CoverDocumentId = null,
+						ActiveIconDocumentId = null,
+						InactiveIconDocumentId = null,
+						QuadMenuDocumentId = null,
 						DisplayName = "وبلاگ",
+						Description = null,
 						Sort = 2,
 						ModifiedDate = DateTime.Now,
+						IsActive = true,
 						IsDelete = false
 					},
                     new Category
@@ -9365,80 +9386,128 @@ namespace Pisheyar.Infrastructure.Persistence
                         CategoryId = 3,
                         CategoryGuid = Guid.NewGuid(),
                         ParentCategoryId = 1,
-                        DisplayName = "خانه",
-                        Sort = 1,
+						CoverDocumentId = null,
+						ActiveIconDocumentId = null,
+						InactiveIconDocumentId = null,
+						QuadMenuDocumentId = null,
+						DisplayName = "خانه",
+						Description = null,
+						Sort = 1,
                         ModifiedDate = DateTime.Now,
-                        IsDelete = false
+						IsActive = true,
+						IsDelete = false
                     },
                     new Category
                     {
                         CategoryId = 4,
                         CategoryGuid = Guid.NewGuid(),
                         ParentCategoryId = 1,
-                        DisplayName = "حمل و نقل",
-                        Sort = 2,
+						CoverDocumentId = null,
+						ActiveIconDocumentId = null,
+						InactiveIconDocumentId = null,
+						QuadMenuDocumentId = null,
+						DisplayName = "حمل و نقل",
+						Description = null,
+						Sort = 2,
                         ModifiedDate = DateTime.Now,
-                        IsDelete = false
+						IsActive = true,
+						IsDelete = false
                     },
 					new Category
                     {
                         CategoryId = 5,
                         CategoryGuid = Guid.NewGuid(),
                         ParentCategoryId = 3,
-                        DisplayName = "تاسیسات",
-                        Sort = 1,
+						CoverDocumentId = null,
+						ActiveIconDocumentId = null,
+						InactiveIconDocumentId = null,
+						QuadMenuDocumentId = null,
+						DisplayName = "تاسیسات",
+						Description = null,
+						Sort = 1,
                         ModifiedDate = DateTime.Now,
-                        IsDelete = false
+						IsActive = true,
+						IsDelete = false
                     },
                     new Category
                     {
                         CategoryId = 6,
                         CategoryGuid = Guid.NewGuid(),
                         ParentCategoryId = 3,
-                        DisplayName = "الکتریکی",
-                        Sort = 2,
+						CoverDocumentId = null,
+						ActiveIconDocumentId = null,
+						InactiveIconDocumentId = null,
+						QuadMenuDocumentId = null,
+						DisplayName = "الکتریکی",
+						Description = null,
+						Sort = 2,
                         ModifiedDate = DateTime.Now,
-                        IsDelete = false
+						IsActive = true,
+						IsDelete = false
                     },
                     new Category
                     {
                         CategoryId = 7,
                         CategoryGuid = Guid.NewGuid(),
                         ParentCategoryId = 3,
-                        DisplayName = "ایمنی و امنیت",
-                        Sort = 3,
+						CoverDocumentId = null,
+						ActiveIconDocumentId = null,
+						InactiveIconDocumentId = null,
+						QuadMenuDocumentId = null,
+						DisplayName = "ایمنی و امنیت",
+						Description = null,
+						Sort = 3,
                         ModifiedDate = DateTime.Now,
-                        IsDelete = false
+						IsActive = true,
+						IsDelete = false
                     },
                     new Category
                     {
                         CategoryId = 8,
                         CategoryGuid = Guid.NewGuid(),
                         ParentCategoryId = 3,
-                        DisplayName = "مبلمان",
-                        Sort = 4,
+						CoverDocumentId = null,
+						ActiveIconDocumentId = null,
+						InactiveIconDocumentId = null,
+						QuadMenuDocumentId = null,
+						DisplayName = "مبلمان",
+						Description = null,
+						Sort = 4,
                         ModifiedDate = DateTime.Now,
-                        IsDelete = false
+						IsActive = true,
+						IsDelete = false
                     },
                     new Category
                     {
                         CategoryId = 9,
                         CategoryGuid = Guid.NewGuid(),
                         ParentCategoryId = 3,
-                        DisplayName = "آلومینیوم سازی",
-                        Sort = 5,
+						CoverDocumentId = null,
+						ActiveIconDocumentId = null,
+						InactiveIconDocumentId = null,
+						QuadMenuDocumentId = null,
+						DisplayName = "آلومینیوم سازی",
+						Description = null,
+						Sort = 5,
                         ModifiedDate = DateTime.Now,
-                        IsDelete = false
+						IsActive = true,
+						IsDelete = false
                     },
                     new Category
                     {
                         CategoryId = 10,
                         CategoryGuid = Guid.NewGuid(),
                         ParentCategoryId = 3,
-                        DisplayName = "شیشه بری و قابسازی",
-                        Sort = 6,
+						CoverDocumentId = null,
+						ActiveIconDocumentId = null,
+						InactiveIconDocumentId = null,
+						QuadMenuDocumentId = null,
+						DisplayName = "شیشه بری و قابسازی",
+						Description = null,
+						Sort = 6,
                         ModifiedDate = DateTime.Now,
-                        IsDelete = false
+						IsActive = true,
+						IsDelete = false
                     },
                     new Category
                     {
@@ -9455,230 +9524,368 @@ namespace Pisheyar.Infrastructure.Persistence
                         CategoryId = 12,
                         CategoryGuid = Guid.NewGuid(),
                         ParentCategoryId = 3,
-                        DisplayName = "دکوراسیون داخلی",
-                        Sort = 8,
+						CoverDocumentId = null,
+						ActiveIconDocumentId = null,
+						InactiveIconDocumentId = null,
+						QuadMenuDocumentId = null,
+						DisplayName = "دکوراسیون داخلی",
+						Description = null,
+						Sort = 8,
                         ModifiedDate = DateTime.Now,
-                        IsDelete = false
+						IsActive = true,
+						IsDelete = false
                     },
                     new Category
                     {
                         CategoryId = 13,
                         CategoryGuid = Guid.NewGuid(),
                         ParentCategoryId = 3,
-                        DisplayName = "بنایی",
-                        Sort = 9,
+						CoverDocumentId = null,
+						ActiveIconDocumentId = null,
+						InactiveIconDocumentId = null,
+						QuadMenuDocumentId = null,
+						DisplayName = "بنایی",
+						Description = null,
+						Sort = 9,
                         ModifiedDate = DateTime.Now,
-                        IsDelete = false
+						IsActive = true,
+						IsDelete = false
                     },
                     new Category
                     {
                         CategoryId = 14,
                         CategoryGuid = Guid.NewGuid(),
                         ParentCategoryId = 3,
-                        DisplayName = "آهنگری",
-                        Sort = 10,
+						CoverDocumentId = null,
+						ActiveIconDocumentId = null,
+						InactiveIconDocumentId = null,
+						QuadMenuDocumentId = null,
+						DisplayName = "آهنگری",
+						Description = null,
+						Sort = 10,
                         ModifiedDate = DateTime.Now,
-                        IsDelete = false
+						IsActive = true,
+						IsDelete = false
                     },
                     new Category
                     {
                         CategoryId = 15,
                         CategoryGuid = Guid.NewGuid(),
                         ParentCategoryId = 3,
-                        DisplayName = "عایق کاری",
-                        Sort = 11,
+						CoverDocumentId = null,
+						ActiveIconDocumentId = null,
+						InactiveIconDocumentId = null,
+						QuadMenuDocumentId = null,
+						DisplayName = "عایق کاری",
+						Description = null,
+						Sort = 11,
                         ModifiedDate = DateTime.Now,
-                        IsDelete = false
+						IsActive = true,
+						IsDelete = false
                     },
                     new Category
                     {
                         CategoryId = 16,
                         CategoryGuid = Guid.NewGuid(),
                         ParentCategoryId = 3,
-                        DisplayName = "عایق کاری",
-                        Sort = 12,
+						CoverDocumentId = null,
+						ActiveIconDocumentId = null,
+						InactiveIconDocumentId = null,
+						QuadMenuDocumentId = null,
+						DisplayName = "عایق کاری",
+						Description = null,
+						Sort = 12,
                         ModifiedDate = DateTime.Now,
-                        IsDelete = false
+						IsActive = true,
+						IsDelete = false
                     },
                     new Category
                     {
                         CategoryId = 17,
                         CategoryGuid = Guid.NewGuid(),
                         ParentCategoryId = 3,
-                        DisplayName = "نرده و حفاظ استیل",
-                        Sort = 13,
+						CoverDocumentId = null,
+						ActiveIconDocumentId = null,
+						InactiveIconDocumentId = null,
+						QuadMenuDocumentId = null,
+						DisplayName = "نرده و حفاظ استیل",
+						Description = null,
+						Sort = 13,
                         ModifiedDate = DateTime.Now,
-                        IsDelete = false
+						IsActive = true,
+						IsDelete = false
                     },
                     new Category
                     {
                         CategoryId = 18,
                         CategoryGuid = Guid.NewGuid(),
                         ParentCategoryId = 3,
-                        DisplayName = "تعمیرات لوازم خانگی",
-                        Sort = 14,
+						CoverDocumentId = null,
+						ActiveIconDocumentId = null,
+						InactiveIconDocumentId = null,
+						QuadMenuDocumentId = null,
+						DisplayName = "تعمیرات لوازم خانگی",
+						Description = null,
+						Sort = 14,
                         ModifiedDate = DateTime.Now,
-                        IsDelete = false
+						IsActive = true,
+						IsDelete = false
                     },
                     new Category
                     {
                         CategoryId = 19,
                         CategoryGuid = Guid.NewGuid(),
                         ParentCategoryId = 3,
-                        DisplayName = "نجاری",
-                        Sort = 15,
+						CoverDocumentId = null,
+						ActiveIconDocumentId = null,
+						InactiveIconDocumentId = null,
+						QuadMenuDocumentId = null,
+						DisplayName = "نجاری",
+						Description = null,
+						Sort = 15,
                         ModifiedDate = DateTime.Now,
-                        IsDelete = false
+						IsActive = true,
+						IsDelete = false
                     },
                     new Category
                     {
                         CategoryId = 20,
                         CategoryGuid = Guid.NewGuid(),
                         ParentCategoryId = 3,
-                        DisplayName = "آسانسور و بالابر",
-                        Sort = 16,
+						CoverDocumentId = null,
+						ActiveIconDocumentId = null,
+						InactiveIconDocumentId = null,
+						QuadMenuDocumentId = null,
+						DisplayName = "آسانسور و بالابر",
+						Description = null,
+						Sort = 16,
                         ModifiedDate = DateTime.Now,
-                        IsDelete = false
+						IsActive = true,
+						IsDelete = false
                     },
                     new Category
                     {
                         CategoryId = 21,
                         CategoryGuid = Guid.NewGuid(),
                         ParentCategoryId = 3,
-                        DisplayName = "کار در ارتفاع",
-                        Sort = 17,
+						CoverDocumentId = null,
+						ActiveIconDocumentId = null,
+						InactiveIconDocumentId = null,
+						QuadMenuDocumentId = null,
+						DisplayName = "کار در ارتفاع",
+						Description = null,
+						Sort = 17,
                         ModifiedDate = DateTime.Now,
-                        IsDelete = false
+						IsActive = true,
+						IsDelete = false
                     },
                     new Category
                     {
                         CategoryId = 22,
                         CategoryGuid = Guid.NewGuid(),
                         ParentCategoryId = 5,
-                        DisplayName = "سرویس کولر آبی",
-                        Sort = 1,
+						CoverDocumentId = null,
+						ActiveIconDocumentId = null,
+						InactiveIconDocumentId = null,
+						QuadMenuDocumentId = null,
+						DisplayName = "سرویس کولر آبی",
+						Description = null,
+						Sort = 1,
                         ModifiedDate = DateTime.Now,
-                        IsDelete = false
+						IsActive = true,
+						IsDelete = false
                     },
                     new Category
                     {
                         CategoryId = 23,
                         CategoryGuid = Guid.NewGuid(),
                         ParentCategoryId = 5,
-                        DisplayName = "نقاشی ساختمان",
-                        Sort = 2,
+						CoverDocumentId = null,
+						ActiveIconDocumentId = null,
+						InactiveIconDocumentId = null,
+						QuadMenuDocumentId = null,
+						DisplayName = "نقاشی ساختمان",
+						Description = null,
+						Sort = 2,
                         ModifiedDate = DateTime.Now,
-                        IsDelete = false
+						IsActive = true,
+						IsDelete = false
                     },
                     new Category
                     {
                         CategoryId = 24,
                         CategoryGuid = Guid.NewGuid(),
                         ParentCategoryId = 8,
-                        DisplayName = "رنگ کاری مبل",
-                        Sort = 1,
+						CoverDocumentId = null,
+						ActiveIconDocumentId = null,
+						InactiveIconDocumentId = null,
+						QuadMenuDocumentId = null,
+						DisplayName = "رنگ کاری مبل",
+						Description = null,
+						Sort = 1,
                         ModifiedDate = DateTime.Now,
-                        IsDelete = false
+						IsActive = true,
+						IsDelete = false
                     },
                     new Category
                     {
                         CategoryId = 25,
                         CategoryGuid = Guid.NewGuid(),
                         ParentCategoryId = 8,
-                        DisplayName = "تعمیر صندلی اداری",
-                        Sort = 2,
+						CoverDocumentId = null,
+						ActiveIconDocumentId = null,
+						InactiveIconDocumentId = null,
+						QuadMenuDocumentId = null,
+						DisplayName = "تعمیر صندلی اداری",
+						Description = null,
+						Sort = 2,
                         ModifiedDate = DateTime.Now,
-                        IsDelete = false
+						IsActive = true,
+						IsDelete = false
                     },
                     new Category
                     {
                         CategoryId = 26,
                         CategoryGuid = Guid.NewGuid(),
                         ParentCategoryId = 8,
-                        DisplayName = "ساخت مبلمان",
-                        Sort = 3,
+						CoverDocumentId = null,
+						ActiveIconDocumentId = null,
+						InactiveIconDocumentId = null,
+						QuadMenuDocumentId = null,
+						DisplayName = "ساخت مبلمان",
+						Description = null,
+						Sort = 3,
                         ModifiedDate = DateTime.Now,
-                        IsDelete = false
+						IsActive = true,
+						IsDelete = false
                     },
                     new Category
                     {
                         CategoryId = 27,
                         CategoryGuid = Guid.NewGuid(),
                         ParentCategoryId = 8,
-                        DisplayName = "دوخت کاور مبل",
-                        Sort = 4,
+						CoverDocumentId = null,
+						ActiveIconDocumentId = null,
+						InactiveIconDocumentId = null,
+						QuadMenuDocumentId = null,
+						DisplayName = "دوخت کاور مبل",
+						Description = null,
+						Sort = 4,
                         ModifiedDate = DateTime.Now,
-                        IsDelete = false
+						IsActive = true,
+						IsDelete = false
                     },
                     new Category
                     {
                         CategoryId = 28,
                         CategoryGuid = Guid.NewGuid(),
                         ParentCategoryId = 8,
-                        DisplayName = "تعمیر مبل",
-                        Sort = 5,
+						CoverDocumentId = null,
+						ActiveIconDocumentId = null,
+						InactiveIconDocumentId = null,
+						QuadMenuDocumentId = null,
+						DisplayName = "تعمیر مبل",
+						Description = null,
+						Sort = 5,
                         ModifiedDate = DateTime.Now,
-                        IsDelete = false
+						IsActive = true,
+						IsDelete = false
                     },
                     new Category
                     {
                         CategoryId = 29,
                         CategoryGuid = Guid.NewGuid(),
                         ParentCategoryId = 4,
-                        DisplayName = "اتوبار",
-                        Sort = 1,
+						CoverDocumentId = null,
+						ActiveIconDocumentId = null,
+						InactiveIconDocumentId = null,
+						QuadMenuDocumentId = null,
+						DisplayName = "اتوبار",
+						Description = null,
+						Sort = 1,
                         ModifiedDate = DateTime.Now,
-                        IsDelete = false
+						IsActive = true,
+						IsDelete = false
                     },
                     new Category
                     {
                         CategoryId = 30,
                         CategoryGuid = Guid.NewGuid(),
                         ParentCategoryId = 4,
-                        DisplayName = "اجاره خودرو",
-                        Sort = 2,
+						CoverDocumentId = null,
+						ActiveIconDocumentId = null,
+						InactiveIconDocumentId = null,
+						QuadMenuDocumentId = null,
+						DisplayName = "اجاره خودرو",
+						Description = null,
+						Sort = 2,
                         ModifiedDate = DateTime.Now,
-                        IsDelete = false
+						IsActive = true,
+						IsDelete = false
                     },
                     new Category
                     {
                         CategoryId = 31,
                         CategoryGuid = Guid.NewGuid(),
                         ParentCategoryId = 4,
-                        DisplayName = "سرویس و تعمیر خودرو",
-                        Sort = 3,
+						CoverDocumentId = null,
+						ActiveIconDocumentId = null,
+						InactiveIconDocumentId = null,
+						QuadMenuDocumentId = null,
+						DisplayName = "سرویس و تعمیر خودرو",
+						Description = null,
+						Sort = 3,
                         ModifiedDate = DateTime.Now,
-                        IsDelete = false
+						IsActive = true,
+						IsDelete = false
                     },
                     new Category
                     {
                         CategoryId = 32,
                         CategoryGuid = Guid.NewGuid(),
                         ParentCategoryId = 29,
-                        DisplayName = "وانت بار",
-                        Sort = 1,
+						CoverDocumentId = null,
+						ActiveIconDocumentId = null,
+						InactiveIconDocumentId = null,
+						QuadMenuDocumentId = null,
+						DisplayName = "وانت بار",
+						Description = null,
+						Sort = 1,
                         ModifiedDate = DateTime.Now,
-                        IsDelete = false
+						IsActive = true,
+						IsDelete = false
                     },
                     new Category
                     {
                         CategoryId = 33,
                         CategoryGuid = Guid.NewGuid(),
                         ParentCategoryId = 29,
-                        DisplayName = "باربری و اتوبار",
-                        Sort = 2,
+						CoverDocumentId = null,
+						ActiveIconDocumentId = null,
+						InactiveIconDocumentId = null,
+						QuadMenuDocumentId = null,
+						DisplayName = "باربری و اتوبار",
+						Description = null,
+						Sort = 2,
                         ModifiedDate = DateTime.Now,
-                        IsDelete = false
+						IsActive = true,
+						IsDelete = false
                     },
                     new Category
                     {
                         CategoryId = 34,
                         CategoryGuid = Guid.NewGuid(),
                         ParentCategoryId = 29,
-                        DisplayName = "کارگر اسباب کشی",
-                        Sort = 3,
+						CoverDocumentId = null,
+						ActiveIconDocumentId = null,
+						InactiveIconDocumentId = null,
+						QuadMenuDocumentId = null,
+						DisplayName = "کارگر اسباب کشی",
+						Description = null,
+						Sort = 3,
                         ModifiedDate = DateTime.Now,
-                        IsDelete = false
+						IsActive = true,
+						IsDelete = false
                     }
             );
 

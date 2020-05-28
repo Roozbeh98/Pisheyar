@@ -190,12 +190,5 @@ namespace WebUI.Controllers
         {
             return await Mediator.Send(command);
         }
-
-        [HttpGet("[action]")]
-        [AllowAnonymous]
-        public ActionResult Test()
-        {
-            return Redirect("https://tavanito.com/services/?categories[]=77");
-        }
     }
 }

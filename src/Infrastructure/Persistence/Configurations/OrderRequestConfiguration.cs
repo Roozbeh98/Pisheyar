@@ -15,6 +15,8 @@ namespace Pisheyar.Infrastructure.Persistence.Configurations
 
             entity.Property(e => e.IsAccept).HasDefaultValueSql("((0))");
 
+            entity.Property(e => e.IsAllow).HasDefaultValueSql("((0))");
+
             entity.Property(e => e.ModifiedDate).HasDefaultValueSql("(getdate())");
 
             entity.Property(e => e.OrderRequestGuid)

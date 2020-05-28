@@ -24,6 +24,7 @@ namespace Pisheyar.Domain.Entities
         [Required]
         public string Message { get; set; }
         public long OfferedPrice { get; set; }
+        public bool IsAllow { get; set; }
         public bool IsAccept { get; set; }
         public bool IsDelete { get; set; }
         public DateTime ModifiedDate { get; set; }

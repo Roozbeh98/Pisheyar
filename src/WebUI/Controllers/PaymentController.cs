@@ -42,11 +42,11 @@ namespace WebUI.Controllers
 
                 if (res.State == 1)
                 {
-                    return Redirect("");
+                    return Redirect("https://tavanito.com/services/?categories[]=77");
                 }
             }
 
-            return Redirect("");
+            return Redirect("https://tavanito.com/services/?categories[]=77");
         }
     }
 }

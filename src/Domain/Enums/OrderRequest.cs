@@ -20,6 +20,14 @@ namespace Pisheyar.Domain.Enums
         OrderRequestNotFound = 4,
     }
 
+    public enum AllowOrderRequestState
+    {
+        Success = 1,
+        UserNotFound = 2,
+        ClientNotFound = 3,
+        OrderRequestNotFound = 4,
+    }
+
     public enum GetOrderRequestsForClientState
     {
         Success = 1,
@@ -35,6 +43,15 @@ namespace Pisheyar.Domain.Enums
         UserNotFound = 2,
         ContractorNotFound = 3,
         StateNotFound = 4,
+        NotAnyOrderRequestsFound = 5
+    }
+
+    public enum GetOrderRequestAllowingStatusState
+    {
+        Success = 1,
+        UserNotFound = 2,
+        ClientNotFound = 3,
+        OrderRequestNotFound = 4,
         NotAnyOrderRequestsFound = 5
     }
 

@@ -57,7 +57,7 @@ namespace Pisheyar.Application.OrderRequests.Queries.GetChatRooms
                 }
 
                 List<GetChatRoomsDto> orderRequests = await _context.OrderRequest
-                    .Where(x => x.ContractorId == contractor.ContractorId && x.IsAccept)
+                    .Where(x => x.ContractorId == contractor.ContractorId && x.IsAllow)
                     .ProjectTo<GetChatRoomsDto>(_mapper.ConfigurationProvider)
                     .ToListAsync(cancellationToken);
 

@@ -28,26 +28,32 @@ namespace Pisheyar.Infrastructure.Services
                 .AnyAsync(x => x.OrderRequestGuid == orderRequestGuid);
         }
 
-        private async Task<int> GetOrderRequestIdAsync(Guid orderRequestGuid)
+        public Task<bool> IsOrderRequestAccessibleAsync(OrderRequest orderRequest)
+        {
+            return Task.FromResult((orderRequest.Order.StateCodeId == 9
+                && orderRequest.IsAllow) ||
+                orderRequest.IsAccept);
+        }
+
+        public async Task<OrderRequest> GetOrderRequestAsync(Guid orderRequestGuid)
         {
             OrderRequest orderRequest = await _context.OrderRequest
+                .Include(x => x.Order)
                 .SingleOrDefaultAsync(x => x.OrderRequestGuid == orderRequestGuid);
 
             if (orderRequest == null)
-            {
                 throw new ArgumentException("Invalid Order Request GUID");
-            }
 
-            return orderRequest.OrderRequestId;
+            return orderRequest;
         }
 
         #endregion
 
-        public async Task<ChatMessage> CreateMessageAsync(Guid orderRequestGuid, string text, int userId)
+        public async Task<ChatMessage> CreateMessageAsync(int orderRequestId, string text, int userId)
         {
             ChatMessage chatMessage = new ChatMessage
             {
-                OrderRequestId = await GetOrderRequestIdAsync(orderRequestGuid),
+                OrderRequestId = orderRequestId,
                 UserId = userId,
                 Text = text
             };

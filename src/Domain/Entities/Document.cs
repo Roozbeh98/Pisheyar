@@ -10,7 +10,12 @@ namespace Pisheyar.Domain.Entities
         public Document()
         {
             Advertisement = new HashSet<Advertisement>();
+            CategoryActiveIconDocument = new HashSet<Category>();
+            CategoryCoverDocument = new HashSet<Category>();
+            CategoryInactiveIconDocument = new HashSet<Category>();
+            CategoryQuadMenuDocument = new HashSet<Category>();
             Post = new HashSet<Post>();
+            User = new HashSet<User>();
         }
 
         [Key]
@@ -34,7 +39,17 @@ namespace Pisheyar.Domain.Entities
         public virtual Code TypeCode { get; set; }
         [InverseProperty("Document")]
         public virtual ICollection<Advertisement> Advertisement { get; set; }
+        [InverseProperty(nameof(Category.ActiveIconDocument))]
+        public virtual ICollection<Category> CategoryActiveIconDocument { get; set; }
+        [InverseProperty(nameof(Category.CoverDocument))]
+        public virtual ICollection<Category> CategoryCoverDocument { get; set; }
+        [InverseProperty(nameof(Category.InactiveIconDocument))]
+        public virtual ICollection<Category> CategoryInactiveIconDocument { get; set; }
+        [InverseProperty(nameof(Category.QuadMenuDocument))]
+        public virtual ICollection<Category> CategoryQuadMenuDocument { get; set; }
         [InverseProperty("Document")]
         public virtual ICollection<Post> Post { get; set; }
+        [InverseProperty("ProfileDocument")]
+        public virtual ICollection<User> User { get; set; }
     }
 }

@@ -66,7 +66,7 @@ namespace Pisheyar.Application.OrderRequests.Queries.GetContractorCategories
                 {
                     return new GetContractorCategoriesVm()
                     {
-                        Message = "خدمتی برای سرویس دهنده مورد نظر یافت نشد",
+                        Message = "خدمتی یافت نشد",
                         State = (int)GetContractorCategoriesState.NotAnyContractorCategoriesFound
                     };
                 }

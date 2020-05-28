@@ -10,6 +10,10 @@ namespace Pisheyar.Application.Common.Interfaces
     {
         Task<bool> OrderRequestExistsAsync(Guid orderRequestGuid);
 
-        Task<ChatMessage> CreateMessageAsync(Guid orderRequestGuid, string message, int userId);
+        Task<bool> IsOrderRequestAccessibleAsync(OrderRequest orderRequest);
+
+        Task<OrderRequest> GetOrderRequestAsync(Guid orderRequestGuid);
+
+        Task<ChatMessage> CreateMessageAsync(int orderRequestId, string message, int userId);
     }
 }

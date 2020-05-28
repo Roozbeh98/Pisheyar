@@ -27,27 +27,37 @@ namespace WebUI.Hubs
         public async Task SendMessageAsync(Guid orderRequestGuid, string text)
         {
             User currentUser = await _currentUser.GetInfoAsync();
+            OrderRequest orderRequest = await _chatRoom.GetOrderRequestAsync(orderRequestGuid);
 
-            ChatMessage chatMessage = await _chatRoom.CreateMessageAsync(orderRequestGuid, text, currentUser.UserId);
+            if (await _chatRoom.IsOrderRequestAccessibleAsync(orderRequest))
+            {
+                ChatMessage chatMessage = await _chatRoom.CreateMessageAsync(orderRequest.OrderRequestId, text, currentUser.UserId);
+                string clientName = chatMessage.User.FirstName + " " + chatMessage.User.LastName;
+                string sentAt = PersianDateExtensionMethods.ToPeString(chatMessage.SentAt, "yyyy/MM/dd HH:mm");
 
-            string clientName = chatMessage.User.FirstName + " " + chatMessage.User.LastName;
-            await Clients.Group(orderRequestGuid.ToString()).SendAsync("ReceiveMessage", clientName, chatMessage.Text, PersianDateExtensionMethods.ToPeString(chatMessage.SentAt, "yyyy/MM/dd HH:mm"), _currentUser.Role);
+                await Clients.Group(orderRequestGuid.ToString())
+                    .SendAsync("ReceiveMessage", clientName, chatMessage.Text, sentAt, _currentUser.Role);
+            }
+            else
+                throw new NotSupportedException("Order Is Closed");
         }
 
         public async Task JoinRoomAsync(Guid orderRequestGuid)
         {
-            if (await _chatRoom.OrderRequestExistsAsync(orderRequestGuid))
-            {
+            OrderRequest orderRequest = await _chatRoom.GetOrderRequestAsync(orderRequestGuid);
+
+            if (await _chatRoom.IsOrderRequestAccessibleAsync(orderRequest))
                 await Groups.AddToGroupAsync(Context.ConnectionId, orderRequestGuid.ToString());
-            }
+            else
+                throw new NotSupportedException("Order Is Closed");
         }
 
         public async Task LeaveRoomAsync(Guid orderRequestGuid)
         {
             if (await _chatRoom.OrderRequestExistsAsync(orderRequestGuid))
-            {
                 await Groups.RemoveFromGroupAsync(Context.ConnectionId, orderRequestGuid.ToString());
-            }
+            else
+                throw new ArgumentException("Invalid Order Request GUID");
         }
     }
 }

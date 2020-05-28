@@ -29,6 +29,9 @@ namespace Pisheyar.Domain.Entities
         public string Title { get; set; }
         [Required]
         public string Description { get; set; }
+        public string Comment { get; set; }
+        public double? Rate { get; set; }
+        public int? Cost { get; set; }
         public bool IsDelete { get; set; }
         public DateTime? DeadlineDate { get; set; }
         public DateTime ModifiedDate { get; set; }
