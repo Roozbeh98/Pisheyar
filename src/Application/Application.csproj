@@ -8,11 +8,8 @@
 
   <ItemGroup>
     <Compile Remove="TblSmstemplate\**" />
-    <Compile Remove="Users\**" />
     <EmbeddedResource Remove="TblSmstemplate\**" />
-    <EmbeddedResource Remove="Users\**" />
     <None Remove="TblSmstemplate\**" />
-    <None Remove="Users\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -39,12 +36,13 @@
     <Folder Include="Advertisements\Commands\UpdateAdvertisement\" />
     <Folder Include="Advertisements\Queries\GetAdvertisement\" />
     <Folder Include="Advertisements\Queries\GetAllAdvertisements\" />
+    <Folder Include="Clients\Queries\" />
     <Folder Include="Codes\Commands\" />
     <Folder Include="Contact\Queries\" />
-    <Folder Include="Contractors\Commands\" />
     <Folder Include="Payments\Queries\GetPayment\" />
     <Folder Include="Tags\Commands\" />
     <Folder Include="Common\Mappings\" />
+    <Folder Include="Users\Queries\" />
   </ItemGroup>
 
 </Project>

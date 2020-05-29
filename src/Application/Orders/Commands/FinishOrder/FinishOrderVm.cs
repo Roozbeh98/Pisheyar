@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Pisheyar.Application.Categories.Queries.GetCategoryByGuid
+namespace Pisheyar.Application.Orders.Commands.FinishOrder
 {
-    public class CategoryVm
+    public class FinishOrderVm
     {
         public string Message { get; set; }
 
         public int State { get; set; }
-
-        public CategoryDto Category { get; set; }
     }
 }

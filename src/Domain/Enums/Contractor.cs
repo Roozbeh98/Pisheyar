@@ -11,4 +11,12 @@ namespace Pisheyar.Domain.Enums
         ContractorNotFound = 3,
         NotAnyContractorCategoriesFound = 4
     }
+
+    public enum ChangeContractorCityState
+    {
+        Success = 1,
+        UserNotFound = 2,
+        ContractorNotFound = 3,
+        CityNotFound = 4
+    }
 }

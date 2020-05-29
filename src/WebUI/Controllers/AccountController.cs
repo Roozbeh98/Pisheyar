@@ -17,6 +17,7 @@ using Pisheyar.Application.Accounts.Queries.GetAllProvinceCities;
 using Pisheyar.Application.Accounts.Queries.GetCurrentAdminUser;
 using Pisheyar.Application.Accounts.Queries.GetCurrentClientUser;
 using Pisheyar.Application.Accounts.Queries.GetCurrentContractorUser;
+using Pisheyar.Application.Users.Commands.SetProfilePicture;
 
 namespace WebUI.Controllers
 {
@@ -141,6 +142,18 @@ namespace WebUI.Controllers
         [AllowAnonymous]
         [HttpPost("[action]")]
         public async Task<ActionResult<RegisterContractorVm>> RegisterContractor(RegisterContractorCommand command)
+        {
+            return await Mediator.Send(command);
+        }
+
+        /// <summary>
+        /// تغییر تصویر پروفایل کاربر
+        /// </summary>
+        /// <param name="command">اطلاعات لازم</param>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpPost("[action]")]
+        public async Task<ActionResult<SetProfilePictureVm>> SetProfilePicture(SetProfilePictureCommand command)
         {
             return await Mediator.Send(command);
         }

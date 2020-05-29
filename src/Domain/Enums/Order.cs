@@ -12,6 +12,15 @@ namespace Pisheyar.Domain.Enums
         CategoryNotFound = 4,
     }
 
+    public enum FinishOrderState
+    {
+        Success = 1,
+        UserNotFound = 2,
+        ClientNotFound = 3,
+        OrderRequestNotFound = 4,
+        OrderNotFound = 5
+    }
+
     public enum GetOrdersForContractorState
     {
         Success = 1,

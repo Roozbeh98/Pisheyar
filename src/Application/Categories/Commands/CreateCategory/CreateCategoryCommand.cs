@@ -20,12 +20,6 @@ namespace Pisheyar.Application.Categories.Commands.CreateCategory
 
         public int Order { get; set; }
 
-        //public Guid BannerDocumentGuid { get; set; }
-
-        //public Guid IconDocumentGuid { get; set; }
-
-        //public Guid[] Tags { get; set; }
-
         public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, int>
         {
             private readonly IPisheyarContext _context;
@@ -49,17 +43,6 @@ namespace Pisheyar.Application.Categories.Commands.CreateCategory
                         DisplayName = request.Name,
                         Sort = request.Order,
                     };
-
-                    //foreach (var tagGuid in request.Tags)
-                    //{
-                    //    var categoryTag = new TblCategoryTag()
-                    //    {
-                    //        CtCategoryGu = category,
-                    //        CtTagGuid = tagGuid
-                    //    };
-
-                    //    _context.TblCategoryTag.Add(categoryTag);
-                    //}
 
                     _context.Category.Add(category);
 

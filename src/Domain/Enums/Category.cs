@@ -46,4 +46,14 @@ namespace Pisheyar.Domain.Enums
         Success = 1,
         NotFound = 2
     }
+
+    public enum SetCategoryDetailsState
+    {
+        Success = 1,
+        CategoryNotFound = 2,
+        CoverDocumentNotFound = 3,
+        ActiveIconDocumentNotFound = 4,
+        InactiveIconDocumentNotFound = 5,
+        QuadMenuDocumentNotFound = 6
+    }
 }

@@ -30,7 +30,11 @@ namespace Pisheyar.Application.Accounts.Queries.GetCurrentContractorUser
 
         public CurrentContracorUserBusinessDto Business { get; set; }
 
-        public long Credit { get; set; }
+        public int Credit { get; set; }
+
+        public double? AverageRate { get; set; }
+
+        public string ProfileDocument { get; set; }
 
         public bool IsRegister { get; set; }
 
@@ -54,6 +58,8 @@ namespace Pisheyar.Application.Accounts.Queries.GetCurrentContractorUser
                 .ForMember(d => d.Latitude, opt => opt.MapFrom(s => s.Contractor.SingleOrDefault().Latitude))
                 .ForMember(d => d.Longitude, opt => opt.MapFrom(s => s.Contractor.SingleOrDefault().Longitude))
                 .ForMember(d => d.Credit, opt => opt.MapFrom(s => s.Contractor.SingleOrDefault().Credit))
+                .ForMember(d => d.AverageRate, opt => opt.MapFrom(s => s.Contractor.SingleOrDefault().AverageRate))
+                .ForMember(d => d.ProfileDocument, opt => opt.MapFrom(s => s.ProfileDocument.Path))
                 .ForMember(d => d.Business, opt => opt.MapFrom(s => new CurrentContracorUserBusinessDto
                 {
                     BusinessGuid = s.Contractor.SingleOrDefault().BusinessTypeCode.CodeGuid,

@@ -23,27 +23,26 @@ namespace Pisheyar.Application.Categories.Queries.SearchCategoriesByCity
         public class SearchCategoriesByCityQueryHandler : IRequestHandler<SearchCategoriesByCityQuery, SearchCategoriesByCityVm>
         {
             private readonly IPisheyarContext _context;
-            private readonly IMapper _mapper;
 
-            public SearchCategoriesByCityQueryHandler(IPisheyarContext context, IMapper mapper)
+            public SearchCategoriesByCityQueryHandler(IPisheyarContext context)
             {
                 _context = context;
-                _mapper = mapper;
             }
 
             public async Task<SearchCategoriesByCityVm> Handle(SearchCategoriesByCityQuery request, CancellationToken cancellationToken)
             {
                 List<SearchCategoriesByCityDto> categories = await (from cc in _context.ContractorCategory
-                                                 where cc.Contractor.City.CityGuid == request.CityGuid
-                                                 join c in _context.Category on cc.CategoryId equals c.CategoryId
-                                                 join ct in _context.CategoryTag on cc.CategoryId equals ct.CategoryId into jct
-                                                 from ct in jct.DefaultIfEmpty()
-                                                 where cc.Category.DisplayName.Contains(request.SearchInput) || ct.Tag.Name.Contains(request.SearchInput)
-                                                 select new SearchCategoriesByCityDto
-                                                 {
-                                                    CategoryGuid = c.CategoryGuid,
-                                                    DisplayName = c.DisplayName,
-                                                 }).ToListAsync(cancellationToken);
+                                                                    where cc.Contractor.City.CityGuid == request.CityGuid
+                                                                    join c in _context.Category on cc.CategoryId equals c.CategoryId
+                                                                    join ct in _context.CategoryTag on cc.CategoryId equals ct.CategoryId into jct
+                                                                    from ct in jct.DefaultIfEmpty()
+                                                                    where cc.Category.DisplayName.Contains(request.SearchInput) || ct.Tag.Name.Contains(request.SearchInput)
+                                                                    select new SearchCategoriesByCityDto
+                                                                    {
+                                                                       CategoryGuid = c.CategoryGuid,
+                                                                       DisplayName = c.DisplayName,
+                                                                    }).Distinct()
+                                                                    .ToListAsync(cancellationToken);
 
                 if (categories.Count <= 0)
                     return new SearchCategoriesByCityVm

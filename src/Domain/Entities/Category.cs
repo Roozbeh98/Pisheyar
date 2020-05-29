@@ -35,6 +35,7 @@ namespace Pisheyar.Domain.Entities
         [Required]
         [StringLength(128)]
         public string DisplayName { get; set; }
+        public string Abstract { get; set; }
         public string Description { get; set; }
         public int Sort { get; set; }
         public bool IsActive { get; set; }

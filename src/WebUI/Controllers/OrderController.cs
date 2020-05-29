@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Pisheyar.Application.Orders.Commands.CreateOrder;
+using Pisheyar.Application.Orders.Commands.FinishOrder;
 using Pisheyar.Application.Orders.Queries.GetClientOrders;
 using Pisheyar.Application.Orders.Queries.GetOrdersForContractor;
 
@@ -23,6 +24,17 @@ namespace WebUI.Controllers
         /// <returns></returns>
         [HttpPost("[action]")]
         public async Task<ActionResult<CreateOrderVm>> Create(CreateOrderCommand command)
+        {
+            return await Mediator.Send(command);
+        }
+
+        /// <summary>
+        /// اتمام سفارش
+        /// </summary>
+        /// <param name="command">اطلاعات سفارش</param>
+        /// <returns></returns>
+        [HttpPost("[action]")]
+        public async Task<ActionResult<FinishOrderVm>> Finish(FinishOrderCommand command)
         {
             return await Mediator.Send(command);
         }
