@@ -20,7 +20,7 @@ namespace Pisheyar.Application.Contact.Commands.SendMessage
 
         public string PhoneNumber { get; set; }
 
-        public Guid CategoryGuid { get; set; }
+        public Guid ContactUsBusinessTypeGuid { get; set; }
 
         public class SendMessageCommandHandler : IRequestHandler<SendMessageCommand, SendMessageVm>
         {
@@ -33,21 +33,21 @@ namespace Pisheyar.Application.Contact.Commands.SendMessage
 
             public async Task<SendMessageVm> Handle(SendMessageCommand request, CancellationToken cancellationToken)
             {
-                Category category = await _context.Category
-                    .SingleOrDefaultAsync(x => x.CategoryGuid == request.CategoryGuid, cancellationToken);
+                Code code = await _context.Code
+                    .SingleOrDefaultAsync(x => x.CodeGuid == request.ContactUsBusinessTypeGuid, cancellationToken);
 
-                if (category == null) return new SendMessageVm()
+                if (code == null) return new SendMessageVm()
                 {
-                    Message = "دسته بندی مورد نظر یافت نشد",
+                    Message = "نوع کسب و کار مورد نظر یافت نشد",
                     State = (int)SendContactUsMessgae.CategoryNotFound
                 };
 
-                Domain.Entities.ContactUs contectUs = new Domain.Entities.ContactUs()
+                ContactUs contectUs = new ContactUs()
                 {
                     Name = request.Name,
                     Email = request.Email,
                     PhoneNumber = request.PhoneNumber,
-                    CategoryId = category.CategoryId
+                    ContactUsBusinessTypeCodeId = code.CodeId
                 };
 
                 _context.ContactUs.Add(contectUs);

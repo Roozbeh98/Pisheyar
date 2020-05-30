@@ -12,8 +12,8 @@ namespace Pisheyar.Domain.Entities
         public int ContactUsId { get; set; }
         [Column("ContactUsGUID")]
         public Guid ContactUsGuid { get; set; }
-        [Column("CategoryID")]
-        public int CategoryId { get; set; }
+        [Column("ContactUsBusinessTypeCodeID")]
+        public int ContactUsBusinessTypeCodeId { get; set; }
         [Required]
         [StringLength(128)]
         public string Name { get; set; }
@@ -24,8 +24,8 @@ namespace Pisheyar.Domain.Entities
         [StringLength(128)]
         public string PhoneNumber { get; set; }
 
-        [ForeignKey(nameof(CategoryId))]
-        [InverseProperty("ContactUs")]
-        public virtual Category Category { get; set; }
+        [ForeignKey(nameof(ContactUsBusinessTypeCodeId))]
+        [InverseProperty(nameof(Code.ContactUs))]
+        public virtual Code ContactUsBusinessTypeCode { get; set; }
     }
 }

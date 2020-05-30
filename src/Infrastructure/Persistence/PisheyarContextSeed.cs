@@ -8931,10 +8931,17 @@ namespace Pisheyar.Infrastructure.Persistence
                     new CodeGroup
                     {
                         CodeGroupId = 5,
-                        CodeGroupGuid = Guid.NewGuid(),
-                        Name = "Role",
+                        CodeGroupGuid = Guid.Parse("7e9db57a-0c09-47ff-98b5-f49363beff67"),
+						Name = "Role",
                         DisplayName = "نقش"
-                    }
+                    },
+					new CodeGroup
+					{
+						CodeGroupId = 6,
+						CodeGroupGuid = Guid.Parse("107a7244-6e66-4369-8ba6-dfb0636642c4"),
+						Name = "ContactUsBusinessType",
+						DisplayName = "نوع کسب و کار بخش ارتباط با ما"
+					}
 				);
 
 			#endregion
@@ -9076,7 +9083,25 @@ namespace Pisheyar.Infrastructure.Persistence
                         Name = "Contractor",
                         DisplayName = "سرویس دهنده",
                         IsDelete = false
-                    }
+                    },
+					new Code
+					{
+						CodeId = 16,
+						CodeGuid = Guid.Parse("a05c4f54-5999-42b9-a36f-6a04aa7cd476"),
+						CodeGroupId = 6,
+						Name = "Legal",
+						DisplayName = "حقوقی",
+						IsDelete = false
+					},
+					new Code
+					{
+						CodeId = 17,
+						CodeGuid = Guid.Parse("ccef9d1f-343b-442a-a041-1908e4cbc235"),
+						CodeGroupId = 6,
+						Name = "Natural",
+						DisplayName = "حقیقی",
+						IsDelete = false
+					}
 				);
 
 			#endregion
@@ -9262,7 +9287,7 @@ namespace Pisheyar.Infrastructure.Persistence
 					ClientId = 1,
 					ClientGuid = Guid.NewGuid(),
 					UserId = 2,
-					CityId = 750,
+					CityId = 751,
 					IsDelete = false,
 					ModifiedDate = DateTime.Now
 				}
@@ -9279,7 +9304,7 @@ namespace Pisheyar.Infrastructure.Persistence
 					ContractorGuid = Guid.NewGuid(),
 					UserId = 3,
 					BusinessTypeCodeId = 4,
-					CityId = 750,
+					CityId = 751,
 					Latitude = "1",
 					Longitude = "2",
 					Credit = 0,
@@ -9293,13 +9318,90 @@ namespace Pisheyar.Infrastructure.Persistence
 					ContractorGuid = Guid.NewGuid(),
 					UserId = 4,
 					BusinessTypeCodeId = 4,
-					CityId = 750,
+					CityId = 751,
 					Latitude = "1",
 					Longitude = "2",
 					Credit = 10000,
 					AverageRate = 0f,
 					IsDelete = false,
 					ModifiedDate = DateTime.Now
+				}
+			);
+
+			#endregion
+
+			#region ContractorCategory
+
+			modelBuilder.Entity<ContractorCategory>().HasData(
+				new ContractorCategory
+				{
+					ContractorCategoryId = 1,
+					ContractorCategoryGuid = Guid.NewGuid(),
+					ContractorId = 1,
+					CategoryId = 4
+				},
+				new ContractorCategory
+				{
+					ContractorCategoryId = 2,
+					ContractorCategoryGuid = Guid.NewGuid(),
+					ContractorId = 1,
+					CategoryId = 5
+				},
+				new ContractorCategory
+				{
+					ContractorCategoryId = 3,
+					ContractorCategoryGuid = Guid.NewGuid(),
+					ContractorId = 1,
+					CategoryId = 14
+				},
+				new ContractorCategory
+				{
+					ContractorCategoryId = 4,
+					ContractorCategoryGuid = Guid.NewGuid(),
+					ContractorId = 1,
+					CategoryId = 22
+				},
+				new ContractorCategory
+				{
+					ContractorCategoryId = 5,
+					ContractorCategoryGuid = Guid.NewGuid(),
+					ContractorId = 1,
+					CategoryId = 25
+				},
+				new ContractorCategory
+				{
+					ContractorCategoryId = 6,
+					ContractorCategoryGuid = Guid.NewGuid(),
+					ContractorId = 1,
+					CategoryId = 30
+				},
+				new ContractorCategory
+				{
+					ContractorCategoryId = 7,
+					ContractorCategoryGuid = Guid.NewGuid(),
+					ContractorId = 1,
+					CategoryId = 33
+				},
+				new ContractorCategory
+				{
+					ContractorCategoryId = 8,
+					ContractorCategoryGuid = Guid.NewGuid(),
+					ContractorId = 1,
+					CategoryId = 34
+				},
+				new ContractorCategory
+				{
+					ContractorCategoryId = 9,
+					ContractorCategoryGuid = Guid.NewGuid(),
+					ContractorId = 1,
+					CategoryId = 27
+				},
+				new ContractorCategory
+				{
+					ContractorCategoryId = 10,
+					ContractorCategoryGuid = Guid.NewGuid(),
+					ContractorId = 1,
+					CategoryId = 20
 				}
 			);
 
@@ -9317,8 +9419,24 @@ namespace Pisheyar.Infrastructure.Persistence
 					StateCodeId = 9,
 					Title = "تیتر",
 					Description = "توضیح",
-					Comment = "",
-					Rate = 0f,
+					Comment = null,
+					Rate = null,
+					Cost = null,
+					IsDelete = false,
+					ModifiedDate = DateTime.Now
+				},
+				new Order
+				{
+					OrderId = 2,
+					OrderGuid = Guid.NewGuid(),
+					ClientId = 1,
+					CategoryId = 22,
+					StateCodeId = 9,
+					Title = "مشکل",
+					Description = "کولر ماشین مشکل داره",
+					Comment = null,
+					Rate = null,
+					Cost = null,
 					IsDelete = false,
 					ModifiedDate = DateTime.Now
 				}

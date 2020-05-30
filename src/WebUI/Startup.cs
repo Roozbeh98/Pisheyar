@@ -61,6 +61,8 @@ namespace WebUI
                     .WithOrigins("http://127.0.0.1:3000")
                     .WithOrigins("http://localhost:3001")
                     .WithOrigins("http://127.0.0.1:3001")
+                    .WithOrigins("http://localhost:3002")
+                    .WithOrigins("http://127.0.0.1:3002")
                     .WithOrigins("http://localhost:5500")
                     .WithOrigins("http://127.0.0.1:5500")
                     .AllowCredentials();

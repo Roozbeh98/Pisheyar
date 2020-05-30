@@ -15,11 +15,11 @@ namespace Pisheyar.Infrastructure.Persistence.Configurations
                 .HasColumnType("UNIQUEIDENTIFIER ROWGUIDCOL")
                 .HasDefaultValueSql("(newid())");
 
-            entity.HasOne(d => d.Category)
+            entity.HasOne(d => d.ContactUsBusinessTypeCode)
                 .WithMany(p => p.ContactUs)
-                .HasForeignKey(d => d.CategoryId)
+                .HasForeignKey(d => d.ContactUsBusinessTypeCodeId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Contact_Category");
+                .HasConstraintName("FK_ContactUs_Code");
         }
     }
 }
