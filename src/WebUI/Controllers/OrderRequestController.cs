@@ -12,7 +12,9 @@ using Pisheyar.Application.OrderRequests.Queries.GetChatMessages;
 using Pisheyar.Application.OrderRequests.Queries.GetChatRooms;
 using Pisheyar.Application.OrderRequests.Queries.GetContractorOrderRequests;
 using Pisheyar.Application.OrderRequests.Queries.GetOrderRequestAcceptanceStatus;
+using Pisheyar.Application.OrderRequests.Queries.GetOrderRequestAccessStatus;
 using Pisheyar.Application.OrderRequests.Queries.GetOrderRequestAllowingStatus;
+using Pisheyar.Application.OrderRequests.Queries.GetOrderRequestFinishingStatus;
 using Pisheyar.Application.OrderRequests.Queries.GetOrderRequestsForClient;
 
 namespace WebUI.Controllers
@@ -98,6 +100,28 @@ namespace WebUI.Controllers
         public async Task<ActionResult<GetOrderRequestAcceptanceStatusVm>> GetAcceptanceStatus(Guid orderRequestGuid)
         {
             return await Mediator.Send(new GetOrderRequestAcceptanceStatusQuery() { OrderRequestGuid = orderRequestGuid });
+        }
+
+        /// <summary>
+        /// دریافت وضعیت اتمام درخواست سفارش
+        /// </summary>
+        /// <param name="orderRequestGuid">آیدی درخواست سفارش</param>
+        /// <returns></returns>
+        [HttpGet("[action]")]
+        public async Task<ActionResult<GetOrderRequestFinishingStatusVm>> GetFinishingStatus(Guid orderRequestGuid)
+        {
+            return await Mediator.Send(new GetOrderRequestFinishingStatusQuery() { OrderRequestGuid = orderRequestGuid });
+        }
+
+        /// <summary>
+        /// دریافت وضعیت دسترسی درخواست سفارش
+        /// </summary>
+        /// <param name="orderRequestGuid">آیدی درخواست سفارش</param>
+        /// <returns></returns>
+        [HttpGet("[action]")]
+        public async Task<ActionResult<GetOrderRequestAccessStatusVm>> GetAccessStatus(Guid orderRequestGuid)
+        {
+            return await Mediator.Send(new GetOrderRequestAccessStatusQuery() { OrderRequestGuid = orderRequestGuid });
         }
 
         /// <summary>

@@ -87,6 +87,36 @@ namespace Pisheyar.Application.Orders.Commands.FinishOrder
                     State = (int)FinishOrderState.OrderNotFound
                 };
 
+                switch (order.StateCodeId)
+                {
+                    case 9:
+                        return new FinishOrderVm
+                        {
+                            Message = "سفارش مورد نظر قبول نشده است",
+                            State = (int)FinishOrderState.OrderNotAcceptedBefore
+                        };
+
+                    case 11:
+                        return new FinishOrderVm
+                        {
+                            Message = "سفارش مورد نظر قبلا به اتمام رسیده است",
+                            State = (int)FinishOrderState.OrderDoneBefore
+                        };
+
+                    case 12:
+                        return new FinishOrderVm
+                        {
+                            Message = "سفارش مورد نظر قبلا لغو شده است",
+                            State = (int)FinishOrderState.OrderCancelledBefore
+                        };
+                }
+
+                if (!orderRequest.IsAllow) return new FinishOrderVm
+                {
+                    Message = "سفارش مورد نظر قبلا تایید نشده است",
+                    State = (int)FinishOrderState.OrderRequestAllowedBefore
+                };
+
                 order.Comment = request.Comment;
                 order.Rate = request.Rate;
                 order.Cost = request.Cost;

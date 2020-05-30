@@ -33,10 +33,10 @@ namespace Pisheyar.Application.Contact.Commands.SendMessage
 
             public async Task<SendMessageVm> Handle(SendMessageCommand request, CancellationToken cancellationToken)
             {
-                Code code = await _context.Code
-                    .SingleOrDefaultAsync(x => x.CodeGuid == request.ContactUsBusinessTypeGuid, cancellationToken);
+                Code contactUsBusinessType = await _context.Code
+                    .SingleOrDefaultAsync(x => x.CodeGuid == request.ContactUsBusinessTypeGuid && !x.IsDelete, cancellationToken);
 
-                if (code == null) return new SendMessageVm()
+                if (contactUsBusinessType == null) return new SendMessageVm()
                 {
                     Message = "نوع کسب و کار مورد نظر یافت نشد",
                     State = (int)SendContactUsMessgae.CategoryNotFound
@@ -47,7 +47,7 @@ namespace Pisheyar.Application.Contact.Commands.SendMessage
                     Name = request.Name,
                     Email = request.Email,
                     PhoneNumber = request.PhoneNumber,
-                    ContactUsBusinessTypeCodeId = code.CodeId
+                    ContactUsBusinessTypeCodeId = contactUsBusinessType.CodeId
                 };
 
                 _context.ContactUs.Add(contectUs);

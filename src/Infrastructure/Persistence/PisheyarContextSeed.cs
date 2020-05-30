@@ -9308,7 +9308,7 @@ namespace Pisheyar.Infrastructure.Persistence
 					Latitude = "1",
 					Longitude = "2",
 					Credit = 0,
-					AverageRate = 0f,
+					AverageRate = null,
 					IsDelete = false,
 					ModifiedDate = DateTime.Now
 				},
@@ -9322,7 +9322,7 @@ namespace Pisheyar.Infrastructure.Persistence
 					Latitude = "1",
 					Longitude = "2",
 					Credit = 10000,
-					AverageRate = 0f,
+					AverageRate = null,
 					IsDelete = false,
 					ModifiedDate = DateTime.Now
 				}

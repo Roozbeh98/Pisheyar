@@ -38,7 +38,7 @@ namespace Pisheyar.Application.Categories.Queries.GetCategoryByGuid
                     {
                         CategoryId = x.CategoryId,
                         CategoryGuid = x.CategoryGuid,
-                        DisplayName = x.DisplayName,
+                        Title = x.DisplayName,
                         Description = x.Description,
                         Abstract = x.Abstract,
                         Sort = x.Sort,
@@ -61,7 +61,7 @@ namespace Pisheyar.Application.Categories.Queries.GetCategoryByGuid
 
                     if (categories.Count <= 0) return category;
 
-                    category.SubCategories = await GetCategoryChildren(categories, category);
+                    category.Children = await GetCategoryChildren(categories, category);
                 }
 
                 return category;
@@ -70,13 +70,13 @@ namespace Pisheyar.Application.Categories.Queries.GetCategoryByGuid
             private async Task<List<CategoryDto>> GetCategoryChildren(List<Category> categories, CategoryDto category)
             {
                 var subCategories = categories
-                    .Where(x => x.ParentCategoryId == category.CategoryId)
+                    .Where(x => x.ParentCategoryId == category.CategoryId && !x.IsDelete)
                     .OrderBy(x => x.Sort)
                     .Select(x => new CategoryDto
                     {
                         CategoryId = x.CategoryId,
                         CategoryGuid = x.CategoryGuid,
-                        DisplayName = x.DisplayName,
+                        Title = x.DisplayName,
                         Description = x.Description,
                         Abstract = x.Abstract,
                         Sort = x.Sort,
@@ -91,14 +91,14 @@ namespace Pisheyar.Application.Categories.Queries.GetCategoryByGuid
 
                 if (subCategories.Count <= 0) return null;
 
-                category.SubCategories = subCategories;
+                category.Children = subCategories;
 
-                foreach (CategoryDto subCategory in category.SubCategories)
+                foreach (CategoryDto subCategory in category.Children)
                 {
-                    subCategory.SubCategories = await GetCategoryChildren(categories, subCategory);
+                    subCategory.Children = await GetCategoryChildren(categories, subCategory);
                 }
 
-                return category.SubCategories;
+                return category.Children;
             }
 
             public async Task<CategoryVm> Handle(GetCategoryByGuidQuery request, CancellationToken cancellationToken)

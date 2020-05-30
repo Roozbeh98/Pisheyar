@@ -12,25 +12,25 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Pisheyar.Application.OrderRequests.Queries.GetOrderRequestAcceptanceStatus
+namespace Pisheyar.Application.OrderRequests.Queries.GetOrderRequestFinishingStatus
 {
-    public class GetOrderRequestAcceptanceStatusQuery : IRequest<GetOrderRequestAcceptanceStatusVm>
+    public class GetOrderRequestFinishingStatusQuery : IRequest<GetOrderRequestFinishingStatusVm>
     {
         public Guid OrderRequestGuid { get; set; }
 
-        public class GetOrderRequestAcceptanceStatusQueryHandler : IRequestHandler<GetOrderRequestAcceptanceStatusQuery, GetOrderRequestAcceptanceStatusVm>
+        public class GetOrderRequestFinishingStatusQueryHandler : IRequestHandler<GetOrderRequestFinishingStatusQuery, GetOrderRequestFinishingStatusVm>
         {
             private readonly IPisheyarContext _context;
             private readonly ICurrentUserService _currentUser;
 
-            public GetOrderRequestAcceptanceStatusQueryHandler(IPisheyarContext context,
+            public GetOrderRequestFinishingStatusQueryHandler(IPisheyarContext context,
                 ICurrentUserService currentUserService)
             {
                 _context = context;
                 _currentUser = currentUserService;
             }
 
-            public async Task<GetOrderRequestAcceptanceStatusVm> Handle(GetOrderRequestAcceptanceStatusQuery request, CancellationToken cancellationToken)
+            public async Task<GetOrderRequestFinishingStatusVm> Handle(GetOrderRequestFinishingStatusQuery request, CancellationToken cancellationToken)
             {
                 User currentUser = await _context.User
                     .Where(x => x.UserGuid == Guid.Parse(_currentUser.NameIdentifier))
@@ -38,10 +38,10 @@ namespace Pisheyar.Application.OrderRequests.Queries.GetOrderRequestAcceptanceSt
 
                 if (currentUser == null)
                 {
-                    return new GetOrderRequestAcceptanceStatusVm()
+                    return new GetOrderRequestFinishingStatusVm()
                     {
                         Message = "کاربر مورد نظر یافت نشد",
-                        State = (int)GetOrderRequestAcceptanceStatusState.UserNotFound
+                        State = (int)GetOrderRequestAccessStatusState.UserNotFound
                     };
                 }
 
@@ -50,10 +50,10 @@ namespace Pisheyar.Application.OrderRequests.Queries.GetOrderRequestAcceptanceSt
 
                 if (client == null)
                 {
-                    return new GetOrderRequestAcceptanceStatusVm()
+                    return new GetOrderRequestFinishingStatusVm()
                     {
                         Message = "سرویس گیرنده مورد نظر یافت نشد",
-                        State = (int)GetOrderRequestAcceptanceStatusState.ClientNotFound
+                        State = (int)GetOrderRequestAccessStatusState.ClientNotFound
                     };
                 }
 
@@ -63,18 +63,18 @@ namespace Pisheyar.Application.OrderRequests.Queries.GetOrderRequestAcceptanceSt
 
                 if (orderRequest == null)
                 {
-                    return new GetOrderRequestAcceptanceStatusVm()
+                    return new GetOrderRequestFinishingStatusVm()
                     {
                         Message = "درخواست سفارش مورد نظر یافت نشد",
-                        State = (int)GetOrderRequestAcceptanceStatusState.OrderRequestNotFound
+                        State = (int)GetOrderRequestAccessStatusState.OrderRequestNotFound
                     };
                 }
 
-                return new GetOrderRequestAcceptanceStatusVm()
+                return new GetOrderRequestFinishingStatusVm()
                 {
                     Message = "عملیات موفق آمیز",
-                    State = (int)GetOrderRequestAcceptanceStatusState.Success,
-                    AcceptanceStatus = orderRequest.IsAccept
+                    State = (int)GetOrderRequestAccessStatusState.Success,
+                    FinishingStatus = orderRequest.Order.StateCodeId == 11
                 };
             }
         }

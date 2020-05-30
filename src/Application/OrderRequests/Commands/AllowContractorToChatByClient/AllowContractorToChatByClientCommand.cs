@@ -21,13 +21,11 @@ namespace Pisheyar.Application.OrderRequests.Commands.AllowContractorToChatByCli
         {
             private readonly IPisheyarContext _context;
             private readonly ICurrentUserService _currentUser;
-            private readonly ISmsService _sms;
 
-            public CreateOrderCommandHandler(IPisheyarContext context, ICurrentUserService currentUserService, ISmsService smsService)
+            public CreateOrderCommandHandler(IPisheyarContext context, ICurrentUserService currentUser)
             {
                 _context = context;
-                _currentUser = currentUserService;
-                _sms = smsService;
+                _currentUser = currentUser;
             }
 
             public async Task<AllowContractorToChatByClientVm> Handle(AllowContractorToChatByClientCommand request, CancellationToken cancellationToken)
@@ -61,6 +59,36 @@ namespace Pisheyar.Application.OrderRequests.Commands.AllowContractorToChatByCli
                 {
                     Message = "درخواست سفارش مورد نظر یافت نشد",
                     State = (int)AllowOrderRequestState.OrderRequestNotFound
+                };
+
+                switch (orderRequest.Order.StateCodeId)
+                {
+                    case 10:
+                        return new AllowContractorToChatByClientVm
+                        {
+                            Message = "سفارش مورد نظر قبول شده است",
+                            State = (int)AllowOrderRequestState.OrderRequestAcceptedBefore
+                        };
+
+                    case 11:
+                        return new AllowContractorToChatByClientVm
+                        {
+                            Message = "سفارش مورد نظر به اتمام رسیده است",
+                            State = (int)AllowOrderRequestState.OrderDoneBefore
+                        };
+
+                    case 12:
+                        return new AllowContractorToChatByClientVm
+                        {
+                            Message = "سفارش مورد نظر لغو شده است",
+                            State = (int)AllowOrderRequestState.OrderCancelledBefore
+                        };
+                }
+
+                if (orderRequest.IsAllow) return new AllowContractorToChatByClientVm
+                {
+                    Message = "سفارش مورد نظر قبلا تایید شده است",
+                    State = (int)AllowOrderRequestState.OrderRequestAllowedBefore
                 };
 
                 orderRequest.IsAllow = true;

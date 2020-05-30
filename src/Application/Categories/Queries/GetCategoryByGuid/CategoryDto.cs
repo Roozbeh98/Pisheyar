@@ -14,7 +14,7 @@ namespace Pisheyar.Application.Categories.Queries.GetCategoryByGuid
 
         public Guid CategoryGuid { get; set; }
 
-        public string DisplayName { get; set; }
+        public string Title { get; set; }
 
         public string Abstract { get; set; }
 
@@ -34,6 +34,6 @@ namespace Pisheyar.Application.Categories.Queries.GetCategoryByGuid
 
         public string ModifiedDate { get; set; }
 
-        public List<CategoryDto> SubCategories { get; set; }
+        public List<CategoryDto> Children { get; set; }
     }
 }

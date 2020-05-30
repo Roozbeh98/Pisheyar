@@ -118,14 +118,14 @@ namespace Pisheyar.Infrastructure.Identity
             return new AuthenticateVm() {
                 Message = "عملیات موفق آمیز",
                 State = (int)AuthenticateState.Success,
-                Token = await GenerateJsonWebToken(user, expireDate),
+                Token = await GenerateJsonWebToken(user, expireDate, isApplication),
                 Expires = expireDate.ToString("yyyy/MM/dd HH:mm:ss")
             };
 
             //return user.WithoutPassword();
         }
 
-        private async Task<string> GenerateJsonWebToken(User user, DateTime expireDate)
+        private async Task<string> GenerateJsonWebToken(User user, DateTime expireDate, bool isApplication)
         {
             Role role = await _context.Role
                 .Where(x => x.RoleId == user.RoleId)
@@ -142,6 +142,7 @@ namespace Pisheyar.Infrastructure.Identity
                 //new Claim(JwtRegisteredClaimNames.Sub, userInfo.Username),
                 //new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim(JwtRegisteredClaimNames.Jti, user.UserGuid.ToString()),
+                new Claim("IsApplication", isApplication.ToString()),
             };
             JwtSecurityToken token = new JwtSecurityToken(_jwtSettings.Issuer,
                 _jwtSettings.Issuer,

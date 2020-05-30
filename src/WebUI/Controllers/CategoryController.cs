@@ -29,7 +29,7 @@ namespace WebUI.Controllers
         /// <returns></returns>
         [HttpGet("{categoryGuid}")]
         [AllowAnonymous]
-        public async Task<ActionResult<CategoryVm>> GetByGuid(Guid categoryGuid, bool includeChildren = false)
+        public async Task<ActionResult<CategoryVm>> GetByGuid(Guid categoryGuid, bool includeChildren = true)
         {
             return await Mediator.Send(new GetCategoryByGuidQuery() { CategoryGuid = categoryGuid, IncludeChildren = includeChildren });
         }

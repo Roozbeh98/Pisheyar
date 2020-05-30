@@ -62,6 +62,36 @@ namespace Pisheyar.Application.OrderRequests.Commands.AcceptOrderRequest
                     State = (int)AcceptOrderRequestState.OrderRequestNotFound
                 };
 
+                switch (orderRequest.Order.StateCodeId)
+                {
+                    case 10:
+                        return new AcceptOrderRequestVm
+                        {
+                            Message = "سفارش مورد نظر قبلا قبول شده است",
+                            State = (int)AcceptOrderRequestState.OrderRequestAcceptedBefore
+                        };
+
+                    case 11:
+                        return new AcceptOrderRequestVm
+                        {
+                            Message = "سفارش مورد نظر قبلا به اتمام رسیده است",
+                            State = (int)AcceptOrderRequestState.OrderDoneBefore
+                        };
+
+                    case 12:
+                        return new AcceptOrderRequestVm
+                        {
+                            Message = "سفارش مورد نظر قبلا لغو شده است",
+                            State = (int)AcceptOrderRequestState.OrderCancelledBefore
+                        };
+                }
+
+                if (!orderRequest.IsAllow) return new AcceptOrderRequestVm
+                {
+                    Message = "سفارش مورد نظر تایید نشده است",
+                    State = (int)AcceptOrderRequestState.OrderRequestNotAllowed
+                };
+
                 orderRequest.IsAccept = true;
                 orderRequest.ModifiedDate = DateTime.Now;
                 orderRequest.Order.StateCodeId = 10;

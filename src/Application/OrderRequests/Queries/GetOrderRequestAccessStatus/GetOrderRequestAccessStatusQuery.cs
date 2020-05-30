@@ -12,13 +12,13 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Pisheyar.Application.OrderRequests.Queries.GetOrderRequestAcceptanceStatus
+namespace Pisheyar.Application.OrderRequests.Queries.GetOrderRequestAccessStatus
 {
-    public class GetOrderRequestAcceptanceStatusQuery : IRequest<GetOrderRequestAcceptanceStatusVm>
+    public class GetOrderRequestAccessStatusQuery : IRequest<GetOrderRequestAccessStatusVm>
     {
         public Guid OrderRequestGuid { get; set; }
 
-        public class GetOrderRequestAcceptanceStatusQueryHandler : IRequestHandler<GetOrderRequestAcceptanceStatusQuery, GetOrderRequestAcceptanceStatusVm>
+        public class GetOrderRequestAcceptanceStatusQueryHandler : IRequestHandler<GetOrderRequestAccessStatusQuery, GetOrderRequestAccessStatusVm>
         {
             private readonly IPisheyarContext _context;
             private readonly ICurrentUserService _currentUser;
@@ -30,7 +30,7 @@ namespace Pisheyar.Application.OrderRequests.Queries.GetOrderRequestAcceptanceSt
                 _currentUser = currentUserService;
             }
 
-            public async Task<GetOrderRequestAcceptanceStatusVm> Handle(GetOrderRequestAcceptanceStatusQuery request, CancellationToken cancellationToken)
+            public async Task<GetOrderRequestAccessStatusVm> Handle(GetOrderRequestAccessStatusQuery request, CancellationToken cancellationToken)
             {
                 User currentUser = await _context.User
                     .Where(x => x.UserGuid == Guid.Parse(_currentUser.NameIdentifier))
@@ -38,10 +38,10 @@ namespace Pisheyar.Application.OrderRequests.Queries.GetOrderRequestAcceptanceSt
 
                 if (currentUser == null)
                 {
-                    return new GetOrderRequestAcceptanceStatusVm()
+                    return new GetOrderRequestAccessStatusVm()
                     {
                         Message = "کاربر مورد نظر یافت نشد",
-                        State = (int)GetOrderRequestAcceptanceStatusState.UserNotFound
+                        State = (int)GetOrderRequestAccessStatusState.UserNotFound
                     };
                 }
 
@@ -50,10 +50,10 @@ namespace Pisheyar.Application.OrderRequests.Queries.GetOrderRequestAcceptanceSt
 
                 if (client == null)
                 {
-                    return new GetOrderRequestAcceptanceStatusVm()
+                    return new GetOrderRequestAccessStatusVm()
                     {
                         Message = "سرویس گیرنده مورد نظر یافت نشد",
-                        State = (int)GetOrderRequestAcceptanceStatusState.ClientNotFound
+                        State = (int)GetOrderRequestAccessStatusState.ClientNotFound
                     };
                 }
 
@@ -63,18 +63,20 @@ namespace Pisheyar.Application.OrderRequests.Queries.GetOrderRequestAcceptanceSt
 
                 if (orderRequest == null)
                 {
-                    return new GetOrderRequestAcceptanceStatusVm()
+                    return new GetOrderRequestAccessStatusVm()
                     {
                         Message = "درخواست سفارش مورد نظر یافت نشد",
-                        State = (int)GetOrderRequestAcceptanceStatusState.OrderRequestNotFound
+                        State = (int)GetOrderRequestAccessStatusState.OrderRequestNotFound
                     };
                 }
 
-                return new GetOrderRequestAcceptanceStatusVm()
+                return new GetOrderRequestAccessStatusVm()
                 {
                     Message = "عملیات موفق آمیز",
-                    State = (int)GetOrderRequestAcceptanceStatusState.Success,
-                    AcceptanceStatus = orderRequest.IsAccept
+                    State = (int)GetOrderRequestAccessStatusState.Success,
+                    AccessStatus = (orderRequest.Order.StateCodeId == 9 &&
+                        orderRequest.IsAllow) ||
+                        orderRequest.IsAccept
                 };
             }
         }

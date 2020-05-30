@@ -72,7 +72,7 @@ namespace Pisheyar.Application.OrderRequests.Queries.GetContractorOrderRequests
                 if (request.StateGuid != null)
                 {
                     Code state = await _context.Code
-                        .SingleOrDefaultAsync(x => x.CodeGuid == request.StateGuid, cancellationToken);
+                        .SingleOrDefaultAsync(x => x.CodeGuid == request.StateGuid && !x.IsDelete, cancellationToken);
 
                     if (state == null)
                     {

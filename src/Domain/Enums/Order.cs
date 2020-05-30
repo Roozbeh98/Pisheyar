@@ -18,7 +18,11 @@ namespace Pisheyar.Domain.Enums
         UserNotFound = 2,
         ClientNotFound = 3,
         OrderRequestNotFound = 4,
-        OrderNotFound = 5
+        OrderNotFound = 5,
+        OrderNotAcceptedBefore = 6,
+        OrderDoneBefore = 7,
+        OrderCancelledBefore = 8,
+        OrderRequestAllowedBefore = 9
     }
 
     public enum GetOrdersForContractorState

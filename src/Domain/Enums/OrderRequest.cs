@@ -18,6 +18,10 @@ namespace Pisheyar.Domain.Enums
         UserNotFound = 2,
         ClientNotFound = 3,
         OrderRequestNotFound = 4,
+        OrderRequestAcceptedBefore = 5,
+        OrderDoneBefore = 6,
+        OrderCancelledBefore = 7,
+        OrderRequestNotAllowed = 8
     }
 
     public enum AllowOrderRequestState
@@ -26,6 +30,10 @@ namespace Pisheyar.Domain.Enums
         UserNotFound = 2,
         ClientNotFound = 3,
         OrderRequestNotFound = 4,
+        OrderRequestAcceptedBefore = 5,
+        OrderDoneBefore = 6,
+        OrderCancelledBefore = 7,
+        OrderRequestAllowedBefore = 8
     }
 
     public enum GetOrderRequestsForClientState
@@ -51,8 +59,23 @@ namespace Pisheyar.Domain.Enums
         Success = 1,
         UserNotFound = 2,
         ClientNotFound = 3,
-        OrderRequestNotFound = 4,
-        NotAnyOrderRequestsFound = 5
+        OrderRequestNotFound = 4
+    }
+
+    public enum GetOrderRequestAcceptanceStatusState
+    {
+        Success = 1,
+        UserNotFound = 2,
+        ClientNotFound = 3,
+        OrderRequestNotFound = 4
+    }
+
+    public enum GetOrderRequestAccessStatusState
+    {
+        Success = 1,
+        UserNotFound = 2,
+        ClientNotFound = 3,
+        OrderRequestNotFound = 4
     }
 
     public enum GetChatRoomState
