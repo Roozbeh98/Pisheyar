@@ -67,21 +67,21 @@ namespace Pisheyar.Application.OrderRequests.Commands.AcceptOrderRequest
                     case 10:
                         return new AcceptOrderRequestVm
                         {
-                            Message = "سفارش مورد نظر قبلا قبول شده است",
+                            Message = "سفارش مورد نظر قبول شده است",
                             State = (int)AcceptOrderRequestState.OrderRequestAcceptedBefore
                         };
 
                     case 11:
                         return new AcceptOrderRequestVm
                         {
-                            Message = "سفارش مورد نظر قبلا به اتمام رسیده است",
+                            Message = "سفارش مورد نظر به اتمام رسیده است",
                             State = (int)AcceptOrderRequestState.OrderDoneBefore
                         };
 
                     case 12:
                         return new AcceptOrderRequestVm
                         {
-                            Message = "سفارش مورد نظر قبلا لغو شده است",
+                            Message = "سفارش مورد نظر لغو شده است",
                             State = (int)AcceptOrderRequestState.OrderCancelledBefore
                         };
                 }

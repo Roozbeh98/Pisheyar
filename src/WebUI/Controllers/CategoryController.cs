@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Pisheyar.Application.Categories.Commands.CreateCategory;
 using Pisheyar.Application.Categories.Commands.DeleteCategory;
@@ -21,6 +22,13 @@ namespace WebUI.Controllers
     [ApiController]
     public class CategoryController : ApiController
     {
+        private readonly IWebHostEnvironment _hostingEnvironment;
+
+        public CategoryController(IWebHostEnvironment hostingEnvironment)
+        {
+            _hostingEnvironment = hostingEnvironment;
+        }
+
         /// <summary>
         /// دریافت اطلاعات دسته بندی از طریق آیدی
         /// </summary>
@@ -109,9 +117,9 @@ namespace WebUI.Controllers
         /// <param name="command">اطلاعات دسته بندی</param>
         /// <returns></returns>
         [HttpPost("[action]")]
-        public async Task<ActionResult<SetCategoryDetailsVm>> SetDetails(SetCategoryDetailsCommand command)
+        public async Task<ActionResult<SetCategoryDetailsVm>> SetDetails(SetCategoryDetailsDto command)
         {
-            return await Mediator.Send(command);
+            return await Mediator.Send(new SetCategoryDetailsCommand { Command = command, WebRootPath = _hostingEnvironment.WebRootPath });
         }
 
         /// <summary>

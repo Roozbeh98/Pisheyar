@@ -8,7 +8,8 @@ namespace Pisheyar.Domain.Enums
     {
         Success = 1,
         DocumentNotFound = 2,
-        UserNotFound = 3
+        UserNotFound = 3,
+        DocumentGuidProblem = 4
     }
 
     public enum UpdatePostState

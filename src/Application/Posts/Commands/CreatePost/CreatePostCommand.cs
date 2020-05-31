@@ -41,6 +41,14 @@ namespace Pisheyar.Application.Posts.Commands.CreatePost
 
             public async Task<CreatePostCommandVm> Handle(CreatePostCommand request, CancellationToken cancellationToken)
             {
+                Guid.TryParse(request.DocumentGuid, out Guid DocumentGuid);
+
+                if (DocumentGuid == Guid.Empty) return new CreatePostCommandVm
+                {
+                    Message = "تصویر آپلود شده شناسایی نشد",
+                    State = (int)CreatePostState.DocumentGuidProblem
+                };
+
                 var currentUser = await _context.User
                     .Where(x => x.UserGuid == Guid.Parse(_currentUser.NameIdentifier))
                     .SingleOrDefaultAsync(cancellationToken);
@@ -55,7 +63,7 @@ namespace Pisheyar.Application.Posts.Commands.CreatePost
                 }
 
                 var document = await _context.Document
-                    .SingleOrDefaultAsync(x => x.DocumentGuid == Guid.Parse(request.DocumentGuid), cancellationToken);
+                    .SingleOrDefaultAsync(x => x.DocumentGuid == DocumentGuid, cancellationToken);
 
                 if (document == null)
                 {
@@ -76,61 +84,67 @@ namespace Pisheyar.Application.Posts.Commands.CreatePost
                     DocumentId = document.DocumentId
                 };
 
-                foreach (var categoryGuid in request.Categories)
+                if (request.Categories != null)
                 {
-                    var category = await _context.Category
-                        .Where(x => x.CategoryGuid == categoryGuid)
-                        .SingleOrDefaultAsync(cancellationToken);
-
-                    if (category == null) continue;
-
-                    var postCategory = new PostCategory()
+                    foreach (var categoryGuid in request.Categories)
                     {
-                        Post = post,
-                        CategoryId = category.CategoryId
-                    };
-
-                    _context.PostCategory.Add(postCategory);
-                }
-
-                PostTag postTag;
-
-                foreach (var tag in request.Tags)
-                {
-                    Guid.TryParse(tag, out Guid guid);
-
-                    if (guid == Guid.Empty)
-                    {
-                        var newTag = new Tag()
-                        {
-                            Name = tag
-                        };
-
-                        _context.Tag.Add(newTag);
-
-                        postTag = new PostTag()
-                        {
-                            Post = post
-                        };
-
-                        postTag.Tag = newTag;
-                    }
-                    else
-                    {
-                        var t = await _context.Tag
-                            .Where(x => x.TagGuid == Guid.Parse(tag))
+                        var category = await _context.Category
+                            .Where(x => x.CategoryGuid == categoryGuid)
                             .SingleOrDefaultAsync(cancellationToken);
 
-                        if (t == null) continue;
+                        if (category == null) continue;
 
-                        postTag = new PostTag()
+                        var postCategory = new PostCategory()
                         {
                             Post = post,
-                            TagId = t.TagId
+                            CategoryId = category.CategoryId
                         };
+
+                        _context.PostCategory.Add(postCategory);
                     }
-                    
-                    _context.PostTag.Add(postTag);
+                }    
+
+                if (request.Tags != null)
+                {
+                    PostTag postTag;
+
+                    foreach (var tag in request.Tags)
+                    {
+                        Guid.TryParse(tag, out Guid guid);
+
+                        if (guid == Guid.Empty)
+                        {
+                            var newTag = new Tag()
+                            {
+                                Name = tag
+                            };
+
+                            _context.Tag.Add(newTag);
+
+                            postTag = new PostTag()
+                            {
+                                Post = post
+                            };
+
+                            postTag.Tag = newTag;
+                        }
+                        else
+                        {
+                            var t = await _context.Tag
+                                .Where(x => x.TagGuid == Guid.Parse(tag))
+                                .SingleOrDefaultAsync(cancellationToken);
+
+                            if (t == null) continue;
+
+                            postTag = new PostTag()
+                            {
+                                Post = post,
+                                TagId = t.TagId
+                            };
+                        }
+
+                        _context.PostTag.Add(postTag);
+                    }
                 }
 
                 _context.Post.Add(post);

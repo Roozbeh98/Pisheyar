@@ -99,21 +99,21 @@ namespace Pisheyar.Application.Orders.Commands.FinishOrder
                     case 11:
                         return new FinishOrderVm
                         {
-                            Message = "سفارش مورد نظر قبلا به اتمام رسیده است",
+                            Message = "سفارش مورد نظر به اتمام رسیده است",
                             State = (int)FinishOrderState.OrderDoneBefore
                         };
 
                     case 12:
                         return new FinishOrderVm
                         {
-                            Message = "سفارش مورد نظر قبلا لغو شده است",
+                            Message = "سفارش مورد نظر لغو شده است",
                             State = (int)FinishOrderState.OrderCancelledBefore
                         };
                 }
 
                 if (!orderRequest.IsAllow) return new FinishOrderVm
                 {
-                    Message = "سفارش مورد نظر قبلا تایید نشده است",
+                    Message = "سفارش مورد نظر تایید نشده است",
                     State = (int)FinishOrderState.OrderRequestAllowedBefore
                 };
 

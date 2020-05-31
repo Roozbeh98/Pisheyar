@@ -10,6 +10,6 @@ namespace Pisheyar.Application.Categories.Queries.GetCategoryByGuid
 
         public int State { get; set; }
 
-        public CategoryDto Category { get; set; }
+        public CategoryDtoResult Category { get; set; }
     }
 }

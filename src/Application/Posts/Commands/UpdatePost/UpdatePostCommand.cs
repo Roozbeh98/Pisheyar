@@ -74,10 +74,10 @@ namespace Pisheyar.Application.Posts.Commands.UpdatePost
                     var oldDocument = await _context.Document
                         .FirstOrDefaultAsync(x => x.DocumentId == post.DocumentId, cancellationToken);
 
-                    post.DocumentId = document.DocumentId;
-
-                    if (oldDocument != null)
+                    if (oldDocument != null && post.DocumentId != document.DocumentId)
                     {
+                        post.DocumentId = document.DocumentId;
+
                         var uploadsIndex = oldDocument.Path.IndexOf("Uploads");
                         var documentPath = Path.Combine(Directory.GetCurrentDirectory(), request.WebRootPath, oldDocument.Path.Substring(uploadsIndex));
 
@@ -132,44 +132,47 @@ namespace Pisheyar.Application.Posts.Commands.UpdatePost
                     _context.PostTag.Remove(oldTag);
                 }
 
-                PostTag postTag;
-
-                foreach (var tag in request.Command.Tags)
+                if (request.Command.Tags != null)
                 {
-                    Guid.TryParse(tag, out Guid guid);
+                    PostTag postTag;
 
-                    if (guid == Guid.Empty)
+                    foreach (var tag in request.Command.Tags)
                     {
-                        var newTag = new Tag()
+                        Guid.TryParse(tag, out Guid guid);
+
+                        if (guid == Guid.Empty)
                         {
-                            Name = tag
-                        };
+                            var newTag = new Tag()
+                            {
+                                Name = tag
+                            };
 
-                        _context.Tag.Add(newTag);
+                            _context.Tag.Add(newTag);
 
-                        postTag = new PostTag()
+                            postTag = new PostTag()
+                            {
+                                Post = post
+                            };
+
+                            postTag.Tag = newTag;
+                        }
+                        else
                         {
-                            Post = post
-                        };
+                            var t = await _context.Tag
+                                .Where(x => x.TagGuid == Guid.Parse(tag))
+                                .SingleOrDefaultAsync(cancellationToken);
 
-                        postTag.Tag = newTag;
+                            if (t == null) continue;
+
+                            postTag = new PostTag()
+                            {
+                                Post = post,
+                                TagId = t.TagId
+                            };
+                        }
+
+                        _context.PostTag.Add(postTag);
                     }
-                    else
-                    {
-                        var t = await _context.Tag
-                            .Where(x => x.TagGuid == Guid.Parse(tag))
-                            .SingleOrDefaultAsync(cancellationToken);
-
-                        if (t == null) continue;
-
-                        postTag = new PostTag()
-                        {
-                            Post = post,
-                            TagId = t.TagId
-                        };
-                    }
-
-                    _context.PostTag.Add(postTag);
                 }
 
                 await _context.SaveChangesAsync(cancellationToken);

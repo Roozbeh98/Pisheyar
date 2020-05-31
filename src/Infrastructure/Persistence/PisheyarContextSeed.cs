@@ -9632,11 +9632,17 @@ namespace Pisheyar.Infrastructure.Persistence
                         CategoryId = 11,
                         CategoryGuid = Guid.NewGuid(),
                         ParentCategoryId = 3,
-                        DisplayName = "کابینت سازی",
-                        Sort = 7,
+						CoverDocumentId = null,
+						ActiveIconDocumentId = null,
+						InactiveIconDocumentId = null,
+						QuadMenuDocumentId = null,
+						DisplayName = "کابینت سازی",
+						Description = null,
+						Sort = 7,
                         ModifiedDate = DateTime.Now,
-                        IsDelete = false
-                    },
+						IsActive = true,
+						IsDelete = false
+					},
                     new Category
                     {
                         CategoryId = 12,

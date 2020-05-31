@@ -53,6 +53,7 @@ namespace Pisheyar.Application.OrderRequests.Commands.AllowContractorToChatByCli
                 };
 
                 OrderRequest orderRequest = await _context.OrderRequest
+                    .Include(x => x.Order)
                     .SingleOrDefaultAsync(x => x.OrderRequestGuid == request.OrderRequestGuid && !x.IsDelete, cancellationToken);
 
                 if (orderRequest == null) return new AllowContractorToChatByClientVm

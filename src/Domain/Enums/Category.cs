@@ -25,14 +25,15 @@ namespace Pisheyar.Domain.Enums
     public enum GetPrimaryCategoriesState
     {
         Success = 1,
-        NotFound = 2,
+        NotAnyCategoriesFound = 2,
         CategoryNotFound = 3
     }
 
     public enum DeleteCategoryState
     {
         Success = 1,
-        NotFound = 2
+        NotAnyCategoriesFound = 2,
+        CategoryNotFound = 3
     }
 
     public enum SearchCategoriesState
@@ -50,10 +51,11 @@ namespace Pisheyar.Domain.Enums
     public enum SetCategoryDetailsState
     {
         Success = 1,
-        CategoryNotFound = 2,
-        CoverDocumentNotFound = 3,
-        ActiveIconDocumentNotFound = 4,
-        InactiveIconDocumentNotFound = 5,
-        QuadMenuDocumentNotFound = 6
+        DocumentGuidProblem = 2,
+        CategoryNotFound = 3,
+        CoverDocumentNotFound = 4,
+        ActiveIconDocumentNotFound = 5,
+        InactiveIconDocumentNotFound = 6,
+        QuadMenuDocumentNotFound = 7
     }
 }

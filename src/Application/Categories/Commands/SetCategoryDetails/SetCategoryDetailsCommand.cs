@@ -5,6 +5,7 @@ using Pisheyar.Domain.Entities;
 using Pisheyar.Domain.Enums;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -14,21 +15,9 @@ namespace Pisheyar.Application.Categories.Commands.SetCategoryDetails
 {
     public class SetCategoryDetailsCommand : IRequest<SetCategoryDetailsVm>
     {
-        public Guid CategoryGuid { get; set; }
+        public SetCategoryDetailsDto Command { get; set; }
 
-        public string Abstract { get; set; }
-
-        public string Description { get; set; }
-
-        public string CoverDocumentGuid { get; set; }
-
-        public string ActiveIconDocumentGuid { get; set; }
-
-        public string InactiveIconDocumentGuid { get; set; }
-
-        public string QuadMenuDocumentGuid { get; set; }
-
-        public string[] Tags { get; set; }
+        public string WebRootPath { get; set; }
 
         public class SetCategoryDetailsQueryHandler : IRequestHandler<SetCategoryDetailsCommand, SetCategoryDetailsVm>
         {
@@ -42,7 +31,7 @@ namespace Pisheyar.Application.Categories.Commands.SetCategoryDetails
             public async Task<SetCategoryDetailsVm> Handle(SetCategoryDetailsCommand request, CancellationToken cancellationToken)
             {
                 Category category = await _context.Category
-                    .SingleOrDefaultAsync(x => x.CategoryGuid == request.CategoryGuid, cancellationToken);
+                    .SingleOrDefaultAsync(x => x.CategoryGuid == request.Command.CategoryGuid, cancellationToken);
 
                 if (category == null) return new SetCategoryDetailsVm
                 {
@@ -50,88 +39,178 @@ namespace Pisheyar.Application.Categories.Commands.SetCategoryDetails
                     State = (int)SetCategoryDetailsState.CategoryNotFound
                 };
 
-                Document coverDocument = await _context.Document
-                    .SingleOrDefaultAsync(x => x.DocumentGuid == Guid.Parse(request.CoverDocumentGuid), cancellationToken);
-
-                if (coverDocument == null) return new SetCategoryDetailsVm()
+                if (!string.IsNullOrEmpty(request.Command.CoverDocumentGuid))
                 {
-                    Message = "تصویر کاور مورد نظر یافت نشد",
-                    State = (int)SetCategoryDetailsState.CoverDocumentNotFound
-                };
+                    Document coverDocument = await _context.Document
+                        .FirstOrDefaultAsync(x => x.DocumentGuid == Guid.Parse(request.Command.CoverDocumentGuid), cancellationToken);
 
-                Document activeIconDocument = await _context.Document
-                    .SingleOrDefaultAsync(x => x.DocumentGuid == Guid.Parse(request.ActiveIconDocumentGuid), cancellationToken);
+                    if (coverDocument == null) return new SetCategoryDetailsVm()
+                    {
+                        Message = "تصویر کاور مورد نظر یافت نشد",
+                        State = (int)SetCategoryDetailsState.CoverDocumentNotFound
+                    };
 
-                if (activeIconDocument == null) return new SetCategoryDetailsVm()
+                    Document oldDocument = await _context.Document
+                        .FirstOrDefaultAsync(x => x.DocumentId == category.CoverDocumentId, cancellationToken);
+
+                    if (oldDocument != null && category.CoverDocumentId != coverDocument.DocumentId)
+                    {
+                        category.CoverDocumentId = coverDocument.DocumentId;
+
+                        int uploadsIndex = oldDocument.Path.IndexOf("Uploads");
+                        string documentPath = Path.Combine(Directory.GetCurrentDirectory(),
+                            request.WebRootPath,
+                            oldDocument.Path.Substring(uploadsIndex));
+
+                        if (File.Exists(documentPath))
+                            File.Delete(documentPath);
+
+                        _context.Document.Remove(oldDocument);
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(request.Command.ActiveIconDocumentGuid))
                 {
-                    Message = "تصویر آیکون فعال مورد نظر یافت نشد",
-                    State = (int)SetCategoryDetailsState.ActiveIconDocumentNotFound
-                };
+                    Document activeIconDocument = await _context.Document
+                        .FirstOrDefaultAsync(x => x.DocumentGuid == Guid.Parse(request.Command.ActiveIconDocumentGuid), cancellationToken);
 
-                Document inactiveIconDocument = await _context.Document
-                    .SingleOrDefaultAsync(x => x.DocumentGuid == Guid.Parse(request.InactiveIconDocumentGuid), cancellationToken);
+                    if (activeIconDocument == null) return new SetCategoryDetailsVm()
+                    {
+                        Message = "تصویر آیکون فعال مورد نظر یافت نشد",
+                        State = (int)SetCategoryDetailsState.CoverDocumentNotFound
+                    };
 
-                if (inactiveIconDocument == null) return new SetCategoryDetailsVm()
+                    Document oldDocument = await _context.Document
+                        .FirstOrDefaultAsync(x => x.DocumentId == category.ActiveIconDocumentId, cancellationToken);
+
+                    if (oldDocument != null && category.ActiveIconDocumentId != activeIconDocument.DocumentId)
+                    {
+                        category.ActiveIconDocumentId = activeIconDocument.DocumentId;
+
+                        int uploadsIndex = oldDocument.Path.IndexOf("Uploads");
+                        string documentPath = Path.Combine(Directory.GetCurrentDirectory(),
+                            request.WebRootPath,
+                            oldDocument.Path.Substring(uploadsIndex));
+
+                        if (File.Exists(documentPath))
+                            File.Delete(documentPath);
+
+                        _context.Document.Remove(oldDocument);
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(request.Command.InactiveIconDocumentGuid))
                 {
-                    Message = "تصویر آیکون غیرفعال مورد نظر یافت نشد",
-                    State = (int)SetCategoryDetailsState.InactiveIconDocumentNotFound
-                };
+                    Document inactiveIconDocument = await _context.Document
+                        .FirstOrDefaultAsync(x => x.DocumentGuid == Guid.Parse(request.Command.InactiveIconDocumentGuid), cancellationToken);
 
-                Document quadMenuDocument = await _context.Document
-                    .SingleOrDefaultAsync(x => x.DocumentGuid == Guid.Parse(request.QuadMenuDocumentGuid), cancellationToken);
+                    if (inactiveIconDocument == null) return new SetCategoryDetailsVm()
+                    {
+                        Message = "تصویر آیکون غیرفعال مورد نظر یافت نشد",
+                        State = (int)SetCategoryDetailsState.CoverDocumentNotFound
+                    };
 
-                if (quadMenuDocument == null) return new SetCategoryDetailsVm()
+                    Document oldDocument = await _context.Document
+                        .FirstOrDefaultAsync(x => x.DocumentId == category.InactiveIconDocumentId, cancellationToken);
+
+                    if (oldDocument != null && category.InactiveIconDocumentId != inactiveIconDocument.DocumentId)
+                    {
+                        category.InactiveIconDocumentId = inactiveIconDocument.DocumentId;
+
+                        int uploadsIndex = oldDocument.Path.IndexOf("Uploads");
+                        string documentPath = Path.Combine(Directory.GetCurrentDirectory(),
+                            request.WebRootPath,
+                            oldDocument.Path.Substring(uploadsIndex));
+
+                        if (File.Exists(documentPath))
+                            File.Delete(documentPath);
+
+                        _context.Document.Remove(oldDocument);
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(request.Command.QuadMenuDocumentGuid))
                 {
-                    Message = "تصویر فهرست چرخشی مورد نظر یافت نشد",
-                    State = (int)SetCategoryDetailsState.QuadMenuDocumentNotFound
-                };
+                    Document quadMenuDocument = await _context.Document
+                        .FirstOrDefaultAsync(x => x.DocumentGuid == Guid.Parse(request.Command.QuadMenuDocumentGuid), cancellationToken);
 
-                category.Abstract = request.Abstract;
-                category.Description = request.Description;
-                category.CoverDocumentId = coverDocument.DocumentId;
-                category.ActiveIconDocumentId = activeIconDocument.DocumentId;
-                category.InactiveIconDocumentId = inactiveIconDocument.DocumentId;
-                category.QuadMenuDocumentId = quadMenuDocument.DocumentId;
+                    if (quadMenuDocument == null) return new SetCategoryDetailsVm()
+                    {
+                        Message = "تصویر فهرست چرخشی مورد نظر یافت نشد",
+                        State = (int)SetCategoryDetailsState.CoverDocumentNotFound
+                    };
+
+                    Document oldDocument = await _context.Document
+                        .FirstOrDefaultAsync(x => x.DocumentId == category.QuadMenuDocumentId, cancellationToken);
+
+                    if (oldDocument != null && category.QuadMenuDocumentId != quadMenuDocument.DocumentId)
+                    {
+                        category.QuadMenuDocumentId = quadMenuDocument.DocumentId;
+
+                        int uploadsIndex = oldDocument.Path.IndexOf("Uploads");
+                        string documentPath = Path.Combine(Directory.GetCurrentDirectory(),
+                            request.WebRootPath,
+                            oldDocument.Path.Substring(uploadsIndex));
+
+                        if (File.Exists(documentPath))
+                            File.Delete(documentPath);
+
+                        _context.Document.Remove(oldDocument);
+                    }
+                }
+
+                category.Abstract = request.Command.Abstract;
+                category.Description = request.Command.Description;
                 category.ModifiedDate = DateTime.Now;
 
-                CategoryTag categoryTag;
+                List<CategoryTag> categoryTags = await _context.CategoryTag
+                    .Where(x => x.CategoryId == category.CategoryId)
+                    .ToListAsync(cancellationToken);
 
-                foreach (string tag in request.Tags)
+                foreach (var oldCategory in categoryTags)
+                    _context.CategoryTag.Remove(oldCategory);
+
+                if (request.Command.Tags != null)
                 {
-                    Guid.TryParse(tag, out Guid guid);
+                    CategoryTag categoryTag;
 
-                    if (guid == Guid.Empty)
+                    foreach (string tag in request.Command.Tags)
                     {
-                        Tag newTag = new Tag()
+                        Guid.TryParse(tag, out Guid guid);
+
+                        if (guid == Guid.Empty)
                         {
-                            Name = tag
-                        };
+                            Tag newTag = new Tag()
+                            {
+                                Name = tag
+                            };
 
-                        _context.Tag.Add(newTag);
+                            _context.Tag.Add(newTag);
 
-                        categoryTag = new CategoryTag()
+                            categoryTag = new CategoryTag()
+                            {
+                                CategoryId = category.CategoryId
+                            };
+
+                            categoryTag.Tag = newTag;
+                        }
+                        else
                         {
-                            CategoryId = category.CategoryId
-                        };
+                            Tag availableTeg = await _context.Tag
+                                .Where(x => x.TagGuid == Guid.Parse(tag))
+                                .SingleOrDefaultAsync(cancellationToken);
 
-                        categoryTag.Tag = newTag;
+                            if (availableTeg == null) continue;
+
+                            categoryTag = new CategoryTag()
+                            {
+                                CategoryId = category.CategoryId,
+                                TagId = availableTeg.TagId
+                            };
+                        }
+
+                        _context.CategoryTag.Add(categoryTag);
                     }
-                    else
-                    {
-                        Tag availableTeg = await _context.Tag
-                            .Where(x => x.TagGuid == Guid.Parse(tag))
-                            .SingleOrDefaultAsync(cancellationToken);
-
-                        if (availableTeg == null) continue;
-
-                        categoryTag = new CategoryTag()
-                        {
-                            CategoryId = category.CategoryId,
-                            TagId = availableTeg.TagId
-                        };
-                    }
-
-                    _context.CategoryTag.Add(categoryTag);
                 }
 
                 await _context.SaveChangesAsync(cancellationToken);
