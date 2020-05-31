@@ -28,12 +28,12 @@ namespace Pisheyar.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration, IWebHostEnvironment environment)
         {
-            services.AddDbContext<PisheyarMagContext>(options =>
+            services.AddDbContext<PisheyarContext>(options =>
                 options.UseSqlServer(
                     configuration.GetConnectionString("DefaultConnection"),
-                    b => b.MigrationsAssembly(typeof(PisheyarMagContext).Assembly.FullName)));
+                    b => b.MigrationsAssembly(typeof(PisheyarContext).Assembly.FullName)));
 
-            services.AddScoped<IPisheyarMagContext>(provider => provider.GetService<PisheyarMagContext>());
+            services.AddScoped<IPisheyarContext>(provider => provider.GetService<PisheyarContext>());
 
             // configure strongly typed settings objects
             var jwtSection = configuration.GetSection("Jwt");
@@ -66,7 +66,7 @@ namespace Pisheyar.Infrastructure
                             // If the request is for our hub...
                             var path = context.HttpContext.Request.Path;
                             if (!string.IsNullOrEmpty(accessToken) &&
-                                path.StartsWithSegments("/chatHub"))
+                                path.StartsWithSegments("/ChatHub"))
                             {
                                 // Read the token out of the query string
                                 context.Token = accessToken;
@@ -79,7 +79,8 @@ namespace Pisheyar.Infrastructure
             services.AddTransient<IDateTime, DateTimeService>();
             services.AddTransient<IIdentityService, IdentityService>();
             services.AddTransient<ISmsService, SmsService>();
-            services.AddTransient<IChatRoomService, InMemoryChatRoomService>();
+            services.AddTransient<IChatRoomService, ChatRoomService>();
+            services.AddTransient<IZarinPalService, ZarinPalService>();
 
             return services;
         }

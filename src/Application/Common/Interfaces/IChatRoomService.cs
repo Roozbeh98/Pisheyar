@@ -8,16 +8,12 @@ namespace Pisheyar.Application.Common.Interfaces
 {
     public interface IChatRoomService
     {
-        Task<Guid> CreateRoom(string connectionId);
+        Task<bool> OrderRequestExistsAsync(Guid orderRequestGuid);
 
-        Task<Guid> GetRoom(string connectionId);
+        Task<bool> IsOrderRequestAccessibleAsync(OrderRequest orderRequest);
 
-        Task SetRoomName(Guid roomId, string name);
+        Task<OrderRequest> GetOrderRequestAsync(Guid orderRequestGuid);
 
-        Task AddMessage(Guid roomId, TblChatMessage message);
-
-        Task<List<TblChatMessage>> GetAllMessages(Guid roomId);
-
-        Task<IReadOnlyList<TblChatRoom>> GetAllRooms();
+        Task<ChatMessage> CreateMessageAsync(int orderRequestId, string message, int userId);
     }
 }

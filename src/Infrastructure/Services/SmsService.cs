@@ -16,18 +16,18 @@ namespace Pisheyar.Infrastructure.Services
     [Authorize]
     public class SmsService : ISmsService
     {
-        private readonly IPisheyarMagContext _context;
+        private readonly IPisheyarContext _context;
         private readonly string apikey;
 
-        public SmsService(IPisheyarMagContext context)
+        public SmsService(IPisheyarContext context)
         {
             _context = context;
-            apikey = _context.TblSmsproviderConfiguration.FirstOrDefault().SpcApiKey;
+            apikey = _context.SmsProviderConfiguration.FirstOrDefault().Apikey;
         }
 
         private string GetSmsTemplateName(SmsTemplate template)
         {
-            return _context.TblSmstemplate.Where(x => x.StId == (int)template).FirstOrDefault().StName;
+            return _context.SmsTemplate.Where(x => x.SmsTemplateId == (int)template).FirstOrDefault().Name;
         }
 
         //private bool InsertIntoDB(SendResult result, string token, string token1, string token2)

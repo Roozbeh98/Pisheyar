@@ -22,9 +22,9 @@ namespace Pisheyar.Application.Common.UploadHelper.Filepond
 
         public class FilepondRevertHandler : IRequestHandler<FilepondRevert, bool>
         {
-            private readonly IPisheyarMagContext _context;
+            private readonly IPisheyarContext _context;
 
-            public FilepondRevertHandler(IPisheyarMagContext context)
+            public FilepondRevertHandler(IPisheyarContext context)
             {
                 _context = context;
             }

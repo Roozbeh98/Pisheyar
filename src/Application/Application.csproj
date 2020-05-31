@@ -7,24 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Accounts\**" />
-    <Compile Remove="Advertisements\**" />
-    <Compile Remove="Posts\**" />
-    <Compile Remove="Tags\**" />
     <Compile Remove="TblSmstemplate\**" />
-    <Compile Remove="Users\**" />
-    <EmbeddedResource Remove="Accounts\**" />
-    <EmbeddedResource Remove="Advertisements\**" />
-    <EmbeddedResource Remove="Posts\**" />
-    <EmbeddedResource Remove="Tags\**" />
     <EmbeddedResource Remove="TblSmstemplate\**" />
-    <EmbeddedResource Remove="Users\**" />
-    <None Remove="Accounts\**" />
-    <None Remove="Advertisements\**" />
-    <None Remove="Posts\**" />
-    <None Remove="Tags\**" />
     <None Remove="TblSmstemplate\**" />
-    <None Remove="Users\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -46,14 +31,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Admin\Advertisements\Commands\CreateAdvertisement\" />
-    <Folder Include="Admin\Advertisements\Commands\DeleteAdvertisement\" />
-    <Folder Include="Admin\Advertisements\Commands\UpdateAdvertisement\" />
-    <Folder Include="Admin\Advertisements\Queries\GetAdvertisement\" />
-    <Folder Include="Admin\Advertisements\Queries\GetAllAdvertisements\" />
-    <Folder Include="Admin\Tags\Commands\" />
+    <Folder Include="Advertisements\Commands\CreateAdvertisement\" />
+    <Folder Include="Advertisements\Commands\DeleteAdvertisement\" />
+    <Folder Include="Advertisements\Commands\UpdateAdvertisement\" />
+    <Folder Include="Advertisements\Queries\GetAdvertisement\" />
+    <Folder Include="Advertisements\Queries\GetAllAdvertisements\" />
+    <Folder Include="Clients\Queries\" />
+    <Folder Include="Codes\Commands\" />
+    <Folder Include="Contact\Queries\" />
+    <Folder Include="Payments\Queries\GetPayment\" />
+    <Folder Include="Tags\Commands\" />
     <Folder Include="Common\Mappings\" />
-    <Folder Include="User\" />
+    <Folder Include="Users\Queries\" />
   </ItemGroup>
 
 </Project>

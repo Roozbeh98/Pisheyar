@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Pisheyar.Application.Accounts.Commands.Login;
-using Pisheyar.Application.Accounts.Commands.Register;
 using Pisheyar.Application.Accounts.Commands.Authenticate;
 using Pisheyar.Application.Accounts.Queries.GetUserByMobile;
 using Pisheyar.Application.Accounts.Queries.GetUserByGuid;
@@ -11,6 +10,14 @@ using Pisheyar.Application.Accounts.Queries.GetAllUsers;
 using Microsoft.AspNetCore.Authorization;
 using Pisheyar.Application.Accounts.Commands.ChangeUserActiveness;
 using Pisheyar.Application.Accounts.Commands.DeleteUser;
+using Pisheyar.Application.Accounts.Commands.RegisterClient;
+using Pisheyar.Application.Accounts.Commands.RegisterContractor;
+using Pisheyar.Application.Accounts.Queries.GetAllProvinces;
+using Pisheyar.Application.Accounts.Queries.GetAllProvinceCities;
+using Pisheyar.Application.Accounts.Queries.GetCurrentAdminUser;
+using Pisheyar.Application.Accounts.Queries.GetCurrentClientUser;
+using Pisheyar.Application.Accounts.Queries.GetCurrentContractorUser;
+using Pisheyar.Application.Users.Commands.SetProfilePicture;
 
 namespace WebUI.Controllers
 {
@@ -38,7 +45,37 @@ namespace WebUI.Controllers
         [HttpGet("[action]/{guid}")]
         public async Task<ActionResult<UserByGuidVm>> GetByGuid(Guid guid)
         {
-            return await Mediator.Send(new GetUserByGuidQuery { UserGuid = guid });
+            return await Mediator.Send(new GetUserByGuidQuery() { UserGuid = guid });
+        }
+
+        /// <summary>
+        /// دریافت اطلاعات کاربر ادمین لاگین شده
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("[action]")]
+        public async Task<ActionResult<GetCurrentAdminUserVm>> GetCurrentAdminUser()
+        {
+            return await Mediator.Send(new GetCurrentAdminUserQuery());
+        }
+
+        /// <summary>
+        /// دریافت اطلاعات کاربر سرویس دهنده لاگین شده
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("[action]")]
+        public async Task<ActionResult<GetCurrentContractorUserVm>> GetCurrentContractorUser()
+        {
+            return await Mediator.Send(new GetCurrentContractorUserQuery());
+        }
+
+        /// <summary>
+        /// دریافت اطلاعات کاربر سرویس گیرنده لاگین شده
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("[action]")]
+        public async Task<ActionResult<GetCurrentClientUserVm>> GetCurrentClientUser()
+        {
+            return await Mediator.Send(new GetCurrentClientUserQuery());
         }
 
         /// <summary>
@@ -63,13 +100,60 @@ namespace WebUI.Controllers
         }
 
         /// <summary>
-        /// افزودن کاربر جدید
+        /// دریافت تمامی استان ها
         /// </summary>
-        /// <param name="command">اطلاعات کاربر</param>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpGet("Provinces")]
+        public async Task<ActionResult<GetAllProvincesVm>> GetAllProvinces()
+        {
+            return await Mediator.Send(new GetAllProvincesQuery());
+        }
+
+        /// <summary>
+        /// دریافت تمامی شهرهای واقع یک استان
+        /// </summary>
+        /// <param name="guid">آیدی استان</param>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpGet("Provinces/{guid}/Cities")]
+        public async Task<ActionResult<GetAllProvinceCitiesVm>> GetAllProvinceCities(Guid guid)
+        {
+            return await Mediator.Send(new GetAllProvinceCitiesQuery { ProvinceGuid = guid });
+        }
+
+        /// <summary>
+        /// افزودن سرویس گیرنده جدید
+        /// </summary>
+        /// <param name="command">اطلاعات ادمین</param>
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost("[action]")]
-        public async Task<ActionResult<RegisterCommandVm>> Register(RegisterCommand command)
+        public async Task<ActionResult<RegisterClientCommandVm>> RegisterClient(RegisterClientCommand command)
+        {
+            return await Mediator.Send(command);
+        }
+
+        /// <summary>
+        /// افزودن سرویس دهنده جدید
+        /// </summary>
+        /// <param name="command">اطلاعات سرویس دهنده</param>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpPost("[action]")]
+        public async Task<ActionResult<RegisterContractorVm>> RegisterContractor(RegisterContractorCommand command)
+        {
+            return await Mediator.Send(command);
+        }
+
+        /// <summary>
+        /// تغییر تصویر پروفایل کاربر
+        /// </summary>
+        /// <param name="command">اطلاعات لازم</param>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpPost("[action]")]
+        public async Task<ActionResult<SetProfilePictureVm>> SetProfilePicture(SetProfilePictureCommand command)
         {
             return await Mediator.Send(command);
         }
